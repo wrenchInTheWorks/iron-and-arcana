@@ -1,0 +1,9 @@
+hash-format = "sha256"
+
+[[files]]
+file = ".claude/settings.local.json"
+hash = "551edbbc31271b1523d98688d20b193a6e7b70f1d5f333fcc30844cef7c2970e"
+
+[[files]]
+file = "iron-and-arcana-packwiz-brief.md"
+hash = "e2168fc0818ba6ff73982ab01ef201bffc8783859e619d86e857b3a5b92e5312"

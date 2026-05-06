@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"$env:USERPROFILE\\\\go\\\\bin\\\\packwiz.exe\" init --help)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(curl -s \"https://api.modrinth.com/v2/project/minecolonies/version?game_versions=%5B%221.21.1%22%5D&loaders=%5B%22neoforge%22%5D\")",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(v['version_number'], v['loaders'], v['game_versions']\\) for v in data[:5]]\")",
+      "PowerShell($uri = \"https://api.modrinth.com/v2/project/minecolonies/version?game_versions=%5B%221.21.1%22%5D&loaders=%5B%22neoforge%22%5D\"; $resp = Invoke-RestMethod -Uri $uri; $resp | Select-Object -First 3 | ForEach-Object { \"$\\($_.version_number\\) | $\\($_.loaders\\) | $\\($_.game_versions\\)\" })"
+    ]
+  }
+}

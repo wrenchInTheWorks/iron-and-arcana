@@ -2,11 +2,15 @@ hash-format = "sha256"
 
 [[files]]
 file = ".claude/settings.local.json"
-hash = "75a3e551d6a9d4237eeec4e6da040ad7d1a19e57eee9e4e7937c29efcd1000b1"
+hash = "7e37c2e79e448f16dd22c5c5c473b20b00f818a788bd3dc677b957a37687b681"
 
 [[files]]
 file = "SKIPPED.md"
 hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
+
+[[files]]
+file = "create-aeronautics-bundled-1.21.1-1.2.1.jar"
+hash = "5a8c6d168ec1b47ecee7f2e83a93accbca71544d2b14ca1ca1b1271855f26248"
 
 [[files]]
 file = "iron-and-arcana-packwiz-brief.md"

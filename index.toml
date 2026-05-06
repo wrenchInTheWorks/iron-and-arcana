@@ -6,7 +6,7 @@ hash = "75a3e551d6a9d4237eeec4e6da040ad7d1a19e57eee9e4e7937c29efcd1000b1"
 
 [[files]]
 file = "SKIPPED.md"
-hash = "d93dbd9dcab4d180dd35384743ce9a8499be7b3f2fd665c667567697cd6910f1"
+hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
 
 [[files]]
 file = "iron-and-arcana-packwiz-brief.md"
@@ -185,11 +185,6 @@ metafile = true
 [[files]]
 file = "mods/dungeons-and-taverns.pw.toml"
 hash = "b9244dca740d333c22f3425991fdd2fd40d3ae12384079a40a6fb7d4bca18a18"
-metafile = true
-
-[[files]]
-file = "mods/embeddium.pw.toml"
-hash = "778c42263b2ba7c9e73553bdcd70f48a3e485ba52b6a83474160d48be696b71f"
 metafile = true
 
 [[files]]
@@ -405,6 +400,21 @@ metafile = true
 [[files]]
 file = "mods/smallcolonies.pw.toml"
 hash = "55b7956f5bdf88fa96c46b5e31a8856ad16f97826d43bb589f9ad38044b5c7bc"
+metafile = true
+
+[[files]]
+file = "mods/sodium-dynamic-lights.pw.toml"
+hash = "c1e526d3d17cb3563e596d45c7567ed1fe60c31bdc3457f7a747ef8150bd3c1b"
+metafile = true
+
+[[files]]
+file = "mods/sodium-options-api.pw.toml"
+hash = "d193173f0f5dfb4a921d44e29e8d5cee656dd3a40872939069715bb482b66fc9"
+metafile = true
+
+[[files]]
+file = "mods/sodium.pw.toml"
+hash = "0281ed9713f3141bdac363056a791845510e14761ea65b4b2813cf96d664b20a"
 metafile = true
 
 [[files]]

@@ -149,6 +149,11 @@ file = "mods/crash-2026-05-06_21.58.50-fml.txt"
 hash = "4a42d36df3b6162b41196bdaf08bff27a65512d2decbc1d96c91084221c6660e"
 
 [[files]]
+file = "mods/create-aeronautics.pw.toml"
+hash = "6cabae8686cf85c826d1280f00e00d67bb7672d353f669bea9f3775de39dd378"
+metafile = true
+
+[[files]]
 file = "mods/create-bluemap.pw.toml"
 hash = "d2c49f70c1b3f557db5ddfc1016cb0e4e224f5f517c03485ab6c8c07b4712dea"
 metafile = true
@@ -401,6 +406,11 @@ metafile = true
 [[files]]
 file = "mods/rhino.pw.toml"
 hash = "6b91f46291891e725189b0bd54d0db0f66925b1e785bdfa737592dfcf41a79a3"
+metafile = true
+
+[[files]]
+file = "mods/sable.pw.toml"
+hash = "e8ec0a7577c9e3354b78cc613c2c5e6a9fd708a026869aba82d4ce7fc04bc2e7"
 metafile = true
 
 [[files]]

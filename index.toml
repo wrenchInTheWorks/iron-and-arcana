@@ -9,8 +9,8 @@ file = "SKIPPED.md"
 hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
 
 [[files]]
-file = "create-aeronautics-bundled-1.21.1-1.2.1.jar"
-hash = "5a8c6d168ec1b47ecee7f2e83a93accbca71544d2b14ca1ca1b1271855f26248"
+file = "crash-2026-05-06_21.58.50-fml.txt"
+hash = "ddb5aaffa0235f11dae4e9e0a1c43bbaea549f6972bbb9a193f5ab4a6f58c85d"
 
 [[files]]
 file = "iron-and-arcana-packwiz-brief.md"
@@ -135,6 +135,10 @@ metafile = true
 file = "mods/crafting-tweaks.pw.toml"
 hash = "b607b4c0f30caa94f29f1624a5f58eb8673040bd50845145e5f0533fd9e9b6b8"
 metafile = true
+
+[[files]]
+file = "mods/crash-2026-05-06_21.58.50-fml.txt"
+hash = "4a42d36df3b6162b41196bdaf08bff27a65512d2decbc1d96c91084221c6660e"
 
 [[files]]
 file = "mods/create-aeronautics.pw.toml"
@@ -262,6 +266,11 @@ hash = "b4ada8cc3723fd50ce5b4116784434d6ce9edc9e611eca2c5994dba8146d194e"
 metafile = true
 
 [[files]]
+file = "mods/jei.pw.toml"
+hash = "8da46348495ee032dbac80374ff4691351e41dfee9957dc27811e0957fe13e4e"
+metafile = true
+
+[[files]]
 file = "mods/just-enough-effect-descriptions-jeed.pw.toml"
 hash = "0b6a884fe3969a05a24aec1569d1ffcb2ec8fb8b268f749416a9c0677e3cac46"
 metafile = true
@@ -367,6 +376,11 @@ hash = "804736be3ded2a6f89f44522b88d82636209ed203c234ea34b6d6ffdd9ecee54"
 metafile = true
 
 [[files]]
+file = "mods/reeses-sodium-options.pw.toml"
+hash = "09306b955060349986ccf6a6d2a67f1e019fa172a7dc690dd6007f81c966309a"
+metafile = true
+
+[[files]]
 file = "mods/resourceful-config.pw.toml"
 hash = "27721caca5a03b743bf25888e1d984142948069dace31453f103f94f7f24d2ce"
 metafile = true
@@ -374,6 +388,11 @@ metafile = true
 [[files]]
 file = "mods/resourceful-lib.pw.toml"
 hash = "c0b066684294c33972d562e0cb08ea17b2d31bcf86cd1d6c63b8e968f0eac7a2"
+metafile = true
+
+[[files]]
+file = "mods/rhino.pw.toml"
+hash = "6b91f46291891e725189b0bd54d0db0f66925b1e785bdfa737592dfcf41a79a3"
 metafile = true
 
 [[files]]

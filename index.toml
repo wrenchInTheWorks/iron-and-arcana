@@ -2,7 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = ".claude/settings.local.json"
-hash = "d30d09b43732ab4ace021c251c2e94695ff28ce43c7ed84e0924464a43d0ea66"
+hash = "f645fad6a5455e03985ae22f977afe3ad8a5b1939cccea39220cc0d8a212334a"
 
 [[files]]
 file = "SKIPPED.md"
@@ -11,6 +11,10 @@ hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
 [[files]]
 file = "crash-2026-05-06_21.58.50-fml.txt"
 hash = "ddb5aaffa0235f11dae4e9e0a1c43bbaea549f6972bbb9a193f5ab4a6f58c85d"
+
+[[files]]
+file = "crash-2026-05-07_17.31.06-client.txt"
+hash = "4094ff8f1d43ebb86cdac699f681cc0fb3821b9f1405a14702d44d93035258c0"
 
 [[files]]
 file = "iron-and-arcana-packwiz-brief.md"
@@ -24,11 +28,6 @@ metafile = true
 [[files]]
 file = "mods/alexs-mobs-1-21-1-port.pw.toml"
 hash = "e3bbf8c3650fd5fc795b36b0b38fdb5bd287b22b6b7d94cde7e35561b0bf5000"
-metafile = true
-
-[[files]]
-file = "mods/almost-unified.pw.toml"
-hash = "778fa4eda9d46a79ba4ae4a8425d5202bc584fbf5a64467588567bef5e458726"
 metafile = true
 
 [[files]]

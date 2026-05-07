@@ -17,7 +17,11 @@
       "PowerShell($path = \"$env:LOCALAPPDATA\\\\packwiz\\\\cache\\\\import\"; Test-Path $path; \\(Get-Item $path\\).FullName)",
       "Bash(rm \"Iron & Arcana-1.0.0.mrpack\")",
       "WebFetch(domain:mclo.gs)",
-      "Bash(rm \"Iron & Arcana-1.0.1.mrpack\")"
+      "Bash(rm \"Iron & Arcana-1.0.1.mrpack\")",
+      "WebFetch(domain:api.mclo.gs)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__switch_browser",
+      "Bash(rm \"Iron & Arcana-1.0.2.mrpack\")"
     ]
   }
 }

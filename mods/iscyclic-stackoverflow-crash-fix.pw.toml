@@ -1,0 +1,13 @@
+name = "DependencySorter.isCyclic StackOverflow Crash Fix"
+filename = "StackOverflow_IsCyclic_CrashFix-0.0--1.21.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "2a096538384bd91e141606bc9dfb2213fb172aa6"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7917647
+project-id = 1512342

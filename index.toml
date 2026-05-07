@@ -2,7 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = ".claude/settings.local.json"
-hash = "852d3dafaf6d245f46d2ba3f5c2a2c6b599caae51d401b7ac8b216176f64fdc9"
+hash = "f614ab315ff9de3fbc4389468ebd9dad94b717ecfdfb27b59c80c59353ca4c40"
 
 [[files]]
 file = "SKIPPED.md"
@@ -32,6 +32,11 @@ metafile = true
 [[files]]
 file = "mods/alexs-mobs-1-21-1-port.pw.toml"
 hash = "e3bbf8c3650fd5fc795b36b0b38fdb5bd287b22b6b7d94cde7e35561b0bf5000"
+metafile = true
+
+[[files]]
+file = "mods/almost-unified.pw.toml"
+hash = "778fa4eda9d46a79ba4ae4a8425d5202bc584fbf5a64467588567bef5e458726"
 metafile = true
 
 [[files]]
@@ -256,6 +261,11 @@ metafile = true
 [[files]]
 file = "mods/inventory-profiles-next.pw.toml"
 hash = "ab503e89461dff879ee793253e173625b6ab868f570a371323ef725e567cf5ea"
+metafile = true
+
+[[files]]
+file = "mods/iscyclic-stackoverflow-crash-fix.pw.toml"
+hash = "a0e01612e14a35535117f00167821ca5efc2efdb003149d77a510280323f302e"
 metafile = true
 
 [[files]]

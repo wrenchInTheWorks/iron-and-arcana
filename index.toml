@@ -2,19 +2,23 @@ hash-format = "sha256"
 
 [[files]]
 file = ".claude/settings.local.json"
-hash = "f645fad6a5455e03985ae22f977afe3ad8a5b1939cccea39220cc0d8a212334a"
+hash = "852d3dafaf6d245f46d2ba3f5c2a2c6b599caae51d401b7ac8b216176f64fdc9"
 
 [[files]]
 file = "SKIPPED.md"
 hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
 
 [[files]]
-file = "crash-2026-05-06_21.58.50-fml.txt"
+file = "crash-reports/crash-2026-05-06_21.58.50-fml.txt"
 hash = "ddb5aaffa0235f11dae4e9e0a1c43bbaea549f6972bbb9a193f5ab4a6f58c85d"
 
 [[files]]
-file = "crash-2026-05-07_17.31.06-client.txt"
+file = "crash-reports/crash-2026-05-07_17.31.06-client.txt"
 hash = "4094ff8f1d43ebb86cdac699f681cc0fb3821b9f1405a14702d44d93035258c0"
+
+[[files]]
+file = "crash-reports/crash-2026-05-07_17.42.53-client.txt"
+hash = "65bc6bf3aefe02cc1a61171d66f2ac3e143664fb7aa23a13f267dd6be7fa0f8e"
 
 [[files]]
 file = "iron-and-arcana-packwiz-brief.md"
@@ -138,11 +142,6 @@ metafile = true
 [[files]]
 file = "mods/crash-2026-05-06_21.58.50-fml.txt"
 hash = "4a42d36df3b6162b41196bdaf08bff27a65512d2decbc1d96c91084221c6660e"
-
-[[files]]
-file = "mods/create-aeronautics.pw.toml"
-hash = "6cabae8686cf85c826d1280f00e00d67bb7672d353f669bea9f3775de39dd378"
-metafile = true
 
 [[files]]
 file = "mods/create-bluemap.pw.toml"
@@ -392,11 +391,6 @@ metafile = true
 [[files]]
 file = "mods/rhino.pw.toml"
 hash = "6b91f46291891e725189b0bd54d0db0f66925b1e785bdfa737592dfcf41a79a3"
-metafile = true
-
-[[files]]
-file = "mods/sable.pw.toml"
-hash = "e8ec0a7577c9e3354b78cc613c2c5e6a9fd708a026869aba82d4ce7fc04bc2e7"
 metafile = true
 
 [[files]]

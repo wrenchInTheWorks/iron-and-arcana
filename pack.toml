@@ -1,13 +1,13 @@
 name = "Iron & Arcana"
 author = "iron-and-arcana"
-version = "1.0.1"
+version = "1.0.2"
 description = "A colony-building, engineering, and exploration pack for a small friend server."
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "75fed5e9f1572309c5c37b077370945d33cd5b5789fb6ce8b709fb1bc0ee9f78"
+hash = "d080405db0d673a42faca699a283e4c72cc93d73d7b39a16814315a67e7bf534"
 
 [versions]
 minecraft = "1.21.1"

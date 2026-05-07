@@ -2,7 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = ".claude/settings.local.json"
-hash = "7e37c2e79e448f16dd22c5c5c473b20b00f818a788bd3dc677b957a37687b681"
+hash = "d30d09b43732ab4ace021c251c2e94695ff28ce43c7ed84e0924464a43d0ea66"
 
 [[files]]
 file = "SKIPPED.md"
@@ -291,6 +291,11 @@ hash = "60d0f719a2fc1045e865fc38c0c6d04a733d0ce2e84173be86e999399bcc162d"
 metafile = true
 
 [[files]]
+file = "mods/lambdynamiclights.pw.toml"
+hash = "3d3ed33673e54ea000116c1309de659503e05457104e9a68a236bab475341f3a"
+metafile = true
+
+[[files]]
 file = "mods/libipn.pw.toml"
 hash = "0d2a00252d64ed7d2d9b19994f7accb780304be61f3903d36e810714b414c6cb"
 metafile = true
@@ -376,11 +381,6 @@ hash = "804736be3ded2a6f89f44522b88d82636209ed203c234ea34b6d6ffdd9ecee54"
 metafile = true
 
 [[files]]
-file = "mods/reeses-sodium-options.pw.toml"
-hash = "09306b955060349986ccf6a6d2a67f1e019fa172a7dc690dd6007f81c966309a"
-metafile = true
-
-[[files]]
 file = "mods/resourceful-config.pw.toml"
 hash = "27721caca5a03b743bf25888e1d984142948069dace31453f103f94f7f24d2ce"
 metafile = true
@@ -423,16 +423,6 @@ metafile = true
 [[files]]
 file = "mods/smallcolonies.pw.toml"
 hash = "55b7956f5bdf88fa96c46b5e31a8856ad16f97826d43bb589f9ad38044b5c7bc"
-metafile = true
-
-[[files]]
-file = "mods/sodium-dynamic-lights.pw.toml"
-hash = "c1e526d3d17cb3563e596d45c7567ed1fe60c31bdc3457f7a747ef8150bd3c1b"
-metafile = true
-
-[[files]]
-file = "mods/sodium-options-api.pw.toml"
-hash = "d193173f0f5dfb4a921d44e29e8d5cee656dd3a40872939069715bb482b66fc9"
 metafile = true
 
 [[files]]

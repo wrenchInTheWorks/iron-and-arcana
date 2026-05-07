@@ -15,7 +15,9 @@
       "PowerShell($env:LOCALAPPDATA)",
       "PowerShell($env:USERPROFILE)",
       "PowerShell($path = \"$env:LOCALAPPDATA\\\\packwiz\\\\cache\\\\import\"; Test-Path $path; \\(Get-Item $path\\).FullName)",
-      "Bash(rm \"Iron & Arcana-1.0.0.mrpack\")"
+      "Bash(rm \"Iron & Arcana-1.0.0.mrpack\")",
+      "WebFetch(domain:mclo.gs)",
+      "Bash(rm \"Iron & Arcana-1.0.1.mrpack\")"
     ]
   }
 }

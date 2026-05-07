@@ -1,6 +1,6 @@
 name = "Iron & Arcana"
 author = "iron-and-arcana"
-version = "1.0.0"
+version = "1.0.1"
 description = "A colony-building, engineering, and exploration pack for a small friend server."
 pack-format = "packwiz:1.1.0"
 

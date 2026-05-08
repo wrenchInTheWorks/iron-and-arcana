@@ -53,10 +53,10 @@ jobs:
 
       - name: Seed packwiz import cache (CurseForge-restricted mods)
         run: |
-          mkdir -p $HOME/.cache/packwiz/import
-          cp pack-import-cache/*.jar $HOME/.cache/packwiz/import/
+          mkdir -p $HOME/.cache/packwiz/cache/import
+          cp pack-import-cache/*.jar $HOME/.cache/packwiz/cache/import/
           echo "Import cache contents:"
-          ls -lh $HOME/.cache/packwiz/import/
+          ls -lh $HOME/.cache/packwiz/cache/import/
 
       - name: Export .mrpack
         run: packwiz modrinth export

@@ -109,11 +109,6 @@ hash = "30ffe79b0347aa0c24e2c6ad917457f1ccae75423b96c8d30c7c8c372fb90cc5"
 metafile = true
 
 [[files]]
-file = "mods/byzantine-styles-pack-for-minecolonies.pw.toml"
-hash = "332053c9155a762bccd5bc8f5c572020306432e08aefad7b79ce4394bf013512"
-metafile = true
-
-[[files]]
 file = "mods/carry-on.pw.toml"
 hash = "c5e47d922e39c1556dc2e8c94bfe852cf16de14f65b99eb3e054e41745dddad0"
 metafile = true
@@ -241,16 +236,6 @@ metafile = true
 [[files]]
 file = "mods/friends-and-foes-forge.pw.toml"
 hash = "1c47542391cf5bf8ee7d659225965486084bb8458ecd7ee9ed12f15f4e308c70"
-metafile = true
-
-[[files]]
-file = "mods/ftb-library-forge.pw.toml"
-hash = "9bc684c67d007b7f62203fa77c5ff3952ad55c437cb07595a96af953e90cd810"
-metafile = true
-
-[[files]]
-file = "mods/ftb-teams-forge.pw.toml"
-hash = "998a429f57b27fdac3a540da35d6df758b225c23fd9011d233b48450bd426bec"
 metafile = true
 
 [[files]]
@@ -454,11 +439,6 @@ hash = "18ca1d438084a8578f4b75f12233db58ca1deec55f117fb875afa21f2c021559"
 metafile = true
 
 [[files]]
-file = "mods/smallcolonies.pw.toml"
-hash = "55b7956f5bdf88fa96c46b5e31a8856ad16f97826d43bb589f9ad38044b5c7bc"
-metafile = true
-
-[[files]]
 file = "mods/sodium.pw.toml"
 hash = "0281ed9713f3141bdac363056a791845510e14761ea65b4b2813cf96d664b20a"
 metafile = true
@@ -509,11 +489,6 @@ hash = "9ef81e3a2eedc119c659940b940e5ab1a1ed6e37fbbc83c3edf53a8ea859aaeb"
 metafile = true
 
 [[files]]
-file = "mods/stylecolonies.pw.toml"
-hash = "a1559adb829481745c60775d28e7cdba490108ce68ba696bbeeb7571a0a64394"
-metafile = true
-
-[[files]]
 file = "mods/supplementaries.pw.toml"
 hash = "a382dc176a54944d74070de2a17f34a880834158eaf697b868e6d196d25000ca"
 metafile = true
@@ -521,16 +496,6 @@ metafile = true
 [[files]]
 file = "mods/terralith.pw.toml"
 hash = "da7ee99189ad35aac094919fe33cac647d98533b23c228f10d4811f08989e2b8"
-metafile = true
-
-[[files]]
-file = "mods/the-twilight-forest.pw.toml"
-hash = "9088f93a00bc3242f0239a7115bdcbc4480e19c6120f5396fb3af27d77abda3e"
-metafile = true
-
-[[files]]
-file = "mods/towntalk.pw.toml"
-hash = "a7074e8e499d34f5ce633dbd33f818e376dd1941ec5b1d97a33acd019df69b5a"
 metafile = true
 
 [[files]]

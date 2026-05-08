@@ -1,0 +1,118 @@
+name: Build and Publish Modpack
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # required for creating GitHub Releases
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # need two commits to detect version changes
+
+      - name: Read pack version and detect change
+        id: pack
+        run: |
+          VERSION=$(grep '^version' pack.toml | sed 's/version = "//;s/"//')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          PREV=$(git show HEAD~1:pack.toml 2>/dev/null \
+            | grep '^version' \
+            | sed 's/version = "//;s/"//' \
+            || echo "none")
+          echo "prev_version=$PREV" >> $GITHUB_OUTPUT
+
+          if [ "$VERSION" != "$PREV" ]; then
+            echo "new_version=true" >> $GITHUB_OUTPUT
+            echo "Version changed: $PREV -> $VERSION"
+          else
+            echo "new_version=false" >> $GITHUB_OUTPUT
+            echo "Version unchanged ($VERSION) — skipping release"
+          fi
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install packwiz
+        run: go install github.com/packwiz/packwiz@latest
+
+      - name: Configure packwiz (CurseForge API key)
+        env:
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+        run: |
+          echo "curseforge-api-key = \"${CURSEFORGE_API_KEY}\"" > $HOME/.packwiz.toml
+
+      - name: Export .mrpack
+        run: packwiz modrinth export
+
+      - name: Locate mrpack file
+        id: mrpack
+        run: |
+          FILE=$(ls *.mrpack | head -1)
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+          echo "Found: $FILE"
+
+      # ── Only runs when pack.toml version has changed ──────────────────────
+
+      - name: Create GitHub Release
+        if: steps.pack.outputs.new_version == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.pack.outputs.version }}" \
+            --title "Iron & Arcana v${{ steps.pack.outputs.version }}" \
+            --generate-notes \
+            "${{ steps.mrpack.outputs.file }}"
+
+      - name: Upload to Modrinth
+        if: steps.pack.outputs.new_version == 'true'
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_PROJECT_ID: ${{ secrets.MODRINTH_PROJECT_ID }}
+        run: |
+          VERSION="${{ steps.pack.outputs.version }}"
+          MRPACK="${{ steps.mrpack.outputs.file }}"
+
+          # Build the metadata payload
+          DATA=$(cat <<EOF
+          {
+            "name": "Iron & Arcana ${VERSION}",
+            "version_number": "${VERSION}",
+            "dependencies": [],
+            "game_versions": ["1.21.1"],
+            "version_type": "release",
+            "loaders": ["neoforge"],
+            "featured": true,
+            "project_id": "${MODRINTH_PROJECT_ID}",
+            "file_parts": ["file"],
+            "primary_file": "file"
+          }
+          EOF
+          )
+
+          HTTP_CODE=$(curl -s \
+            -o /tmp/modrinth_resp.json \
+            -w "%{http_code}" \
+            -X POST "https://api.modrinth.com/v2/version" \
+            -H "Authorization: ${MODRINTH_TOKEN}" \
+            -F "data=${DATA}" \
+            -F "file=@${MRPACK};type=application/zip")
+
+          echo "--- Modrinth response ---"
+          cat /tmp/modrinth_resp.json
+          echo ""
+
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::Modrinth upload failed (HTTP ${HTTP_CODE})"
+            exit 1
+          fi
+
+          echo "Published to Modrinth successfully (HTTP ${HTTP_CODE})"

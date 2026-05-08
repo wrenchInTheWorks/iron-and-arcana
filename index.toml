@@ -5,8 +5,76 @@ file = ".claude/settings.local.json"
 hash = "f614ab315ff9de3fbc4389468ebd9dad94b717ecfdfb27b59c80c59353ca4c40"
 
 [[files]]
+file = ".github/workflows/publish.yml"
+hash = "3704eec34590fede48cf7d360338a731a48c007d1b85a80be0794f79425bc7ae"
+
+[[files]]
 file = "SKIPPED.md"
 hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
+
+[[files]]
+file = "config/ftbquests/quests/chapter_groups.snbt"
+hash = "e57d8311aec9f524911ed1313cabf138bb7fa5a2d3ba985a00a2a267ff35ef78"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/01_brave_new_world.snbt"
+hash = "50de277365c7092ab93cf750a043b43f053114040392edcd095130e737ed1ba0"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/02_tools_and_combat.snbt"
+hash = "23da6c2953f24e5b6b3311036280a70a4d1128d11774566aa7c40788db19aeb4"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/03_the_living_world.snbt"
+hash = "e2547b4d596e17fbf0de41f331f4ce6e8b14fa057fcacfd57bedf3bd6621873d"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/04_into_the_deep.snbt"
+hash = "3930527135a6442ad299ecb07bc6e0d0eedd246600d8b98ccd06323ef3481be8"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/05_shelter_and_storage.snbt"
+hash = "5ca888f78392d3da7d61bbd65126db2ec8d470d0265884bcc94a14d21a459398"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/06_hellbound.snbt"
+hash = "6c67b389035ced28efe51415d63da601576aeae797acc3581e7a5553e194e11d"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/07_gears_and_shafts.snbt"
+hash = "07dc3c857be23cd79181dd599dd22e1692f9691d3333942dfdc8bd6e650c9a16"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/08_the_arcane.snbt"
+hash = "c58ae0293fc4e24151a355424ffee1d142aff790fa66f54a55f69ea43550c150"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/09_found_a_colony.snbt"
+hash = "d3d907561aac2e239125c12c5e2e7740891922fab74b6a23715e908d6b596b55"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/10_industrial_engineering.snbt"
+hash = "c1a8210cbc4e12ad387fccccc211ed4c99c13ad4a532e96d04e65e72b1762ed8"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/11_the_twilight_forest.snbt"
+hash = "eea02b1b4827316d431cc8a63166f01e2797254a07741ce14577769c0fd570e6"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/12_advanced_create.snbt"
+hash = "7f899095ac8a2e86b750426fda3a457dcf8bc1407c9973009f9caa088b8c9ccd"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/13_mastering_the_arcane.snbt"
+hash = "069a676fa43610d585c89f84a45b3bfa4eba224d373f06cc62b48242e2c0c52a"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/14_a_thriving_colony.snbt"
+hash = "53bdb0470ca51318888abe71e593f75b4fa606eb03d1a770ccfe9fd333d1b117"
+
+[[files]]
+file = "config/ftbquests/quests/chapters/15_end_game.snbt"
+hash = "461f73d426318b9f9120ccc9b56c6e42979cbe35b60e30d2b95146e13467ab42"
 
 [[files]]
 file = "crash-reports/crash-2026-05-06_21.58.50-fml.txt"
@@ -47,6 +115,11 @@ metafile = true
 [[files]]
 file = "mods/appleskin.pw.toml"
 hash = "ede3f1a1a9966ecba76bd49ecc839ca1a726fcfa5686d7aad64a46854984db99"
+metafile = true
+
+[[files]]
+file = "mods/architectury-api.pw.toml"
+hash = "6d3a1c92eee4dd671253c41ec000ae48064a33c45263d6adce5cad466395169d"
 metafile = true
 
 [[files]]
@@ -145,10 +218,6 @@ hash = "b607b4c0f30caa94f29f1624a5f58eb8673040bd50845145e5f0533fd9e9b6b8"
 metafile = true
 
 [[files]]
-file = "mods/crash-2026-05-06_21.58.50-fml.txt"
-hash = "4a42d36df3b6162b41196bdaf08bff27a65512d2decbc1d96c91084221c6660e"
-
-[[files]]
 file = "mods/create-aeronautics.pw.toml"
 hash = "6cabae8686cf85c826d1280f00e00d67bb7672d353f669bea9f3775de39dd378"
 metafile = true
@@ -239,6 +308,21 @@ hash = "1c47542391cf5bf8ee7d659225965486084bb8458ecd7ee9ed12f15f4e308c70"
 metafile = true
 
 [[files]]
+file = "mods/ftb-library-forge.pw.toml"
+hash = "54b6ce5c7ccf54db4cf8888e1c7e56b2d840cddc0e3e3fd15869a03d5c76c2ef"
+metafile = true
+
+[[files]]
+file = "mods/ftb-quests-forge.pw.toml"
+hash = "7557cd72044ad985b08e452dba7461feb219469e2fea97ea32c6ecd8458b2fd8"
+metafile = true
+
+[[files]]
+file = "mods/ftb-teams-forge.pw.toml"
+hash = "e717bb275a54a5caadaa7cf82bc34df3589f49402074adf93c31eaac43860313"
+metafile = true
+
+[[files]]
 file = "mods/geckolib.pw.toml"
 hash = "0521ed2becdf2b460511c92e80e2702a4b6e540c85c99fb571844e1c7c505724"
 metafile = true
@@ -311,6 +395,11 @@ metafile = true
 [[files]]
 file = "mods/libipn.pw.toml"
 hash = "0d2a00252d64ed7d2d9b19994f7accb780304be61f3903d36e810714b414c6cb"
+metafile = true
+
+[[files]]
+file = "mods/lootr.pw.toml"
+hash = "988377a2fb2346223a83b6545ec52f5b22ebd0e26b63d141427ad389bedfe4f0"
 metafile = true
 
 [[files]]

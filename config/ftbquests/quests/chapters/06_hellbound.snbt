@@ -1,0 +1,227 @@
+{
+	id: "0000000000006000"
+	group: ""
+	order_index: 5
+	filename: "06_hellbound"
+	title: "Hellbound"
+	icon: "minecraft:nether_star"
+	default_quest_shape: ""
+	default_hide_dependency_lines: false
+	images: [ ]
+	quests: [
+		{
+			x: 0.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000006001"
+			dependencies: [ ]
+			title: "Into the Fire"
+			description: [
+				"Build a Nether portal using 10 obsidian (or 14 for a full frame). Light it with flint and steel.",
+				"",
+				"The Nether is dangerous from the moment you step in. Bring food, armor, and a way back.",
+				"Place a Waystone near your portal before entering."
+			]
+			tasks: [
+				{
+					id: "0000000000006002"
+					type: "advancement"
+					advancement: "minecraft:story/enter_the_nether"
+					criterion: ""
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006003"
+					type: "item"
+					item: "minecraft:fire_resistance"
+					count: 2
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000006011"
+			dependencies: ["0000000000006001"]
+			title: "Blaze Hunter"
+			description: [
+				"Kill 5 Blazes and collect their rods. You'll need Blaze Powder for Eyes of Ender and many other recipes.",
+				"",
+				"Blazes spawn in Nether Fortresses. Find one by following Nether brick structures.",
+				"Fire resistance potions or enchantments help enormously here."
+			]
+			tasks: [
+				{
+					id: "0000000000006012"
+					type: "item"
+					item: "minecraft:blaze_rod"
+					count: 5
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006013"
+					type: "item"
+					item: "minecraft:ender_pearl"
+					count: 4
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000006021"
+			dependencies: ["0000000000006011"]
+			title: "Eyes Wide Open"
+			description: [
+				"Craft Eyes of Ender (blaze powder + ender pearl). You'll need at least 12 for the stronghold and End portal.",
+				"",
+				"Throw an Eye of Ender to track the nearest stronghold. They have a small chance to shatter.",
+				"Stock up before heading to the stronghold — once in, you'll want plenty."
+			]
+			tasks: [
+				{
+					id: "0000000000006022"
+					type: "item"
+					item: "minecraft:ender_eye"
+					count: 12
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006023"
+					type: "xp"
+					xp: 100
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000006031"
+			dependencies: ["0000000000006001"]
+			title: "Gold Rush"
+			description: [
+				"Piglins won't attack you if you're wearing at least one piece of gold armor.",
+				"",
+				"Barter with them by dropping gold ingots — they'll throw back random items including Ender Pearls, Fire Resistance potions, and Crying Obsidian.",
+				"Collect 16 gold ingots and set up a bartering station near your portal."
+			]
+			tasks: [
+				{
+					id: "0000000000006032"
+					type: "item"
+					item: "minecraft:gold_ingot"
+					count: 16
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006033"
+					type: "item"
+					item: "minecraft:golden_helmet"
+					count: 1
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000006041"
+			dependencies: ["0000000000006001"]
+			title: "Potion Basics"
+			description: [
+				"Build a Brewing Stand using a Blaze Rod and cobblestone.",
+				"",
+				"Start with Awkward Potions (Nether Wart + Water Bottle), then add an ingredient for an effect.",
+				"Fire Resistance, Strength, and Regeneration are the most useful for combat. Check JEI for brewing chains."
+			]
+			tasks: [
+				{
+					id: "0000000000006042"
+					type: "item"
+					item: "minecraft:potion"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006043"
+					type: "item"
+					item: "minecraft:nether_wart"
+					count: 16
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000006051"
+			dependencies: ["0000000000006001"]
+			title: "Ancient Scrap"
+			description: [
+				"Mine Ancient Debris in the Nether to eventually craft Netherite.",
+				"",
+				"Ancient Debris generates between Y=8 and Y=22. TNT mining is the fastest method.",
+				"You need 4 Netherite Scraps (smelted from Ancient Debris) and 4 Gold Ingots to craft one Netherite Ingot."
+			]
+			tasks: [
+				{
+					id: "0000000000006052"
+					type: "item"
+					item: "minecraft:ancient_debris"
+					count: 4
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006053"
+					type: "xp_levels"
+					xp_levels: 3
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000006061"
+			dependencies: ["0000000000006051"]
+			title: "Netherite"
+			description: [
+				"Craft your first Netherite Ingot and upgrade a piece of diamond gear.",
+				"",
+				"Use a Smithing Table to upgrade diamond tools and armor. Netherite gear is fireproof and has slightly better stats.",
+				"Focus on upgrading your most-used tool or your chestplate first."
+			]
+			tasks: [
+				{
+					id: "0000000000006062"
+					type: "item"
+					item: "minecraft:netherite_ingot"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000006063"
+					type: "xp_levels"
+					xp_levels: 5
+				}
+			]
+		}
+	]
+	quest_links: [ ]
+}

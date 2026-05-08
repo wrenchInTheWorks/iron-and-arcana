@@ -1,0 +1,251 @@
+{
+	id: "0000000000005000"
+	group: ""
+	order_index: 4
+	filename: "05_shelter_and_storage"
+	title: "Shelter & Storage"
+	icon: "sophisticatedstorage:wood_chest"
+	default_quest_shape: ""
+	default_hide_dependency_lines: false
+	images: [ ]
+	quests: [
+		{
+			x: 0.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000005001"
+			dependencies: [ ]
+			title: "Stone the Crows"
+			description: [
+				"&6Waystones&r are craftable fast-travel points. Craft and place your first Waystone anywhere.",
+				"",
+				"Right-click a Waystone to name it and access it. Other players can use it too.",
+				"Once you have two Waystones, right-clicking one lets you teleport to any other you've discovered."
+			]
+			tasks: [
+				{
+					id: "0000000000005002"
+					type: "item"
+					item: "waystones:waystone"
+					count: 1
+					consume: true
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005003"
+					type: "item"
+					item: "minecraft:stone"
+					count: 32
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000005011"
+			dependencies: ["0000000000005001"]
+			title: "Network of Stone"
+			description: [
+				"Place a second Waystone — somewhere useful, like a mining camp or a dungeon you found.",
+				"",
+				"Waystones can be set to global (accessible to all players from anywhere) or local (must be nearby to use).",
+				"Build a network of these across the world to make travel fast and painless."
+			]
+			tasks: [
+				{
+					id: "0000000000005012"
+					type: "item"
+					item: "waystones:waystone"
+					count: 1
+					consume: true
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005013"
+					type: "xp"
+					xp: 75
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000005021"
+			dependencies: [ ]
+			title: "Smarter Chests"
+			description: [
+				"&6Sophisticated Storage&r gives you upgradeable chests, barrels, and shulker boxes.",
+				"",
+				"Craft a &bWood Chest&r to start. Unlike vanilla chests, these accept upgrades — Sort, Stack, Void, Pickup, and more.",
+				"Check JEI for the upgrade recipes. The Sort upgrade alone is worth it."
+			]
+			tasks: [
+				{
+					id: "0000000000005022"
+					type: "item"
+					item: "sophisticatedstorage:wood_chest"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005023"
+					type: "item"
+					item: "minecraft:chest"
+					count: 4
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000005031"
+			dependencies: ["0000000000005021"]
+			title: "Bulk Storage"
+			description: [
+				"Craft a &bBarrel&r from Sophisticated Storage. Barrels hold one item type in large quantities.",
+				"",
+				"Upgrade them with the Stack upgrade to dramatically increase capacity.",
+				"For a dedicated storage room, combine labeled barrels with chests for sorted bulk materials."
+			]
+			tasks: [
+				{
+					id: "0000000000005032"
+					type: "item"
+					item: "sophisticatedstorage:barrel"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005033"
+					type: "xp"
+					xp: 50
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000005041"
+			dependencies: [ ]
+			title: "Better Blocks"
+			description: [
+				"&6Chipped&r adds hundreds of variants for common blocks — stone, wood, glass, and more.",
+				"",
+				"Craft the &bWorkbench of Doom&r (check JEI) to access all variants. Place a block in the center and choose from the grid.",
+				"Great for giving builds a unique look without needing new materials."
+			]
+			tasks: [
+				{
+					id: "0000000000005042"
+					type: "item"
+					item: "chipped:carpenters_table"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005043"
+					type: "item"
+					item: "minecraft:oak_planks"
+					count: 32
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000005051"
+			dependencies: [ ]
+			title: "Beautiful Bridges"
+			description: [
+				"&6Macaw's Bridges&r, &6Doors&r, &6Roofs&r, and &6Windows&r add architectural pieces for more detailed builds.",
+				"",
+				"All recipes are in JEI. Bridges work with slope physics — place them on an incline for natural ramps.",
+				"Windows and doors come in every wood type and some stone types."
+			]
+			tasks: [
+				{
+					id: "0000000000005052"
+					type: "item"
+					item: "mcwbridges:oak_bridge"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005053"
+					type: "xp"
+					xp: 30
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000005061"
+			dependencies: [ ]
+			title: "Claim Your Land"
+			description: [
+				"&6Open Parties &amp; Claims&r lets you claim chunks to protect your base from other players.",
+				"",
+				"Open the map (press &bM&r) and right-click chunks to claim them, or use the &b/ftbchunks&r command.",
+				"Claimed chunks prevent other players from breaking or placing blocks. Party members share access."
+			]
+			tasks: [
+				{
+					id: "0000000000005062"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005063"
+					type: "xp"
+					xp: 25
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000005071"
+			dependencies: [ ]
+			title: "Sort It Out"
+			description: [
+				"&6Inventory Profiles Next&r adds automatic inventory sorting.",
+				"",
+				"Press &bR&r to sort your inventory, or click the sort button that appears in most GUIs.",
+				"It also adds a refill-from-hotbar button and stack-to-chest functionality. Check its config (&bOptions → Controls&r) for keybind customization."
+			]
+			tasks: [
+				{
+					id: "0000000000005072"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000005073"
+					type: "xp"
+					xp: 25
+				}
+			]
+		}
+	]
+	quest_links: [ ]
+}

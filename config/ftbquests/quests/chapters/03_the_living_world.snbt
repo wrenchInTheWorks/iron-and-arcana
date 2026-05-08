@@ -1,0 +1,224 @@
+{
+	id: "0000000000003000"
+	group: ""
+	order_index: 2
+	filename: "03_the_living_world"
+	title: "The Living World"
+	icon: "farmersdelight:cooking_pot"
+	default_quest_shape: ""
+	default_hide_dependency_lines: false
+	images: [ ]
+	quests: [
+		{
+			x: 0.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000003001"
+			dependencies: [ ]
+			title: "A Farmer's Knife"
+			description: [
+				"&6Farmer's Delight&r expands food dramatically through cutting boards, cooking pots, and new crops.",
+				"",
+				"Start with the &bKnife&r — craft it from a flint or iron ingot (check JEI). Use it on animals for better drops and on logs to strip them.",
+				"The knife is also required for many Farmer's Delight recipes."
+			]
+			tasks: [
+				{
+					id: "0000000000003002"
+					type: "item"
+					item: "farmersdelight:flint_knife"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003003"
+					type: "item"
+					item: "minecraft:wheat_seeds"
+					count: 16
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000003011"
+			dependencies: ["0000000000003001"]
+			title: "Cutting Board"
+			description: [
+				"Craft a &bCutting Board&r and use it with your knife to break down food into components.",
+				"",
+				"Cutting boards turn bread into breadcrumbs, logs into sticks, and raw meat into cuts.",
+				"Many Farmer's Delight recipes start here — it's worth keeping one in your base kitchen."
+			]
+			tasks: [
+				{
+					id: "0000000000003012"
+					type: "item"
+					item: "farmersdelight:cutting_board"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003013"
+					type: "item"
+					item: "minecraft:carrot"
+					count: 12
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000003021"
+			dependencies: ["0000000000003011"]
+			title: "The Cooking Pot"
+			description: [
+				"The &bCooking Pot&r is the heart of Farmer's Delight — place it over a fire or campfire to cook stews and meals.",
+				"",
+				"Add ingredients from the top, collect the result with a bowl. Most meals have high saturation.",
+				"Check JEI under the Cooking Pot category for the full recipe list."
+			]
+			tasks: [
+				{
+					id: "0000000000003022"
+					type: "item"
+					item: "farmersdelight:cooking_pot"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003023"
+					type: "item"
+					item: "farmersdelight:beef_stew"
+					count: 3
+				}
+			]
+		}
+		{
+			x: 6.0d
+			y: 0.0d
+			shape: "circle"
+			id: "0000000000003031"
+			dependencies: ["0000000000003021"]
+			title: "A Proper Meal"
+			description: [
+				"Cook a full meal in the Cooking Pot — something with at least 3 ingredients.",
+				"",
+				"Meals with high ingredient counts tend to give more saturation than simpler foods.",
+				"Setting up a small farm near your base will keep you well-fed throughout the early game."
+			]
+			tasks: [
+				{
+					id: "0000000000003032"
+					type: "item"
+					item: "farmersdelight:beef_stew"
+					count: 1
+					consume: true
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003033"
+					type: "xp"
+					xp: 75
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000003041"
+			dependencies: [ ]
+			title: "Seasons Change"
+			description: [
+				"&6Serene Seasons&r adds a four-season cycle that affects crop growth, biome temperatures, and world appearance.",
+				"",
+				"Check the current season by looking at the sun/moon or by reading the season in your F3 debug screen.",
+				"Some crops only grow in certain seasons — if your farm is struggling, the season may be the reason."
+			]
+			tasks: [
+				{
+					id: "0000000000003042"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003043"
+					type: "item"
+					item: "minecraft:bone_meal"
+					count: 16
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: 2.0d
+			shape: "circle"
+			id: "0000000000003051"
+			dependencies: [ ]
+			title: "The Natural World"
+			description: [
+				"&6Alex's Mobs&r and &6Naturalist&r add dozens of new animals and creatures to the world.",
+				"",
+				"Many have unique drops and behaviors — check Jade's tooltip when you encounter a new mob.",
+				"Alex's Mobs in particular adds creatures with special mechanics: some can be tamed, some have multi-stage behaviors."
+			]
+			tasks: [
+				{
+					id: "0000000000003052"
+					type: "kill"
+					entity: "alexsmobs:elephant"
+					value: 1L
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003053"
+					type: "xp"
+					xp: 50
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: -2.0d
+			shape: "circle"
+			id: "0000000000003061"
+			dependencies: [ ]
+			title: "Creeper Variants"
+			description: [
+				"&6Creeper Overhaul&r replaces standard creepers with biome-specific variants.",
+				"",
+				"Desert creepers are sand-camouflaged; jungle creepers are venomous; badlands creepers explode with fire.",
+				"Each variant has unique drops — some are worth farming for."
+			]
+			tasks: [
+				{
+					id: "0000000000003062"
+					type: "kill"
+					entity: "minecraft:creeper"
+					value: 5L
+				}
+			]
+			rewards: [
+				{
+					id: "0000000000003063"
+					type: "item"
+					item: "minecraft:gunpowder"
+					count: 8
+				}
+			]
+		}
+	]
+	quest_links: [ ]
+}

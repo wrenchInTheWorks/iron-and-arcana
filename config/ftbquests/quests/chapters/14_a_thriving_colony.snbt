@@ -1,0 +1,205 @@
+{
+	id: "000000000000E000"
+	group: ""
+	order_index: 13
+	filename: "14_a_thriving_colony"
+	title: "A Thriving Colony"
+	icon: "minecolonies:townhall"
+	default_quest_shape: ""
+	default_hide_dependency_lines: false
+	images: [ ]
+	quests: [
+		{
+			x: 0.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000E001"
+			dependencies: [ ]
+			title: "The Warehouse"
+			description: [
+				"Build a &bWarehouse&r to centralize your colony's supply chain. Colonists pull materials from here automatically.",
+				"",
+				"Connect it with a &bDelivery Man's Hut&r — Deliverymen ferry goods between the Warehouse and work sites.",
+				"The Warehouse is the single most impactful building for colony efficiency."
+			]
+			tasks: [
+				{
+					id: "000000000000E002"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E003"
+					type: "item"
+					item: "minecraft:chest"
+					count: 8
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000E011"
+			dependencies: ["000000000000E001"]
+			title: "Smeltery & Sawmill"
+			description: [
+				"Build a &bSmeltery&r and &bSawmill&r to automate material production within the colony.",
+				"",
+				"Smelteries smelt ores; Sawmills process wood into planks and other products.",
+				"These buildings let your colony be self-sufficient — less you need to supply manually."
+			]
+			tasks: [
+				{
+					id: "000000000000E012"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E013"
+					type: "xp"
+					xp: 100
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000E021"
+			dependencies: ["000000000000E011"]
+			title: "The University"
+			description: [
+				"Build a &bUniversity&r and assign a Researcher. Researchers unlock higher-tier colonist skills and research new building upgrades.",
+				"",
+				"Research takes real time. Queue up multiple research projects to run while you play.",
+				"Higher university levels unlock more research slots simultaneously."
+			]
+			tasks: [
+				{
+					id: "000000000000E022"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E023"
+					type: "xp"
+					xp: 100
+				}
+			]
+		}
+		{
+			x: 6.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000E031"
+			dependencies: ["000000000000E021"]
+			title: "Colony Defense"
+			description: [
+				"Build a &bGuard Tower&r and &bBarracks&r. Guards patrol and defend your colony from raids.",
+				"",
+				"Arm your guards with iron or better weapons — they use whatever you supply.",
+				"Raiders attack periodically at night. A colony without guards is vulnerable."
+			]
+			tasks: [
+				{
+					id: "000000000000E032"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E033"
+					type: "item"
+					item: "minecraft:iron_sword"
+					count: 4
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 2.0d
+			shape: "circle"
+			id: "000000000000E041"
+			dependencies: [ ]
+			title: "Citizen School"
+			description: [
+				"Build a &bSchool&r and a &bLibrary&r. Schools educate child colonists; Libraries boost colonist skill caps.",
+				"",
+				"Higher-skilled colonists work faster and produce more. Investing in education early pays dividends.",
+				"Assign a Teacher and a Librarian to get results."
+			]
+			tasks: [
+				{
+					id: "000000000000E042"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E043"
+					type: "xp"
+					xp: 75
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: 2.0d
+			shape: "circle"
+			id: "000000000000E051"
+			dependencies: [ ]
+			title: "Max Population"
+			description: [
+				"Reach 20 colonists. This requires enough housing and food production to sustain them all.",
+				"",
+				"Balance is key — more colonists need more food, which means more farmers, which need more housing...",
+				"A well-designed colony becomes self-sustaining at this scale."
+			]
+			tasks: [
+				{
+					id: "000000000000E052"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E053"
+					type: "xp_levels"
+					xp_levels: 5
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: -2.0d
+			shape: "circle"
+			id: "000000000000E061"
+			dependencies: [ ]
+			title: "Create x Colony"
+			description: [
+				"Connect your colony's Warehouse to a Create belt system for automated material delivery.",
+				"",
+				"Create's Funnel and Belt system can pull from and push to MineColonies containers.",
+				"This removes the bottleneck of manual supply runs and keeps your workers productive 24/7."
+			]
+			tasks: [
+				{
+					id: "000000000000E062"
+					type: "checkmark"
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000E063"
+					type: "xp"
+					xp: 150
+				}
+			]
+		}
+	]
+	quest_links: [ ]
+}

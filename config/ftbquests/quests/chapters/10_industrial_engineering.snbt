@@ -1,0 +1,257 @@
+{
+	id: "000000000000A000"
+	group: ""
+	order_index: 9
+	filename: "10_industrial_engineering"
+	title: "Industrial Engineering"
+	icon: "immersiveengineering:ingot_steel"
+	default_quest_shape: ""
+	default_hide_dependency_lines: false
+	images: [ ]
+	quests: [
+		{
+			x: 0.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000A001"
+			dependencies: [ ]
+			title: "The Engineer's Manual"
+			description: [
+				"&6Immersive Engineering&r is a tech mod focused on large multiblock structures and realistic power systems.",
+				"",
+				"Craft the &bEngineer's Manual&r (book + lever) and read it. It explains every machine in IE in detail.",
+				"IE uses Forge Energy (FE) — connect machines with &bLV/MV/HV Wires&r to transmit power."
+			]
+			tasks: [
+				{
+					id: "000000000000A002"
+					type: "item"
+					item: "immersiveengineering:engineers_manual"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A003"
+					type: "xp"
+					xp: 50
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000A011"
+			dependencies: ["000000000000A001"]
+			title: "Steel Production"
+			description: [
+				"IE runs on &bSteel&r. Craft a &bCoke Oven&r multiblock (3x3x3 of Coke Bricks) to produce Coal Coke and Creosote Oil.",
+				"",
+				"Feed Coal Coke and Iron into a &bBlast Furnace&r multiblock to produce Steel Ingots.",
+				"Both multiblocks are built by placing the blocks and then right-clicking the center with an Engineer's Hammer."
+			]
+			tasks: [
+				{
+					id: "000000000000A012"
+					type: "item"
+					item: "immersiveengineering:ingot_steel"
+					count: 8
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A013"
+					type: "item"
+					item: "immersiveengineering:ingot_steel"
+					count: 4
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000A021"
+			dependencies: ["000000000000A011"]
+			title: "Wind Power"
+			description: [
+				"Build a &bWindmill&r for your first IE power source. It generates a small but consistent FE output.",
+				"",
+				"The Windmill multiblock uses a Kinetic Dynamo with Windmill Sails attached. Place it in a clear open area for maximum output.",
+				"Connect it with LV Wire Connectors and LV Wire Coils to your machines."
+			]
+			tasks: [
+				{
+					id: "000000000000A022"
+					type: "item"
+					item: "immersiveengineering:windmill_blade"
+					count: 4
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A023"
+					type: "item"
+					item: "immersiveengineering:wire_coil_lv"
+					count: 8
+				}
+			]
+		}
+		{
+			x: 6.0d
+			y: 0.0d
+			shape: "circle"
+			id: "000000000000A031"
+			dependencies: ["000000000000A021"]
+			title: "The Crusher"
+			description: [
+				"Build the &bCrusher&r multiblock — it doubles ore output, like Create's Millstone but FE-powered.",
+				"",
+				"The Crusher is a 3-wide, 3-tall multiblock. Right-click the center block with an Engineer's Hammer to form it.",
+				"It also processes some materials the Millstone can't, including certain mod ores."
+			]
+			tasks: [
+				{
+					id: "000000000000A032"
+					type: "item"
+					item: "immersiveengineering:crusher"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A033"
+					type: "xp"
+					xp: 100
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: 2.0d
+			shape: "circle"
+			id: "000000000000A041"
+			dependencies: ["000000000000A011"]
+			title: "The Revolver"
+			description: [
+				"IE adds a &bRevolver&r — a craftable firearm with interchangeable cartridges.",
+				"",
+				"Craft Cartridges (check JEI) for different ammo types. The revolver uses an upgrade system for expanded cylinders and faster reload.",
+				"It's a strong ranged option mid-game alongside your bows."
+			]
+			tasks: [
+				{
+					id: "000000000000A042"
+					type: "item"
+					item: "immersiveengineering:revolver"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A043"
+					type: "item"
+					item: "immersiveengineering:cartridge"
+					count: 18
+				}
+			]
+		}
+		{
+			x: 4.0d
+			y: 2.0d
+			shape: "circle"
+			id: "000000000000A051"
+			dependencies: ["000000000000A041"]
+			title: "Chemical Thrower"
+			description: [
+				"Craft a &bChemical Thrower&r — a flamethrower-style weapon that sprays Creosote Oil or other fluids.",
+				"",
+				"Creosote Oil comes from the Coke Oven as a byproduct. Sprayed on the ground it leaves burning patches.",
+				"Other fluids give different effects — check JEI for what fluids the Thrower supports."
+			]
+			tasks: [
+				{
+					id: "000000000000A052"
+					type: "item"
+					item: "immersiveengineering:chemical_thrower"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A053"
+					type: "xp"
+					xp: 75
+				}
+			]
+		}
+		{
+			x: 0.0d
+			y: -2.0d
+			shape: "circle"
+			id: "000000000000A061"
+			dependencies: [ ]
+			title: "Immersive Petroleum"
+			description: [
+				"&6Immersive Petroleum&r extends IE with oil drilling and refining.",
+				"",
+				"Use the &bCore Sample Drill&r to survey chunks for petroleum deposits. If a deposit is found, build a &bPumpjack&r to extract it.",
+				"Refined petroleum products power high-tier IE generators."
+			]
+			tasks: [
+				{
+					id: "000000000000A062"
+					type: "item"
+					item: "immersivepetroleum:core_sample_drill"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A063"
+					type: "xp"
+					xp: 75
+				}
+			]
+		}
+		{
+			x: 2.0d
+			y: -2.0d
+			shape: "circle"
+			id: "000000000000A071"
+			dependencies: ["000000000000A061"]
+			title: "Diesel Power"
+			description: [
+				"Refine petroleum into &bDiesel&r and feed it to the &bDiesel Generator&r for high FE output.",
+				"",
+				"The Diesel Generator outputs significantly more power than the Windmill — a reliable source for powering multiple machines.",
+				"Set up a tank system to store diesel before connecting it to the generator."
+			]
+			tasks: [
+				{
+					id: "000000000000A072"
+					type: "item"
+					item: "immersivepetroleum:diesel_generator"
+					count: 1
+					consume: false
+				}
+			]
+			rewards: [
+				{
+					id: "000000000000A073"
+					type: "xp_levels"
+					xp_levels: 3
+				}
+			]
+		}
+	]
+	quest_links: [ ]
+}

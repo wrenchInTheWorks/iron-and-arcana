@@ -85,26 +85,33 @@ jobs:
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           MODRINTH_PROJECT_ID: ${{ secrets.MODRINTH_PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{ steps.pack.outputs.version }}"
           MRPACK="${{ steps.mrpack.outputs.file }}"
 
-          # Build the metadata payload
-          DATA=$(cat <<EOF
-          {
-            "name": "Iron & Arcana ${VERSION}",
-            "version_number": "${VERSION}",
-            "dependencies": [],
-            "game_versions": ["1.21.1"],
-            "version_type": "release",
-            "loaders": ["neoforge"],
-            "featured": true,
-            "project_id": "${MODRINTH_PROJECT_ID}",
-            "file_parts": ["file"],
-            "primary_file": "file"
-          }
-          EOF
-          )
+          # Pull changelog from the GitHub Release we just created
+          CHANGELOG=$(gh release view "v${VERSION}" --json body --jq '.body')
+
+          # Build the metadata payload (jq handles all escaping)
+          DATA=$(jq -n \
+            --arg name "Iron & Arcana ${VERSION}" \
+            --arg version_number "${VERSION}" \
+            --arg changelog "${CHANGELOG}" \
+            --arg project_id "${MODRINTH_PROJECT_ID}" \
+            '{
+              name: $name,
+              version_number: $version_number,
+              changelog: $changelog,
+              dependencies: [],
+              game_versions: ["1.21.1"],
+              version_type: "release",
+              loaders: ["neoforge"],
+              featured: true,
+              project_id: $project_id,
+              file_parts: ["file"],
+              primary_file: "file"
+            }')
 
           HTTP_CODE=$(curl -s \
             -o /tmp/modrinth_resp.json \

@@ -1,6 +1,9 @@
 # packwiz export output
 *.mrpack
 
+# CurseForge-restricted jars for CI import cache (tracked intentionally)
+!pack-import-cache/*.jar
+
 # packwiz cache
 .packwiz-cache/
 

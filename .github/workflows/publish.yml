@@ -48,7 +48,15 @@ jobs:
         env:
           CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
         run: |
-          echo "curseforge-api-key = \"${CURSEFORGE_API_KEY}\"" > $HOME/.packwiz.toml
+          mkdir -p $HOME/.config/packwiz
+          echo "curseforge-api-key = \"${CURSEFORGE_API_KEY}\"" | tee $HOME/.packwiz.toml $HOME/.config/packwiz/.packwiz.toml
+
+      - name: Seed packwiz import cache (CurseForge-restricted mods)
+        run: |
+          mkdir -p $HOME/.cache/packwiz/import
+          cp pack-import-cache/*.jar $HOME/.cache/packwiz/import/
+          echo "Import cache contents:"
+          ls -lh $HOME/.cache/packwiz/import/
 
       - name: Export .mrpack
         run: packwiz modrinth export

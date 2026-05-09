@@ -300,7 +300,7 @@ metafile = true
 
 [[files]]
 file = "mods/kotlin-for-forge.pw.toml"
-hash = "ed36a377c78da1940a4751fd288aab2c27b6b30d902ecc97b2f06c7ab253b06b"
+hash = "27302b0087cf53570cd7a3b4eb550a208cbb6f6ba07210c604176155f39e0078"
 metafile = true
 
 [[files]]

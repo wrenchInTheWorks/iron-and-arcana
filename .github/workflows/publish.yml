@@ -61,12 +61,18 @@ jobs:
       - name: Export .mrpack
         run: packwiz modrinth export
 
-      - name: Locate mrpack file
+      - name: Export CurseForge .zip
+        run: packwiz curseforge export
+
+      - name: Locate export files
         id: mrpack
         run: |
-          FILE=$(ls *.mrpack | head -1)
-          echo "file=$FILE" >> $GITHUB_OUTPUT
-          echo "Found: $FILE"
+          MRPACK=$(ls *.mrpack | head -1)
+          CFZIP=$(ls *.zip | head -1)
+          echo "file=$MRPACK" >> $GITHUB_OUTPUT
+          echo "cfzip=$CFZIP" >> $GITHUB_OUTPUT
+          echo "Found mrpack: $MRPACK"
+          echo "Found cfzip: $CFZIP"
 
       # ── Only runs when pack.toml version has changed ──────────────────────
 
@@ -78,7 +84,8 @@ jobs:
           gh release create "v${{ steps.pack.outputs.version }}" \
             --title "Iron & Arcana v${{ steps.pack.outputs.version }}" \
             --generate-notes \
-            "${{ steps.mrpack.outputs.file }}"
+            "${{ steps.mrpack.outputs.file }}" \
+            "${{ steps.mrpack.outputs.cfzip }}"
 
       - name: Upload to Modrinth
         if: steps.pack.outputs.new_version == 'true'

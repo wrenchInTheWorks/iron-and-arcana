@@ -1,0 +1,63 @@
+name: Update EventBridge Mod
+
+# Triggered by the eventbridge-mod repo when a new release is published.
+# Downloads the new jar, computes its hash, writes mods/eventbridge.pw.toml,
+# then runs packwiz refresh to rebuild index.toml and pack.toml.
+
+on:
+  repository_dispatch:
+    types: [eventbridge-release]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download jar and compute SHA512
+        id: jar
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          JAR_URL="${{ github.event.client_payload.jar_url }}"
+          curl -fsSL "$JAR_URL" -o eventbridge-all.jar
+          HASH=$(sha512sum eventbridge-all.jar | awk '{print $1}')
+          echo "hash=$HASH"   >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "jar_url=$JAR_URL" >> $GITHUB_OUTPUT
+
+      - name: Write mods/eventbridge.pw.toml
+        run: |
+          cat > mods/eventbridge.pw.toml << TOML
+          name = "EventBridge"
+          filename = "eventbridge-all.jar"
+          side = "server"
+
+          [download]
+          url = "${{ steps.jar.outputs.jar_url }}"
+          hash-format = "sha512"
+          hash = "${{ steps.jar.outputs.hash }}"
+          TOML
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install packwiz
+        run: go install github.com/packwiz/packwiz@latest
+
+      - name: Refresh packwiz index
+        run: packwiz refresh
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add mods/eventbridge.pw.toml index.toml pack.toml
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update EventBridge to ${{ steps.jar.outputs.version }}"
+          git push

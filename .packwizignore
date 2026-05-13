@@ -1,0 +1,10 @@
+# Exclude repo/CI files from mrpack export
+.github/
+.claude/
+.git/
+crash-reports/
+pack-import-cache/
+*.mrpack
+*.md
+iron-and-arcana-packwiz-brief.md
+SKIPPED.md

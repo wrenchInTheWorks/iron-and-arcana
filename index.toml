@@ -1,34 +1,6 @@
 hash-format = "sha256"
 
 [[files]]
-file = ".claude/settings.local.json"
-hash = "f614ab315ff9de3fbc4389468ebd9dad94b717ecfdfb27b59c80c59353ca4c40"
-
-[[files]]
-file = ".github/workflows/publish.yml"
-hash = "6f73367813dbfddf7358bac4fb218aed2567a60972ea826fe145488ea8419b4a"
-
-[[files]]
-file = "SKIPPED.md"
-hash = "2e9b992208360dfcd4e3d6bcf3038d187db55ae49aeaf3017e95528da78e5a20"
-
-[[files]]
-file = "crash-reports/crash-2026-05-06_21.58.50-fml.txt"
-hash = "ddb5aaffa0235f11dae4e9e0a1c43bbaea549f6972bbb9a193f5ab4a6f58c85d"
-
-[[files]]
-file = "crash-reports/crash-2026-05-07_17.31.06-client.txt"
-hash = "4094ff8f1d43ebb86cdac699f681cc0fb3821b9f1405a14702d44d93035258c0"
-
-[[files]]
-file = "crash-reports/crash-2026-05-07_17.42.53-client.txt"
-hash = "65bc6bf3aefe02cc1a61171d66f2ac3e143664fb7aa23a13f267dd6be7fa0f8e"
-
-[[files]]
-file = "iron-and-arcana-packwiz-brief.md"
-hash = "e2168fc0818ba6ff73982ab01ef201bffc8783859e619d86e857b3a5b92e5312"
-
-[[files]]
 file = "mods/aether.pw.toml"
 hash = "cc3f6e6e8f1838d16e47cce9241e32176279673efb1438ff4451ccffa9579b14"
 metafile = true
@@ -552,7 +524,3 @@ metafile = true
 file = "mods/yungs-better-strongholds.pw.toml"
 hash = "1a33e6d64e88ad59b65d126c6457d582e62724167349ea184eb237435298985e"
 metafile = true
-
-[[files]]
-file = "pack-import-cache/create-aeronautics-bundled-1.21.1-1.2.1.jar"
-hash = "5a8c6d168ec1b47ecee7f2e83a93accbca71544d2b14ca1ca1b1271855f26248"

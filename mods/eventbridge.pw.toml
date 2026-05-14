@@ -1,0 +1,8 @@
+name = "EventBridge"
+filename = "eventbridge-all.jar"
+side = "server"
+
+[download]
+url = "https://github.com/wrenchInTheWorks/eventbridge-mod/releases/download/v1.0.0/eventbridge-all.jar"
+hash-format = "sha512"
+hash = "02ddaaaa5068df36093a3c9acd16f4b6641353b81959ae8401f9d16beb247a7ef8cb25454d348f296522fc1093d027ae17adf5416d1fe150cb2c0cad92d5bc4a"

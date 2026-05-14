@@ -1,6 +1,10 @@
 hash-format = "sha256"
 
 [[files]]
+file = "eventbridge-all.jar"
+hash = "ee1ef13eeb756668f7f7ced40adacae8c43fac811db708e4d09973fc111d2ed6"
+
+[[files]]
 file = "mods/aether.pw.toml"
 hash = "cc3f6e6e8f1838d16e47cce9241e32176279673efb1438ff4451ccffa9579b14"
 metafile = true
@@ -198,6 +202,11 @@ metafile = true
 [[files]]
 file = "mods/entitytexturefeatures.pw.toml"
 hash = "cf7390cf06a861f7661222773371b429fce4fdd359240ca3c0eff20835471c0c"
+metafile = true
+
+[[files]]
+file = "mods/eventbridge.pw.toml"
+hash = "f11252d6d50e1d724395ec47dba8073ac440b06d4d2c9ecec16ba00c851e12ba"
 metafile = true
 
 [[files]]

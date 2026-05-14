@@ -1,10 +1,6 @@
 hash-format = "sha256"
 
 [[files]]
-file = "eventbridge-all.jar"
-hash = "ee1ef13eeb756668f7f7ced40adacae8c43fac811db708e4d09973fc111d2ed6"
-
-[[files]]
 file = "mods/aether.pw.toml"
 hash = "cc3f6e6e8f1838d16e47cce9241e32176279673efb1438ff4451ccffa9579b14"
 metafile = true
@@ -46,7 +42,7 @@ metafile = true
 
 [[files]]
 file = "mods/ars-nouveau.pw.toml"
-hash = "02261f67e57ae598614d40061c0b7f0c511a28bddcdc394da47a8c61ad209823"
+hash = "3ac93fcf9be618db321efebbbd55045878dec6119fa05b3188cbda746c978748"
 metafile = true
 
 [[files]]
@@ -56,12 +52,12 @@ metafile = true
 
 [[files]]
 file = "mods/athena-ctm.pw.toml"
-hash = "ca4fdebf931acb8578216209bcc396cdfe7d804231f8048794eba5104df30f56"
+hash = "f54cf71372645810ce22b0ba68e706139565437150e4cfd22bde4c14606099c4"
 metafile = true
 
 [[files]]
 file = "mods/balm.pw.toml"
-hash = "9121b274bd87552ae976983d9bdd56061274c126a4a1b7b2e13605b1a1ec0599"
+hash = "392901b7f79963442553456af846d06f48b4057a054a928adb8a76eea13c6383"
 metafile = true
 
 [[files]]
@@ -151,7 +147,7 @@ metafile = true
 
 [[files]]
 file = "mods/createaddition.pw.toml"
-hash = "b5bbbdef134fb735d4a741ccb85b46c6b1707e8e974a09bdcc1dcd785c0f172e"
+hash = "5b529724427fd8b04538c2f49cc8f9b38de49fe46218eb9e07f955f5725d727a"
 metafile = true
 
 [[files]]
@@ -186,7 +182,7 @@ metafile = true
 
 [[files]]
 file = "mods/emi.pw.toml"
-hash = "b07d7101e05c3551bdda0695b71cf87ade3b24e3374d26827c9cf1b0374df4b3"
+hash = "4603c93edafe22ced6578fd08ca44f8c7e4c7f4e0a59c853e7552c6b8dc99388"
 metafile = true
 
 [[files]]
@@ -196,7 +192,7 @@ metafile = true
 
 [[files]]
 file = "mods/entity-model-features.pw.toml"
-hash = "3937618f06648f5ad0c7be0195b5fa75bf6d7464ee133bd59bb5b13753090de7"
+hash = "4fa25309ea7f4f7770ce6588f39711e891d39f70ae0906b842647273a9ce0448"
 metafile = true
 
 [[files]]
@@ -206,12 +202,12 @@ metafile = true
 
 [[files]]
 file = "mods/eventbridge.pw.toml"
-hash = "f11252d6d50e1d724395ec47dba8073ac440b06d4d2c9ecec16ba00c851e12ba"
+hash = "116cad4c9cea384178f61938e32a82f9c7c8199094a4155d141b0056e9b2ceba"
 metafile = true
 
 [[files]]
 file = "mods/farmers-delight.pw.toml"
-hash = "74a9c6f2f890649eb693c9f48c3d99148b5526e23371cf1a9a6276bd3b21b214"
+hash = "9aab64fbec4cc794817026caf84e7d0dff14ba3892da94aa0e00d23c84560499"
 metafile = true
 
 [[files]]
@@ -286,7 +282,7 @@ metafile = true
 
 [[files]]
 file = "mods/kubejs.pw.toml"
-hash = "60d0f719a2fc1045e865fc38c0c6d04a733d0ce2e84173be86e999399bcc162d"
+hash = "99bea71046529d65463fc12acb505ab363c91133ebbcc1d976e49a5d33150702"
 metafile = true
 
 [[files]]
@@ -331,12 +327,12 @@ metafile = true
 
 [[files]]
 file = "mods/modernfix.pw.toml"
-hash = "d2d2b14614ad6820caffa69219414d491d59280685662cbe808f5df33c687555"
+hash = "7862ee4443273e49cd365331f05e0514d3f798a9ced3e5d8b6dd103dd7e92e1a"
 metafile = true
 
 [[files]]
 file = "mods/moonlight.pw.toml"
-hash = "3b7f0351a2473f8c3f8211539bc3ca1aa065acf90f3e3b5e8b68a433fc6ed21f"
+hash = "bbac8cbc56c4a1a14d30f0671a81252978b229066896cba45384c593f67fff7d"
 metafile = true
 
 [[files]]
@@ -441,12 +437,12 @@ metafile = true
 
 [[files]]
 file = "mods/sophisticated-backpacks.pw.toml"
-hash = "bce52f752c8d3bae9ed17dba8f96ec7ff3f1ab7032fe2258a9573e1a8657bb85"
+hash = "50e47fd9fadb581368eba709a8777b34b73938a0911cd436783979c032a0145f"
 metafile = true
 
 [[files]]
 file = "mods/sophisticated-core.pw.toml"
-hash = "e6f7c1b43dbb3a62dd8638228eb17a942a37e6aa50a8f32e9625769c6d4e090e"
+hash = "3642ae8539b2af68e1169284a294aecc5fff94281e339dff0cdf767cd94de2f9"
 metafile = true
 
 [[files]]
@@ -456,7 +452,7 @@ metafile = true
 
 [[files]]
 file = "mods/sophisticated-storage.pw.toml"
-hash = "1e0e4292870a22a5a2bf76f70eca35391d065f1d2213f92b60149b03167a0a82"
+hash = "ee46e9f41ca605056827996fe8afb9fd3282e455ab21283fc199d6da0e6beb58"
 metafile = true
 
 [[files]]
@@ -481,7 +477,7 @@ metafile = true
 
 [[files]]
 file = "mods/supplementaries.pw.toml"
-hash = "a382dc176a54944d74070de2a17f34a880834158eaf697b868e6d196d25000ca"
+hash = "084ba00d5d41d76f4975935f3ada0fb1fce41bce59dd3901f54684c3588cb9f6"
 metafile = true
 
 [[files]]
@@ -491,7 +487,7 @@ metafile = true
 
 [[files]]
 file = "mods/waystones.pw.toml"
-hash = "e2978597c04f24e2e0536a6aa666ef5cc0b1d515c09af1f763c65587faa73333"
+hash = "65242951f26a65cce20bcc2c796805b655046970ee8fe13990976e649fa6ba04"
 metafile = true
 
 [[files]]

@@ -461,6 +461,11 @@ hash = "09c393b303130cefffc1c376ddfdeb869b20db31d3d42d9fa155e13cfc628645"
 metafile = true
 
 [[files]]
+file = "mods/spark.pw.toml"
+hash = "593fa7b30ab016aa45be07bd6bef3a9f160ed0f24689850d60bf84995d69b843"
+metafile = true
+
+[[files]]
 file = "mods/spartan-weaponry-unofficial.pw.toml"
 hash = "604c745488f0d9adfec20a72cfb5085e045dfcd33c736999e07fcf74088d39cb"
 metafile = true
@@ -488,11 +493,6 @@ metafile = true
 [[files]]
 file = "mods/waystones.pw.toml"
 hash = "65242951f26a65cce20bcc2c796805b655046970ee8fe13990976e649fa6ba04"
-metafile = true
-
-[[files]]
-file = "mods/when-dungeons-arise.pw.toml"
-hash = "7e6948368276f2c49d5bccf52cbf80930d0daca75b4dfbc5530479f1d3f95cf8"
 metafile = true
 
 [[files]]

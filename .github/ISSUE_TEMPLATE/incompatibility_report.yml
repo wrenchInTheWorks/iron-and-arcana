@@ -1,0 +1,90 @@
+name: Incompatibility Report
+description: Report a conflict between Iron & Arcana and another mod, shader, or resource pack.
+title: "[Incompatibility] "
+labels: ["incompatibility", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for conflicts caused by mods, shaders, or resource packs **not included** in the base pack.
+        If you're experiencing a bug on an unmodified install, use the **Bug Report** template instead.
+
+  - type: input
+    id: modpack-version
+    attributes:
+      label: Modpack Version
+      placeholder: "e.g. 1.3.2"
+    validations:
+      required: true
+
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft / NeoForge Version
+      placeholder: "e.g. MC 1.21.1 / NeoForge 21.1.77"
+    validations:
+      required: true
+
+  - type: input
+    id: conflicting-mod
+    attributes:
+      label: Conflicting Mod / Shader / Resource Pack
+      description: Name and version of the external addition causing the conflict.
+      placeholder: "e.g. JourneyMap 5.10.3, Complementary Reimagined r5.3"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Conflict
+      description: What breaks? Crash, visual glitch, broken recipe, gameplay logic failure, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Add [mod] to the pack
+        2. Launch game
+        3. Do X
+        4. See Y
+    validations:
+      required: true
+
+  - type: textarea
+    id: crash-log
+    attributes:
+      label: Crash Log / Error Output
+      description: |
+        Paste crash report or log excerpt. Full logs at .minecraft/logs/latest.log.
+        Use https://paste.gg for long logs.
+      render: text
+
+  - type: dropdown
+    id: conflict-type
+    attributes:
+      label: Conflict Type
+      options:
+        - Hard crash (game closes)
+        - Soft crash / freeze
+        - Visual / rendering glitch
+        - Gameplay / logic error
+        - Recipe conflict
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Known Workaround
+      description: If you found a way to work around the issue, share it here. Helps others until a fix lands.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Screenshots, config changes, anything else relevant.

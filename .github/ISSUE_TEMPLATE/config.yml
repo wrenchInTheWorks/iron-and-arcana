@@ -1,8 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Discord
-    url: https://discord.gg/your-invite-here
+    url: https://discord.gg/APbG5E9R2p
     about: For general questions or support, come chat on the Discord server.
-  - name: CurseForge / Modrinth Page
-    url: https://modrinth.com/modpack/iron-and-arcana
-    about: Download links, changelogs, and comments.

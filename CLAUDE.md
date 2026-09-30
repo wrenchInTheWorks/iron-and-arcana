@@ -186,6 +186,27 @@ is validated at **server startup only** — `/kubejs reload` only reloads
 A file-lock `IOException` on startup means a stale `world/session.lock` from an
 unclean kill. Delete it.
 
+### Java 17 is a hard ceiling — BlueMap is pinned because of it
+Forge 47 / 1.20.1 targets **Java 17** (class file major 61). A mod compiled for
+Java 21 (major 65) throws `UnsupportedClassVersionError` at class load.
+
+**BlueMap is deliberately pinned to `5.3-forge-1.20` (version id `aHbq9KFB`).**
+BlueMap 5.12 is compiled for Java 21 and crash-loops the server. Measured class
+majors: 5.12 = 65 (Java 21), 5.3 = 60, 3.21 = 55. 5.3 is the newest that runs on
+Java 17.
+
+**Do not `packwiz update` BlueMap** without re-checking the class version, and
+do not switch the container to `java21` casually — Forge 47 does not officially
+support it and the pack is mixin-heavy.
+
+Valkyrien Skies is what makes this fatal rather than a soft failure: its
+`LoadedMods.getBluemap()` calls `Class.forName` during mixin selection, forcing
+the class to load before anything can catch it. So a Java-21 mod anywhere in the
+pack that VS probes for will hard-crash startup.
+
+To check a jar: read bytes 6–7 of any `.class` inside it (big-endian major
+version), or see the BlueMap investigation in git history for the script.
+
 ### Create addon compatibility
 Every Create addon in the pack declares `create >= 6.0.x`, so Create 6.0.8
 satisfies them. Read `META-INF/mods.toml` out of the jar to check a range —

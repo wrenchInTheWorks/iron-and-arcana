@@ -1,0 +1,2 @@
+# Drop jars here that packwiz-installer cannot fetch; they are copied into the
+# server mods folder on start. See README.md.

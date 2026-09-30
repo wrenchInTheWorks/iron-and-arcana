@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (99 entries, 15 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (98 entries, 14 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -95,7 +95,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 | | |
 |---|---|
-| Pack rebuilt | 99 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Pack rebuilt | 98 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
 | Export verified | `packwiz modrinth export` succeeds; 2.0.0 mrpack is 184 MB vs v1's 256 MB |
 | Flight | Valkyrien Skies 2 + Clockwork replace Create Aeronautics, which has no 1.20.1 release |
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
@@ -207,11 +207,26 @@ pack that VS probes for will hard-crash startup.
 To check a jar: read bytes 6–7 of any `.class` inside it (big-endian major
 version), or see the BlueMap investigation in git history for the script.
 
-### Create addon compatibility
-Every Create addon in the pack declares `create >= 6.0.x`, so Create 6.0.8
-satisfies them. Read `META-INF/mods.toml` out of the jar to check a range —
-`dependencies` in the Modrinth API are unpinned and tell you nothing. Addon
-breakage across Create majors is the usual failure mode.
+### Create addon compatibility — and why a declared range can lie
+Every Create addon in the pack declares a **hard** `create >= 6.0.x` bound, so
+Create 6.0.8 satisfies them. Read `META-INF/mods.toml` out of the jar to check —
+`dependencies` in the Modrinth API are unpinned and tell you nothing.
+
+**A bare `versionRange` is not a bound.** Forge parses it as a Maven version
+spec, where `"6.0.2"` means "recommended, anything acceptable" — so Forge loads
+the mod against *any* Create version without complaint. Only bracketed ranges
+(`[6.0.7,)`) are enforced.
+
+This cost a boot. Create Deco `2.0.3` declared a bare `create = "6.0.2"`, was
+actually built for the Create 0.5.1 era, loaded silently against 6.0.8, and
+disrupted Create's Registrate registration — Create then died in
+`AllAdvancements.<clinit>` with `Registry entry not present:
+create:chocolate_bucket`. Create Deco's Create-6 line (2.1.x) never shipped for
+1.20.1 Forge, only 1.21.1 NeoForge and 1.20.1 Fabric.
+
+**So: check the addon's version *line* against Create's, not just its declared
+range.** If Create is ever bumped, re-read every addon's mods.toml and treat a
+bare range as unverified.
 
 **Forge floor: Valkyrien Skies 2 requires `forge >= 47.2.0`.** Do not drop
 below that; 47.4.10 is well clear.

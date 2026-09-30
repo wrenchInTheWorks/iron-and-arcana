@@ -11,6 +11,10 @@
 # Docker server secrets
 server/.env
 
+# IDE
+.idea/
+.vscode/
+
 # OS
 .DS_Store
 Thumbs.db

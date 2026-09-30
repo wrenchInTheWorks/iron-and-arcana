@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (98 entries) |
+| `mods/*.pw.toml` | one metadata file per mod (100 entries) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -89,7 +89,8 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 | | |
 |---|---|
-| Pack rebuilt | 98 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Pack rebuilt | 100 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Flight | Valkyrien Skies 2 + Clockwork replace Create Aeronautics, which has no 1.20.1 release |
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |
 | Unofficial ports retired | Alex's Caves, Alex's Mobs, Citadel, Spartan Weaponry, Steam 'n' Rails now official 1.20.1 builds |
@@ -179,9 +180,13 @@ A file-lock `IOException` on startup means a stale `world/session.lock` from an
 unclean kill. Delete it.
 
 ### Create addon compatibility
-All four Create addons declare `create >= 6.0.x`, so Create 6.0.8 satisfies
-them. Re-check `META-INF/mods.toml` version ranges if Create is ever bumped —
-addon breakage across Create majors is the usual failure.
+Every Create addon in the pack declares `create >= 6.0.x`, so Create 6.0.8
+satisfies them. Read `META-INF/mods.toml` out of the jar to check a range —
+`dependencies` in the Modrinth API are unpinned and tell you nothing. Addon
+breakage across Create majors is the usual failure mode.
+
+**Forge floor: Valkyrien Skies 2 requires `forge >= 47.2.0`.** Do not drop
+below that; 47.4.10 is well clear.
 
 ---
 

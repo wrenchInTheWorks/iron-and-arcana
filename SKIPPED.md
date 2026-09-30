@@ -14,21 +14,28 @@ See `docs/v1-mod-inventory.md` for the full v1.2.3 snapshot and dispositions.
 | **LambDynamicLights** | Fabric, NeoForge and Quilt only — zero 1.20.1 Forge files. | **Replaced by Dynamic Lights** (`dynamiclights-v1.8.6`) |
 | **Ars Technic** | 1.21.1 only. | Not in pack. **Ars Creo** remains, so the Ars↔Create bridge is intact |
 | **Prickle** | No 1.20.1 build. Dependency-only config library with nothing in 2.0 depending on it. | Not in pack |
-| **Create Aeronautics** | **Requested for 2.0, but impossible.** The mod's own files stop at mc1.21.1 on both CurseForge and Modrinth — zero 1.20.1 files for any loader. The 1.20.1 search hits are unrelated modpacks by other authors that bundle Create addons. | Not in pack — see below for the substitute |
+| **Create Aeronautics** | **Requested for 2.0, but impossible.** The mod's own files stop at mc1.21.1 on both CurseForge and Modrinth — zero 1.20.1 files for any loader. The 1.20.1 search hits are unrelated modpacks by other authors that bundle Create addons. | **Replaced by Valkyrien Skies 2 + Clockwork** |
 
 ### Flying contraptions on 1.20.1 — the Valkyrien Skies route
 
-Since Create Aeronautics cannot be used, the equivalent capability on 1.20.1
-Forge is the Valkyrien Skies stack, all at **release** quality rather than
-Aeronautics' alpha:
+Create Aeronautics cannot be used, so 2.0 uses the Valkyrien Skies stack
+instead. Both are at **release** quality, where Aeronautics was alpha with
+CurseForge distribution disabled:
 
-| Mod | 1.20.1 Forge | Role |
-|---|---|---|
-| Valkyrien Skies 2 | `1.20.1-forge-2.4.11` | Physics/airship engine — the base dependency |
-| Clockwork | `3.1.2` | Create-integrated flying contraptions — closest match to Aeronautics |
-| Eureka | `1.20.1-forge-1.6.3` | Buildable airships, simpler than Clockwork |
+| Mod | Version | Role | In pack |
+|---|---|---|---|
+| Valkyrien Skies 2 | `1.20.1-forge-2.4.11` | Physics/airship engine, base dependency | Yes |
+| Clockwork | `1.20.1-forge-0.5.6` | Create-integrated flying contraptions | Yes |
+| Eureka | `1.20.1-forge-1.6.3` | Simpler buildable airships | No — Clockwork covers the Create-flavoured use case |
 
-Not added — pending a decision on whether to take this route.
+> The Modrinth project at slug `clockwork` is a **modpack**, not the mod.
+> The mod is `create-clockwork` (project `84USeAvk`), confusingly titled
+> "Clockwork". Adding the wrong one fails with a modpack-import error.
+
+Declared ranges, read from the jars: Clockwork needs `create [6.0.7,)` and
+`valkyrienskies [2.4.6,)`; VS2 needs `create [6.0.6,)` and **`forge >= 47.2.0`**.
+Forge 47.4.10 and Create 6.0.8 satisfy all of them — but note VS2 rules out
+older Forge builds, so do not drop below 47.2.0.
 
 ### Dynamic lighting — why not Sodium Dynamic Lights
 

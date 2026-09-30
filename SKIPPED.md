@@ -1,49 +1,65 @@
-# Dropped & Skipped Mods
+# Dropped & Skipped Mods — 2.0 (MC 1.20.1 / Forge)
 
-## Dropped — No NeoForge 1.21.1 Release
+Checked 2026-09-30 while rebuilding the pack for 1.20.1 Forge.
+See `docs/v1-mod-inventory.md` for the full v1.2.3 snapshot and dispositions.
 
-These mods from the original brief were checked on both Modrinth and CurseForge
-and have no compatible release. They are not in the pack.
+## No 1.20.1 Forge release
 
-| Mod | Reason | Possible Replacement |
+| Mod | Finding | Outcome |
 |---|---|---|
-| Botania | No NeoForge 1.21.1 release on either platform | None — check back in future MC versions |
-| Dynamic Lights | No NeoForge 1.21.1 build | See alternatives below |
-| Minecolonies Tweaks | CurseForge slug `minecolonies-tweaks` exists but no 1.21.1 NeoForge file | Check back — may release later |
-| BlueMap-Discord Addon | No standalone addon found on either platform | Discord Integration (DI) already covers in-game chat bridge |
+| **MineColonies Tweaks** | No 1.20.1 file. Also had no 1.21.1 file in v1 — still unavailable on any version this pack can use. | Not in pack |
+| **Create BlueMap** | No 1.20.1 file. Create contraptions will not appear as live markers on the map. | Not in pack — BlueMap itself works fine |
+| **Engineer's Decor** | Confirmed frozen; no 1.20.1 build. v1 recorded it as stuck at 1.19.2 and that has not changed. | Not in pack. Decoration gap covered by Create Deco, Chipped, Supplementaries, Macaw's |
+| **You're in Grave Danger** | Fabric and NeoForge only — zero 1.20.1 Forge files. | **Replaced by GraveStone Mod** (`gravestone-forge-1.20.1-1.0.35`) |
+| **LambDynamicLights** | Fabric, NeoForge and Quilt only — zero 1.20.1 Forge files. | **Replaced by Dynamic Lights** (`dynamiclights-v1.8.6`) |
+| **Ars Technic** | 1.21.1 only. | Not in pack. **Ars Creo** remains, so the Ars↔Create bridge is intact |
+| **Prickle** | No 1.20.1 build. Dependency-only config library with nothing in 2.0 depending on it. | Not in pack |
 
-## Dynamic Lighting Alternatives
+### Dynamic lighting — why not Sodium Dynamic Lights
 
-Three NeoForge 1.21.1 options confirmed working. All are client-side only.
+`sodium-dynamic-lights` does have a 1.20.1 Forge build and would nominally pair
+with Embeddium. It was **not** chosen: v1 shipped it in 1.0.0 and swapped away
+from it in `4eb7d7d` ("swap sodium-dynamic-lights for lambdynamiclights"). Since
+LambDynamicLights is unavailable on Forge, the standalone `dynamic-lights` mod
+was used instead rather than revisiting a build that already caused a problem.
 
-| Mod | Modrinth Slug | Notes |
-|---|---|---|
-| **Sodium Dynamic Lights** | `sodium-dynamic-lights` | Best fit — integrates with Embeddium (already in pack). Recommended. |
-| LambDynamicLights | `lambdynamiclights` | Most popular, feature-complete. Originally Fabric but has NeoForge support. |
-| RyoamicLights | `ryoamiclights` | Architectury port of LambDynamicLights. Lighter than the original. |
+## Excluded on purpose
 
-## Slug Corrections Applied
+| Mod | Reason |
+|---|---|
+| **Silent Gear** + Silent Lib | Replaced by Tinkers' Construct. Weak default material traits, and a Materials Book that advertised materials from mods not in the pack — which needed 18 override JSONs plus a dummy tag to suppress, and was never confirmed fixed in-game |
+| **Just Enough Items** | EMI is the pack's recipe viewer. JEI was only ever added in `320c30a` to satisfy a crash and never removed |
+| **Just Enough Resources** | Hard-depends on JEI, which would reintroduce the duplicate-viewer conflict. Ore-distribution info is the loss here — re-add JEI+JER together if that matters more than having one viewer |
+| **Sodium** | Embeddium is the 1.20.1 Forge equivalent |
+| **Create Aeronautics** + Sable | Alpha quality, and its CurseForge API distribution is disabled, which forced a 33 MB jar into the repo and a cache-seeding step through both CI and the server install path |
+| **isCyclic StackOverflow Crash Fix** | Band-aid for the 1.21.1 unofficial-port stack. All three of those ports are now official 1.20.1 builds, so it should be unnecessary — re-add only if the crash actually reproduces |
+| **EventBridge** | Deferred by choice. Needs a 1.20.1 build of the mod first |
 
-These mods were in the brief with wrong or outdated slugs — corrected and added:
+## Needs manual verification before use
 
-| Original Slug | Correct Slug | Source |
-|---|---|---|
-| `entity-texture-features` | `entitytexturefeatures` | Modrinth |
-| `just-enough-resources` | `just-enough-resources-jer` | Modrinth |
-| `just-enough-effect-descriptions` | `just-enough-effect-descriptions-jeed` | Modrinth |
-| `ars-technica` | `ars-technic` | Modrinth |
-| `illager-expansion` | `illager-invasion` | CurseForge |
-| `bosses-of-mass-destruction` | `bosses-of-mass-destruction-forge` | Modrinth |
-| `friends-and-foes` | `friends-and-foes-forge` | Modrinth |
-| `discord-integration-di` | `discord-integration` | CurseForge |
-| `bluemap-create` | `create-bluemap` | CurseForge |
-| `alexs-caves` | `alexs-caves-unofficial-port` | CurseForge — unofficial 1.21.1 port |
-| `alexs-mobs` | `alexs-mobs-1-21-1-port` | CurseForge — unofficial 1.21.1 port |
-| `immersive-petroleum` | `immersivepetroleum` | Modrinth |
-| `create-aeronautics` (resolved wrong mod) | Added via direct file URL (file ID 8003941) | CurseForge |
+| Mod | Issue |
+|---|---|
+| **Byzantine Styles Pack** | packwiz resolved it to `Byzantine-1.21.1-51.1.jar` — a 1.21.1 jar — because the CurseForge file metadata is mis-tagged. The only 1.20-era file is `Byzantine-1.20.1-17.1.jar` from Sept 2024, which CurseForge lists as 1.20.4. MineColonies blueprint formats are version-sensitive, so it was dropped rather than shipped untested. Re-add by pinning that file id if you want to test it against MineColonies 1.1.1300 |
 
-## Notes on Unofficial Ports
+## Version channel notes
 
-Alex's Caves and Alex's Mobs were added via unofficial 1.21.1 community ports
-on CurseForge. Monitor for stability issues — these may lag behind official
-releases or have unresolved bugs compared to a first-party build.
+Two entries resolved to non-stable builds. Both are normal for the mod in
+question but worth knowing:
+
+- **Tinkers' Construct `3.12.1.231`** is a beta, paired with **Mantle
+  `1.11.117`** (also beta). Tinkers' has not shipped a non-beta in a long time
+  and the pair is designed to match — do not mix a stable Tinkers' with a beta
+  Mantle or it will crash.
+- **MineColonies `1.1.1300-snapshot`** is from their snapshot channel, which is
+  what CurseForge serves as latest and what most MineColonies players run.
+
+## Restored in 2.0
+
+These were cut from v1 purely to satisfy Modrinth's rules, not for technical
+reasons. GitHub-only distribution makes them available again:
+
+Twilight Forest · Stylecolonies · SmallColonies · TownTalk · FTB Quests ·
+FTB Teams · FTB Library
+
+**Botania** also returns — it was only ever dropped for lacking a NeoForge
+1.21.1 build, and has shipped Forge 1.20.1 all along.

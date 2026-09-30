@@ -1,10 +1,14 @@
-# Exclude repo/CI files from mrpack export
+# Exclude repo/CI/tooling files from pack exports
 .github/
 .claude/
 .git/
 crash-reports/
 pack-import-cache/
+docs/
+server/
 *.mrpack
+*.zip
 *.md
-iron-and-arcana-packwiz-brief.md
-SKIPPED.md
+
+# Repo-only reference asset — the launcher icon is not distributed in the pack
+icon.png

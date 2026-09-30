@@ -1,11 +1,15 @@
 # packwiz export output
 *.mrpack
+*.zip
 
-# CurseForge-restricted jars for CI import cache (tracked intentionally)
+# Jars for mods whose CurseForge distribution is disabled (tracked intentionally)
 !pack-import-cache/*.jar
 
 # packwiz cache
 .packwiz-cache/
+
+# Docker server secrets
+server/.env
 
 # OS
 .DS_Store

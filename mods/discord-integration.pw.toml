@@ -1,13 +1,13 @@
 name = "Discord Integration (DI)"
-filename = "DiscordIntegration-1.21.1-4.0.1.jar"
-side = "server"
+filename = "DiscordIntegration-1.20.1-2.2.3.jar"
+side = "both"
 
 [download]
 hash-format = "sha1"
-hash = "a7dff951f88ef75cb544912294ae7327fe4a96cd"
+hash = "dd0eecbbf6ec0899959c210c216d93f9a81848dd"
 mode = "metadata:curseforge"
 
 [update]
 [update.curseforge]
-file-id = 8028899
+file-id = 5074770
 project-id = 389222

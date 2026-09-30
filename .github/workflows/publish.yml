@@ -51,6 +51,18 @@ jobs:
           mkdir -p $HOME/.config/packwiz
           echo "curseforge-api-key = \"${CURSEFORGE_API_KEY}\"" | tee $HOME/.packwiz.toml $HOME/.config/packwiz/.packwiz.toml
 
+      - name: Verify committed index matches a clean checkout
+        run: |
+          packwiz refresh
+          if ! git diff --quiet index.toml pack.toml; then
+            echo "::error::index.toml is stale, or indexes files that are not committed to git."
+            echo "A file indexed but absent from git makes packwiz-installer 404 and abort,"
+            echo "which restart-loops the server. Run 'packwiz refresh' locally and commit."
+            git diff --stat index.toml pack.toml
+            exit 1
+          fi
+          echo "Index matches a clean checkout."
+
       - name: Seed packwiz import cache (mods with CF distribution disabled)
         run: |
           shopt -s nullglob

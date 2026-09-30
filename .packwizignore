@@ -1,7 +1,11 @@
-# Exclude repo/CI/tooling files from pack exports
+# Exclude repo/CI/tooling files from pack exports.
+# Anything indexed here but not committed to git makes packwiz-installer 404
+# and abort, which restart-loops the server container.
 .github/
 .claude/
 .git/
+.idea/
+.vscode/
 crash-reports/
 pack-import-cache/
 docs/

@@ -411,31 +411,6 @@ hash = "6fed7d6fffeece47afdf7c79cf3e6470bb7b297816fcfa6c12a11e036b447a62"
 metafile = true
 
 [[files]]
-file = "mods/sophisticated-backpacks-create-integration.pw.toml"
-hash = "01caee55e5d0cf1cf89c4c946ddfcb98a8906a391f960cbb978241d33927ac2d"
-metafile = true
-
-[[files]]
-file = "mods/sophisticated-backpacks.pw.toml"
-hash = "dcbb8301c31e095d0ead0aa21e2c139419cd8d36a46e3607adab2f8c5fce67bc"
-metafile = true
-
-[[files]]
-file = "mods/sophisticated-core.pw.toml"
-hash = "3f7b17a739dc781e37c46807169b268b58aa473a2d6cecda71d07e7065abedae"
-metafile = true
-
-[[files]]
-file = "mods/sophisticated-storage-create-integration.pw.toml"
-hash = "aa0cc809725f769cbb94d3495086576981ecc521bf385e9d862b78bcc0575222"
-metafile = true
-
-[[files]]
-file = "mods/sophisticated-storage.pw.toml"
-hash = "2380f1c0787fe8b0d736044650db4cc6929e6908b2b601ef847a0056448c3f09"
-metafile = true
-
-[[files]]
 file = "mods/sound-physics-remastered.pw.toml"
 hash = "416bb6449da951ec1a04156348c502b9e47a947212becc173d277faaddaaaccd"
 metafile = true
@@ -443,11 +418,6 @@ metafile = true
 [[files]]
 file = "mods/spark.pw.toml"
 hash = "0be4976227df8e261fd362889bf8e85b93e224d1b1c3cd2a11b73a9de3b64083"
-metafile = true
-
-[[files]]
-file = "mods/spartan-weaponry.pw.toml"
-hash = "2245f3d120ab366a525dd63f07d83bcb879a410fe973db60c189d24395212279"
 metafile = true
 
 [[files]]

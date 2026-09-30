@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (104 entries) |
+| `mods/*.pw.toml` | one metadata file per mod (98 entries) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -89,7 +89,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 | | |
 |---|---|
-| Pack rebuilt | 104 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Pack rebuilt | 98 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |
 | Unofficial ports retired | Alex's Caves, Alex's Mobs, Citadel, Spartan Weaponry, Steam 'n' Rails now official 1.20.1 builds |
@@ -137,12 +137,11 @@ ServerEvents.tags('item', event => {
 > On 1.20.1 Forge the common tag namespace is `forge:` rather than `c:` —
 > check which one Almost Unified and the recipes actually expect before porting.
 
-**Keep — the 29 Sophisticated upgrade removals.** Intent: players should build
-Create/IE automation rather than drop in an upgrade that does the same job.
-Removed: feeding, inception, everlasting, pump, magnet, compacting, void,
-auto_smelting, auto_blasting, auto_smoking, alchemy (and `advanced_` variants),
-across both Backpacks and Storage. Kept: every non-automation upgrade, including
-`deposit_upgrade` (needs a manual keypress).
+**Do not port — the 29 Sophisticated upgrade removals.** Obsolete: the
+Sophisticated mods were dropped from 2.0 entirely, so there are no upgrades to
+remove. This was the bulk of v1's KubeJS surface, which makes the port far
+smaller than it looks in the v1 scripts. The *intent* behind those removals
+still stands as pack philosophy — see below.
 
 **Delete — the entire Silent Gear layer.** 18 material override JSONs, the
 `hidden_silent_gear_material` dummy tag, and the redundant
@@ -196,7 +195,13 @@ public pack, and no longer constrained by Modrinth's rules.
   materials from absent mods. Do not reintroduce Silent Gear, and do not add a
   third gear mod.
 - **Progression matters.** Automation shortcuts that bypass Create/IE gameplay
-  are removed deliberately. Players build factories.
+  are removed deliberately. Players build factories. In v1 this meant stripping
+  29 Sophisticated Backpacks/Storage upgrades; in 2.0 the Sophisticated mods are
+  simply absent. Apply the same test to any storage mod proposed later: if a
+  single upgrade item replaces a Create or IE build, it does not belong.
+- **No dedicated storage mod, by choice.** Sophisticated Core/Storage/Backpacks
+  were dropped in 2.0 at the user's request. Storage is vanilla plus Create
+  logistics. Do not add a replacement unasked.
 - **Colony is a core pillar.** MineColonies with multiple style packs. Don't add
   mods that fight colony chunk claims or building placement.
 - **Magic is secondary.** Ars Nouveau and Botania are present; the pack leans

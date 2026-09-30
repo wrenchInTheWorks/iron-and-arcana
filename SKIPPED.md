@@ -14,6 +14,21 @@ See `docs/v1-mod-inventory.md` for the full v1.2.3 snapshot and dispositions.
 | **LambDynamicLights** | Fabric, NeoForge and Quilt only — zero 1.20.1 Forge files. | **Replaced by Dynamic Lights** (`dynamiclights-v1.8.6`) |
 | **Ars Technic** | 1.21.1 only. | Not in pack. **Ars Creo** remains, so the Ars↔Create bridge is intact |
 | **Prickle** | No 1.20.1 build. Dependency-only config library with nothing in 2.0 depending on it. | Not in pack |
+| **Create Aeronautics** | **Requested for 2.0, but impossible.** The mod's own files stop at mc1.21.1 on both CurseForge and Modrinth — zero 1.20.1 files for any loader. The 1.20.1 search hits are unrelated modpacks by other authors that bundle Create addons. | Not in pack — see below for the substitute |
+
+### Flying contraptions on 1.20.1 — the Valkyrien Skies route
+
+Since Create Aeronautics cannot be used, the equivalent capability on 1.20.1
+Forge is the Valkyrien Skies stack, all at **release** quality rather than
+Aeronautics' alpha:
+
+| Mod | 1.20.1 Forge | Role |
+|---|---|---|
+| Valkyrien Skies 2 | `1.20.1-forge-2.4.11` | Physics/airship engine — the base dependency |
+| Clockwork | `3.1.2` | Create-integrated flying contraptions — closest match to Aeronautics |
+| Eureka | `1.20.1-forge-1.6.3` | Buildable airships, simpler than Clockwork |
+
+Not added — pending a decision on whether to take this route.
 
 ### Dynamic lighting — why not Sodium Dynamic Lights
 
@@ -31,7 +46,9 @@ was used instead rather than revisiting a build that already caused a problem.
 | **Just Enough Items** | EMI is the pack's recipe viewer. JEI was only ever added in `320c30a` to satisfy a crash and never removed |
 | **Just Enough Resources** | Hard-depends on JEI, which would reintroduce the duplicate-viewer conflict. Ore-distribution info is the loss here — re-add JEI+JER together if that matters more than having one viewer |
 | **Sodium** | Embeddium is the 1.20.1 Forge equivalent |
-| **Create Aeronautics** + Sable | Alpha quality, and its CurseForge API distribution is disabled, which forced a 33 MB jar into the repo and a cache-seeding step through both CI and the server install path |
+| **Sophisticated Core / Storage / Backpacks** + both Create integrations | Dropped at the user's request. 2.0 has no dedicated storage mod — storage is vanilla plus Create logistics. This also makes v1's 29 KubeJS upgrade removals obsolete, which was the bulk of the script surface |
+| **Spartan Weaponry** | Dropped at the user's request. Better Combat remains as the combat overhaul. It never integrated with the gear system by design anyway |
+| **Sable** | Was only present as a Create Aeronautics dependency |
 | **isCyclic StackOverflow Crash Fix** | Band-aid for the 1.21.1 unofficial-port stack. All three of those ports are now official 1.20.1 builds, so it should be unnecessary — re-add only if the crash actually reproduces |
 | **EventBridge** | Deferred by choice. Needs a 1.20.1 build of the mod first |
 

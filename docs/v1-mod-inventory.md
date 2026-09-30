@@ -3,6 +3,12 @@
 Snapshot of the **NeoForge 1.21.1** pack as it stood at tag `v1.2.3-final` (105 entries).
 This is the working checklist for re-adding mods on **MC 1.20.1 / Forge 47.4.10**.
 
+> **Historical.** The dispositions below were the plan at the start of the
+> rebuild. Several changed during execution — Sophisticated and Spartan Weaponry
+> were later dropped, and Create Aeronautics turned out to have no 1.20.1 release
+> at all. `../SKIPPED.md` and `../CLAUDE.md` are authoritative for what 2.0
+> actually contains; this file remains useful as the v1.2.3 snapshot.
+
 Source: `MR` = Modrinth, `CF` = CurseForge, `URL` = direct download.
 Disposition: **Keep** = re-add as-is · **Replace** = re-add a different build · **Drop** = not in 2.0 · **Verify** = availability unconfirmed on 1.20.1 Forge.
 

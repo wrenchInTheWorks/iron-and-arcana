@@ -1,6 +1,26 @@
 hash-format = "sha256"
 
 [[files]]
+file = ".idea/Iron & Arcana.iml"
+hash = "a334fc692d753db149a3f77168c46441b57f33e1b6ad97aa7f1b3baf2f015823"
+
+[[files]]
+file = ".idea/inspectionProfiles/profiles_settings.xml"
+hash = "6172c5997eeb3cd19c9ca2b5b97d6e2983cdd1fa60b2460d7bbb74055edcaa46"
+
+[[files]]
+file = ".idea/modules.xml"
+hash = "7c3001519cbe288b7b729332a644e82f01b840cc3bfcbddd0bf6af75c0f8589a"
+
+[[files]]
+file = ".idea/vcs.xml"
+hash = "62be7e0a7f84ab3c35b4d4bafb890a4951d061eadafde1a10aa3f5d0406db5df"
+
+[[files]]
+file = ".idea/workspace.xml"
+hash = "6d417a38b47690f728d7e6825272f206c72d1501774b3a24143ea8161d184a96"
+
+[[files]]
 file = "mods/aether.pw.toml"
 hash = "1aaba088a650cc1499e1871cfa92f97e3d10a9d8c612fbd784b36c12382196de"
 metafile = true
@@ -32,7 +52,7 @@ metafile = true
 
 [[files]]
 file = "mods/architectury-api.pw.toml"
-hash = "5e9edd1fd2395f14a0c8a4acbdbdd61e1047be1f0033deb3140d2ce0d093e9d8"
+hash = "4e81241ba2da06f425efc5e09fb6b38470125c1581c39e1310c5843a0b96ec76"
 metafile = true
 
 [[files]]
@@ -408,11 +428,6 @@ metafile = true
 [[files]]
 file = "mods/slice-and-dice.pw.toml"
 hash = "f49c7302f7a044aae67740fac3a7558ca2f26b3a89a69a3940d516a40e3b75b7"
-metafile = true
-
-[[files]]
-file = "mods/smallcolonies.pw.toml"
-hash = "6fed7d6fffeece47afdf7c79cf3e6470bb7b297816fcfa6c12a11e036b447a62"
 metafile = true
 
 [[files]]

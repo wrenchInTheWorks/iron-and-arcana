@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (100 entries) |
+| `mods/*.pw.toml` | one metadata file per mod (99 entries, 15 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -75,7 +75,13 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
   metadata is mis-tagged. It was dropped for that reason.
 - **Prefer Modrinth when a mod exists on both platforms.** CF mods cannot be
   referenced by URL and have to be bundled, which is what made the v1 mrpack
-  269 MB.
+  269 MB. Watch for a CF dependency *overwriting* a Modrinth entry — FTB Quests
+  silently replaced Architectury API with its CurseForge copy; re-add from
+  Modrinth afterwards.
+- **Run `packwiz modrinth export` after adding CurseForge mods.** It is the only
+  check that catches a mod with third-party distribution disabled, which packwiz
+  cannot download at all. SmallColonies was dropped for exactly this. The export
+  prints "Found N manual downloads" and names them.
 - **Do not hand-set `side`.** packwiz infers it from platform metadata; v1's
   hand-set flags drifted. Sides were audited on 2026-09-30 and are correct —
   Embeddium in particular is correctly `client`.
@@ -89,7 +95,8 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 | | |
 |---|---|
-| Pack rebuilt | 100 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Pack rebuilt | 99 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Export verified | `packwiz modrinth export` succeeds; 2.0.0 mrpack is 184 MB vs v1's 256 MB |
 | Flight | Valkyrien Skies 2 + Clockwork replace Create Aeronautics, which has no 1.20.1 release |
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |

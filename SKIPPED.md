@@ -55,6 +55,7 @@ was used instead rather than revisiting a build that already caused a problem.
 | **Sodium** | Embeddium is the 1.20.1 Forge equivalent |
 | **Sophisticated Core / Storage / Backpacks** + both Create integrations | Dropped at the user's request. 2.0 has no dedicated storage mod — storage is vanilla plus Create logistics. This also makes v1's 29 KubeJS upgrade removals obsolete, which was the bulk of the script surface |
 | **Spartan Weaponry** | Dropped at the user's request. Better Combat remains as the combat overhaul. It never integrated with the gear system by design anyway |
+| **SmallColonies** | Has CurseForge third-party API distribution **disabled**, so packwiz cannot download it. The CI export failed on it, and packwiz-installer would fail the same way on server start. Working around it means committing the author's jar to a public repo, which is the thing they opted out of. Stylecolonies covers the style-pack role |
 | **Sable** | Was only present as a Create Aeronautics dependency |
 | **isCyclic StackOverflow Crash Fix** | Band-aid for the 1.21.1 unofficial-port stack. All three of those ports are now official 1.20.1 builds, so it should be unnecessary — re-add only if the crash actually reproduces |
 | **EventBridge** | Deferred by choice. Needs a 1.20.1 build of the mod first |

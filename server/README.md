@@ -35,6 +35,25 @@ from what the repo says — which is the failure mode the old SFTP sync had.
 Change the branch in `PACKWIZ_URL` to control what the server tracks. It points
 at `2.0` during the rebuild; switch it to `main` once 2.0 is merged.
 
+### Wait before restarting after a push
+
+`raw.githubusercontent.com` sends `Cache-Control: max-age=300`, so for up to
+**5 minutes** after a push it may still serve the previous version. Restarting
+inside that window makes packwiz-installer quietly install the **old** files —
+the server comes up healthy and looks correct, which is what makes this nasty.
+
+Either wait a few minutes, or verify what GitHub is actually serving first:
+
+```powershell
+(Invoke-WebRequest "https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/2.0/pack.toml" -UseBasicParsing).Content
+```
+
+To confirm a config really landed, compare sizes rather than trusting the boot:
+
+```powershell
+docker compose exec -T minecraft sh -c "wc -c < /data/config/sophisticatedcore-common.toml"
+```
+
 ## Console and admin
 
 ```bash

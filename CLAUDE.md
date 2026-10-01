@@ -61,6 +61,27 @@ docker compose exec minecraft rcon-cli
 Releases are cut by `.github/workflows/publish.yml` **only when `pack.toml`
 version changes** — pushing without a version bump builds but does not release.
 
+**Wait ~5 minutes between pushing and restarting the server.**
+`raw.githubusercontent.com` sends `Cache-Control: max-age=300`, so a restart
+inside that window makes packwiz-installer install the **previous** version of
+any changed file. The server boots healthy and looks right, so verify by
+comparing file sizes rather than trusting a clean startup:
+
+```bash
+docker compose exec -T minecraft sh -c "wc -c < /data/config/<file>"
+```
+
+**Configs are now tracked in `config/` and shipped by packwiz**, so the repo is
+authoritative and in-container edits are overwritten on every start. Edit the
+repo, not the container. Note `defaultconfigs/` is different: Forge
+server-scoped configs live per-world in `world/serverconfig/`, so
+`defaultconfigs/` only seeds **new** worlds — changing one means copying it into
+the running world by hand with the server stopped.
+
+**Edit container files as uid 1000, not root** (`docker compose exec --user
+1000:1000 ...`). A root-owned config makes the mod that owns it crash with
+`AccessDeniedException` on the next write.
+
 packwiz is on `PATH` at `C:\Users\email\go\bin\packwiz.exe`; a CurseForge API
 key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 

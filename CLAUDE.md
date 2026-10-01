@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (98 entries, 14 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (95 entries, 11 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -95,9 +95,11 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 | | |
 |---|---|
-| Pack rebuilt | 98 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
-| Export verified | `packwiz modrinth export` succeeds; 2.0.0 mrpack is 184 MB vs v1's 256 MB |
-| Flight | Valkyrien Skies 2 + Clockwork replace Create Aeronautics, which has no 1.20.1 release |
+| Pack rebuilt | 95 entries re-resolved for 1.20.1 Forge from scratch (`247b367`) |
+| Export verified | `packwiz modrinth export` succeeds; 2.0.0 mrpack is 176 MB vs v1's 256 MB |
+| First boot | Server runs, world generates, BlueMap renders, client connects (`v2.0.0-firstboot`) |
+| No flight mod | Create Aeronautics has no 1.20.1 release; Valkyrien Skies + Clockwork were trialled then **removed as off-theme** |
+| Storage | Sophisticated Backpacks is back — upgrades gated by the **mod's own config**, not KubeJS |
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |
 | Unofficial ports retired | Alex's Caves, Alex's Mobs, Citadel, Spartan Weaponry, Steam 'n' Rails now official 1.20.1 builds |
@@ -107,23 +109,24 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 ### Not done yet — in priority order
 
-1. **First Docker boot has never been run.** Nothing in 2.0 has started a
-   server. This is the real verification of the whole rebuild.
-2. **KubeJS scripts are not ported.** They still live only in the legacy
-   Desktop server folder and target the `2101.x` API; 1.20.1 needs `2001.x`.
-   See below for what must carry over and what must be deleted.
-3. **No mod configs are tracked.** `config/` has zero tracked files while the
-   legacy server has 283. Do **not** copy the v1 configs over — schemas change
-   between mod versions. Boot once, let 1.20.1 configs generate, then tune and
-   commit the ones that matter.
-4. **FTB Quests content not restored.** 15 authored chapters (3,557 lines) are
-   recoverable with `git show 5a36352^:config/ftbquests/...`. Chapter 11 is
-   Twilight Forest (valid again); every Silent Gear reference needs rewriting
-   for Tinkers'.
-5. Tinkers' addons (`tinkers-levelling-addon`, `tinkers-reforged`) deferred
-   until the base pack boots.
-6. `options.txt` for enabling Fresh Animations by default.
-7. Client install instructions in the root README.
+1. **Sophisticated Backpacks upgrade gating.** The automation-shortcut upgrades
+   are to be disabled through **Sophisticated Core's own config**, not by KubeJS
+   recipe removal as in v1. See the philosophy section for which ones and why.
+2. **No mod configs are tracked.** `config/` has zero tracked files. 1.20.1
+   configs have now generated inside the `iron-and-arcana_data` volume, so this
+   is unblocked — pull the tuned ones out and commit them. Do **not** copy the
+   v1 configs over; schemas change between mod versions.
+3. **KubeJS scripts are not ported.** Now a very small job: the only thing left
+   to carry over is the Immersive Engineering tag fix (below). Everything else
+   from v1 is obsolete.
+4. Tinkers' addons (`tinkers-levelling-addon`, `tinkers-reforged`) — optional.
+5. `options.txt` for enabling Fresh Animations by default.
+6. Client install instructions in the root README, and optionally the
+   packwiz-installer client route to stop client/server drift.
+
+**No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
+chapters are not being restored. They remain in git history at
+`git show 5a36352^:config/ftbquests/...` if a quest mod is ever reintroduced.
 
 ---
 
@@ -145,11 +148,12 @@ ServerEvents.tags('item', event => {
 > On 1.20.1 Forge the common tag namespace is `forge:` rather than `c:` —
 > check which one Almost Unified and the recipes actually expect before porting.
 
-**Do not port — the 29 Sophisticated upgrade removals.** Obsolete: the
-Sophisticated mods were dropped from 2.0 entirely, so there are no upgrades to
-remove. This was the bulk of v1's KubeJS surface, which makes the port far
-smaller than it looks in the v1 scripts. The *intent* behind those removals
-still stands as pack philosophy — see below.
+**Do not port — the 29 Sophisticated upgrade removals.** Sophisticated Backpacks
+is back in 2.0, but the upgrades are to be gated through **Sophisticated Core's
+own config**, which is simpler and survives mod updates. v1's approach of
+`event.remove({ output: id })` plus EMI hiding was a workaround for not knowing
+the config existed — do not recreate it. This was the bulk of v1's KubeJS
+surface, so the port is far smaller than the v1 scripts suggest.
 
 **Delete — the entire Silent Gear layer.** 18 material override JSONs, the
 `hidden_silent_gear_material` dummy tag, and the redundant
@@ -199,10 +203,11 @@ Java 17.
 do not switch the container to `java21` casually — Forge 47 does not officially
 support it and the pack is mixin-heavy.
 
-Valkyrien Skies is what makes this fatal rather than a soft failure: its
-`LoadedMods.getBluemap()` calls `Class.forName` during mixin selection, forcing
-the class to load before anything can catch it. So a Java-21 mod anywhere in the
-pack that VS probes for will hard-crash startup.
+**The pin stays even though Valkyrien Skies is gone.** VS was what turned this
+into a hard crash — its `LoadedMods.getBluemap()` called `Class.forName` during
+mixin selection, forcing the class to load before anything could catch it. With
+VS removed a Java-21 mod might only fail softly, but the Java 17 ceiling is
+unchanged and an unloadable BlueMap is still a broken BlueMap.
 
 To check a jar: read bytes 6–7 of any `.class` inside it (big-endian major
 version), or see the BlueMap investigation in git history for the script.
@@ -228,8 +233,8 @@ create:chocolate_bucket`. Create Deco's Create-6 line (2.1.x) never shipped for
 range.** If Create is ever bumped, re-read every addon's mods.toml and treat a
 bare range as unverified.
 
-**Forge floor: Valkyrien Skies 2 requires `forge >= 47.2.0`.** Do not drop
-below that; 47.4.10 is well clear.
+> The old "Forge floor 47.2.0" note came from Valkyrien Skies and is moot now
+> that VS is removed. 47.4.10 remains the pinned Forge build regardless.
 
 ---
 
@@ -243,13 +248,19 @@ public pack, and no longer constrained by Modrinth's rules.
   materials from absent mods. Do not reintroduce Silent Gear, and do not add a
   third gear mod.
 - **Progression matters.** Automation shortcuts that bypass Create/IE gameplay
-  are removed deliberately. Players build factories. In v1 this meant stripping
-  29 Sophisticated Backpacks/Storage upgrades; in 2.0 the Sophisticated mods are
-  simply absent. Apply the same test to any storage mod proposed later: if a
-  single upgrade item replaces a Create or IE build, it does not belong.
-- **No dedicated storage mod, by choice.** Sophisticated Core/Storage/Backpacks
-  were dropped in 2.0 at the user's request. Storage is vanilla plus Create
-  logistics. Do not add a replacement unasked.
+  are disabled deliberately. Players build factories. The test for any upgrade
+  or storage feature: **if a single item replaces a Create or IE build, turn it
+  off.** In v1 that meant stripping 29 Sophisticated upgrades via KubeJS; in 2.0
+  it is done in Sophisticated Core's config instead.
+- **Storage is Sophisticated Backpacks only** (plus its Create integration).
+  Sophisticated *Storage* is deliberately **not** in the pack — only Backpacks.
+  The upgrades to disable are the automation ones: feeding, inception,
+  everlasting, pump, magnet, compacting, void, auto_smelting, auto_blasting,
+  auto_smoking, alchemy, and their `advanced_` variants. Keep the manual
+  ones — filter, stack, sort, pickup, deposit, restock, tank, battery.
+- **No flight/airship mod.** Create Aeronautics has no 1.20.1 release;
+  Valkyrien Skies + Clockwork were added and then removed as too advanced and
+  off-theme for this pack. Do not reintroduce them unasked.
 - **Colony is a core pillar.** MineColonies with multiple style packs. Don't add
   mods that fight colony chunk claims or building placement.
 - **Magic is secondary.** Ars Nouveau and Botania are present; the pack leans

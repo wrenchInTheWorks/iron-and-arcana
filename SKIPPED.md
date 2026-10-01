@@ -45,6 +45,22 @@ from it in `4eb7d7d` ("swap sodium-dynamic-lights for lambdynamiclights"). Since
 LambDynamicLights is unavailable on Forge, the standalone `dynamic-lights` mod
 was used instead rather than revisiting a build that already caused a problem.
 
+## Removed after the first playtest build
+
+| Mod | Reason |
+|---|---|
+| **Valkyrien Skies 2** + **Clockwork** | Removed as too advanced and off-theme for a simple-ish pack. Clockwork had to go with it regardless — it hard-requires `valkyrienskies [2.4.6,)` and cannot load alone. 2.0 therefore has **no flight/airship mod**, since Create Aeronautics has no 1.20.1 release either |
+| **Carry On** | Removed by choice |
+| **FTB Quests / Teams / Library** | Removed by choice — quests not wanted, and Open Parties and Claims already covers chunk claiming and parties. The 15 authored v1 quest chapters stay in git history at `git show 5a36352^:config/ftbquests/...` |
+
+> Architectury API was **kept** after the FTB removal — KubeJS depends on it.
+
+## Requested but unavailable on 1.20.1 Forge
+
+| Mod | Finding |
+|---|---|
+| **Sophisticated Backpacks: Ars Compat** | Adds Ars Nouveau Source, Sourcelink, potion and repair upgrades for Sophisticated Backpacks. CurseForge-only (author LuminaCherry) and published for **1.21.1 NeoForge only** — no 1.20.1 Forge build, and not on Modrinth at all. The same author's TaCZ compat does cover 1.20.1, so a backport is possible but does not exist today |
+
 ## Excluded on purpose
 
 | Mod | Reason |

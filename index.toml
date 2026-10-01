@@ -537,5 +537,15 @@ hash = "18dfe8ada0af83eb86d4b8ff8e202479b7c2ab1ee1f894d9bb07cda1744e8981"
 metafile = true
 
 [[files]]
+file = "options.txt"
+hash = "90adccf04be87f863d3fb756287737bbfbd2269e848328bcc88afcfd757ca987"
+preserve = true
+
+[[files]]
+file = "resourcepacks/fresh-animations.pw.toml"
+hash = "6a1556a0e4fcb411b33efafc3382b4abd9a6e671f140dc0d42e9aad2808e24f3"
+metafile = true
+
+[[files]]
 file = "server-icon.png"
 hash = "6326a692d3419a3183e0af7ce54dc1cf516f9164af86f48468e9f1bd7d37d545"

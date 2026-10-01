@@ -447,8 +447,43 @@ hash = "d1f859de9867b7433305aef1631aa22a436a4c3924474a21c0a22ab5f2093c04"
 metafile = true
 
 [[files]]
+file = "mods/tinkers-compatibility.pw.toml"
+hash = "f87af26849fb133c2358738993d2f6a3f87c76ecd18acbcab1bcc024d06dc679"
+metafile = true
+
+[[files]]
 file = "mods/tinkers-construct.pw.toml"
 hash = "9307e6dd4d1703a5bcf1353f7fde2f6ab17ef4f9b05f9fd6698b7fd2a15a031b"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-delight.pw.toml"
+hash = "28ed3bdbe018b8d6306845b84f778f07e0a80ba18be95f1da5b24eb5a7283757"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-jewelry.pw.toml"
+hash = "7b548c054dbd372a255f8cc77e5faf3e06f1f9293d0be7b1359e74e9bec06a80"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-levelling-addon.pw.toml"
+hash = "0d8be7cf9a149da6eaf7a4bc24995d3eb094260c0f353516074b5fb33f9bdd0f"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-reforged.pw.toml"
+hash = "3869aa7c0174655cdc98ea80906ee796d96180ad90aed2c5e621a19ce0721b09"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-things.pw.toml"
+hash = "1873bcebd25d19513c64540c9f057fabf6802ae3388f5c0cdb352c255e398de5"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-thinking.pw.toml"
+hash = "2b4ffe001626b044c5e2280058ff7d59cc29f2fe41ae949917be92918db3e2dd"
 metafile = true
 
 [[files]]

@@ -42,6 +42,11 @@ hash = "fa96526cc55c9fbac742aea245930f1a2db2e68b50765f1bdbaf85477e1631bf"
 metafile = true
 
 [[files]]
+file = "mods/apothic-attributes.pw.toml"
+hash = "1dc9e1a184ade4918dad17ef20de026053c841bd5a50f122fb783bb3f9185b89"
+metafile = true
+
+[[files]]
 file = "mods/appleskin.pw.toml"
 hash = "793693a85f3c87d4e899ee0c58deabc53690bf5a70f17343f28fd5063ce8a1e1"
 metafile = true
@@ -267,6 +272,11 @@ hash = "5d03d20b037a8b7a4765ded0e25146fc970964be46401dff5f9b1059875084e8"
 metafile = true
 
 [[files]]
+file = "mods/json-things.pw.toml"
+hash = "1efef6e736712c66ad307f7eeeb0fb8cf344908c643ebcfada612b8312c2d144"
+metafile = true
+
+[[files]]
 file = "mods/just-enough-effect-descriptions-jeed.pw.toml"
 hash = "ffb380d0c3a85701b3bb594ed39e76b9bd748e6282da79b7bea31765a8fce4c3"
 metafile = true
@@ -359,6 +369,11 @@ metafile = true
 [[files]]
 file = "mods/patchouli.pw.toml"
 hash = "2242b76f7c4ee6d7f396a2d1380bee615d78408d00bff5cca38e4df777b18dc5"
+metafile = true
+
+[[files]]
+file = "mods/placebo.pw.toml"
+hash = "969078b157cd783f7c38ac33407abc4f532c244c973d52810d559f02be06db90"
 metafile = true
 
 [[files]]
@@ -469,11 +484,6 @@ metafile = true
 [[files]]
 file = "mods/tinkers-levelling-addon.pw.toml"
 hash = "0d8be7cf9a149da6eaf7a4bc24995d3eb094260c0f353516074b5fb33f9bdd0f"
-metafile = true
-
-[[files]]
-file = "mods/tinkers-reforged.pw.toml"
-hash = "3869aa7c0174655cdc98ea80906ee796d96180ad90aed2c5e621a19ce0721b09"
 metafile = true
 
 [[files]]

@@ -10,7 +10,7 @@ hash = "b377e97ca3d8ae8560448b92ab820872d7c11bef0ca52dcf3f4901b44c6ddca7"
 
 [[files]]
 file = "config/sophisticatedcore-common.toml"
-hash = "c6c3b3fb308302ef0ae286eb4a381dcd421a064dd1585e8d4ef6301ad311ffab"
+hash = "a195437c53bb631a2cc1ba8381c114541c3cac00f905a805b9e6483707d28ffc"
 
 [[files]]
 file = "defaultconfigs/sophisticatedbackpacks-server.toml"

@@ -1,0 +1,17 @@
+# packwiz records a hash for every indexed file, so the bytes on disk must be
+# identical on every platform. Without this, a Windows checkout gets CRLF, a
+# `packwiz refresh` hashes CRLF, and CI's Linux checkout (LF) computes different
+# hashes — failing the "index matches a clean checkout" guard in publish.yml.
+*.toml  text eol=lf
+*.conf  text eol=lf
+*.json  text eol=lf
+*.js     text eol=lf
+*.snbt  text eol=lf
+*.properties text eol=lf
+*.yml   text eol=lf
+
+# Jars and images must never be line-ending converted.
+*.jar binary
+*.png binary
+*.zip binary
+*.mrpack binary

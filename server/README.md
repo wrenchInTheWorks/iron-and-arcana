@@ -106,6 +106,29 @@ Spark reading guide.
 `VIEW_DISTANCE=8` / `SIMULATION_DISTANCE=4` carry over as the largest single TPS
 win found in v1.
 
+## Planned: exposing the server
+
+Decided, to be built once the Linux host is ready. **No CGNAT** on this
+connection, which is what makes the simple route viable.
+
+| Need | Approach |
+|---|---|
+| Game port | Forward TCP 25565 to the Linux host |
+| Dynamic IP | A `cloudflare-ddns` container updating the A record — no static IP needed |
+| Friendly address | DNS A record **grey-clouded (DNS-only)** plus an SRV record, so players type the hostname with no port. Orange-cloud proxying breaks Minecraft |
+| BlueMap | Cloudflare Tunnel (`cloudflare/cloudflared` service in this compose stack) → `http://minecraft:8100`. Keeps 8100 closed and gives TLS |
+
+**Why not tunnel the game port too:** Cloudflare Tunnel is HTTP-native. Raw TCP
+requires `cloudflared` on every *client*, or Spectrum (Enterprise). The
+client-side route exists — the **Modflared** mod, which could be shipped in the
+pack with a `forced_tunnels.json` — but it was rejected: its 1.20.1 Forge build
+is frozen at May 2024, it downloads and runs a `cloudflared` binary from GitHub
+on each player's machine, and if it breaks *nobody* can connect. Port
+forwarding fails in ways that can be diagnosed and fixed from the server side.
+
+Reconsider Modflared only if this connection is ever moved behind CGNAT, where
+port forwarding becomes impossible.
+
 ## Ports
 
 | Port | Purpose |

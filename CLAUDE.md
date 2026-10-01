@@ -150,13 +150,15 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    configs have now generated inside the `iron-and-arcana_data` volume, so this
    is unblocked — pull the tuned ones out and commit them. Do **not** copy the
    v1 configs over; schemas change between mod versions.
-3. **KubeJS scripts are not ported.** Now a very small job: the only thing left
-   to carry over is the Immersive Engineering tag fix (below). Everything else
-   from v1 is obsolete.
-4. Tinkers' addons (`tinkers-levelling-addon`, `tinkers-reforged`) — optional.
-5. `options.txt` for enabling Fresh Animations by default.
-6. Client install instructions in the root README, and optionally the
-   packwiz-installer client route to stop client/server drift.
+3. **packwiz-installer client route** — ends client/server drift, which has
+   already bitten twice.
+4. **Backups** — to be set up during the migration to the Linux host; the
+   backup/restore path is also the volume-migration path.
+5. Management scripts for the server host (install, start, stop, restart, logs).
+
+**Done since:** Sophisticated upgrade gating, config tracking, Fresh Animations
++ `options.txt` with `preserve = true`, the Tinkers' addon set, server icon,
+root README, and the KubeJS port (resolved as "nothing to port" — see below).
 
 **No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
 chapters are not being restored. They remain in git history at
@@ -164,7 +166,28 @@ chapters are not being restored. They remain in git history at
 
 ---
 
-## KubeJS Port — What Carries Over
+## KubeJS Port — RESOLVED: nothing to port
+
+Checked 2026-10-01 by reading the jars. **Every v1 KubeJS job is obsolete on
+1.20.1**, so no scripts were carried over:
+
+| v1 script job | Status on 2.0 |
+|---|---|
+| IE aluminum tag fix | **Not needed.** IE 1.20.1 already ships `data/forge/tags/items/ingots/aluminum.json` containing `immersiveengineering:ingot_aluminum`. v1 needed it only because NeoForge 1.21.1 moved common tags to the `c:` namespace |
+| IE refined iron tag fix | **Not applicable.** `ingot_iron_refined` does not exist in IE 1.20.1 — zero matches in the jar. It is a 1.21/NeoForge-line item |
+| 29 Sophisticated upgrade removals | Replaced by Sophisticated Core's own config |
+| 18 Silent Gear material overrides | Silent Gear removed from the pack |
+| EMI stack hiding | Unnecessary — config-disabled items do not appear |
+
+**KubeJS and Rhino are therefore currently doing nothing.** They are kept as the
+escape hatch for recipe fixes (v1 maintained a running list of broken recipes),
+not because anything needs them. Note Architectury API is a KubeJS dependency —
+check before removing either.
+
+Common-tag namespace on this pack is **`forge:`**, not `c:`. Anything copied
+from v1 scripts or from 1.21 examples will use the wrong namespace.
+
+## Historical: v1 KubeJS scripts
 
 Scripts are at `C:\Users\email\Desktop\I&A MC Server\kubejs\`.
 

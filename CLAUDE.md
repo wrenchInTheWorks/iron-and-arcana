@@ -106,6 +106,19 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 - **Do not hand-set `side`.** packwiz infers it from platform metadata; v1's
   hand-set flags drifted. Sides were audited on 2026-09-30 and are correct —
   Embeddium in particular is correctly `client`.
+- **Read the FULL mandatory dependency list out of each jar's `mods.toml`
+  before shipping.** Modrinth's API dependency data is incomplete and will not
+  show them. Adding six Tinkers addons crash-looped the server on three missing
+  mandatory deps (`jsonthings`, `attributeslib`, `jei`) that the Modrinth
+  metadata never mentioned. Check every `mandatory = true` entry, not just the
+  one you happen to be thinking about:
+
+  ```python
+  # per jar: re.findall(r'\[\[dependencies\.[^\]]+\]\](.*?)(?=\[\[|\Z)', mods_toml, re.S)
+  # keep blocks where mandatory = true, print modId + versionRange
+  ```
+- **Anything hard-depending on JEI is out.** EMI is the pack's viewer. This has
+  now cost two mods: Just Enough Resources and Tinkers Reforged.
 - Run `packwiz refresh` every 10–15 additions to catch index errors early.
 
 ---

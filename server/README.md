@@ -82,11 +82,68 @@ directory. To snapshot it:
 ```bash
 docker compose stop
 docker run --rm -v iron-and-arcana_data:/data -v "$PWD:/backup" alpine \
-  tar czf /backup/world-$(date +%F).tar.gz -C /data world
+  tar czf /backup/world-$(date +%F).tar.gz --exclude=world/session.lock -C /data world
 docker compose start
 ```
 
 Stop the server first — copying a live world can capture a torn save.
+
+`session.lock` is excluded on purpose. If it ends up in the archive, the
+restored server dies with a file-lock `IOException` on first start, which is
+indistinguishable from a stale lock after an unclean kill.
+
+`scripts/backup.sh` does all of the above, keeps the last 10, and restarts the
+server only if it was running.
+
+## Moving the server to another host
+
+The same archive is the migration path. **Only `world/` needs to move.** Of the
+~890 MB in the volume the world is ~40 MB (~28 MB compressed): `mods/` (~594 MB)
+is re-fetched by packwiz on first start, `bluemap/` (~83 MB) re-renders itself,
+and everything in `config/` ships from the repo.
+
+What is irreplaceable, and easy to lose:
+
+- **`world/serverconfig/`** holds 23 Forge server-scoped configs that live
+  *inside* the world, including the Sophisticated Backpacks slowness nerf.
+  `defaultconfigs/` only seeds **new** worlds, so letting these regenerate
+  instead of carrying them silently reverts tuned values to mod defaults. A
+  `world/` tar includes them; a region-files-only copy does not.
+- **`.env`** is gitignored, so it does not travel with a clone. Copy it across,
+  or let `scripts/setup.sh` generate a fresh one (it mints a new RCON password,
+  which is fine).
+
+On the old host:
+
+```bash
+cd server
+./scripts/backup.sh
+```
+
+On the new host:
+
+```bash
+git clone https://github.com/wrenchInTheWorks/iron-and-arcana.git
+cd iron-and-arcana/server
+./scripts/setup.sh
+docker compose stop
+docker run --rm -v iron-and-arcana_data:/data -v "$PWD:/restore" alpine   tar xzf /restore/world-<date>.tar.gz -C /data
+docker compose start
+```
+
+Restore **after** the first start, not before: that first boot is what creates
+the volume and installs the pack, and the throwaway world it generates is then
+overwritten by the restore.
+
+Then fix ownership. A tar restored as root leaves root-owned files, and the
+owning mod crashes with `AccessDeniedException` on its next write:
+
+```bash
+docker run --rm -v iron-and-arcana_data:/data alpine chown -R 1000:1000 /data/world
+```
+
+Verify with `./scripts/status.sh`, then join and check your inventory and
+position - the surest sign the right world came across.
 
 ## Memory and performance
 

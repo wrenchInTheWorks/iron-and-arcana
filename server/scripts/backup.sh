@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Snapshot the world to a dated tar.gz. Stops the server first so the save is
 # not torn, then restarts it if it was running.
+#
+# session.lock is excluded deliberately. Restoring an archive that contains it
+# makes the server die with a file-lock IOException on first start, which looks
+# exactly like an unclean-kill stale lock and wastes time to diagnose. This is
+# also the volume-migration path, where that trap is easiest to hit.
 #   ./backup.sh [destination-dir]      default: ~/ia-backups
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 require_docker
@@ -16,7 +21,7 @@ if is_running; then
 fi
 c_grn "archiving world -> $DEST/world-$STAMP.tar.gz"
 docker run --rm -v "$VOLUME":/data -v "$DEST":/backup alpine \
-  tar czf "/backup/world-$STAMP.tar.gz" -C /data world
+  tar czf "/backup/world-$STAMP.tar.gz" --exclude=world/session.lock -C /data world
 docker run --rm -v "$DEST":/backup alpine sh -c "chown $(id -u):$(id -g) /backup/world-$STAMP.tar.gz" 2>/dev/null || true
 ls -lh "$DEST/world-$STAMP.tar.gz" | awk '{print "  " $5, $9}'
 # keep the 10 most recent

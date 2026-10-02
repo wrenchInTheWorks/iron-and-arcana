@@ -141,24 +141,40 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 | Docker server | `server/` — itzg image, `PACKWIZ_URL` self-install (`bae071e`) |
 | Infra stripped | EventBridge and all Modrinth publishing removed (`2db8bf6`) |
 
-### Not done yet — in priority order
+### Not done yet
 
-1. **Sophisticated Backpacks upgrade gating.** The automation-shortcut upgrades
-   are to be disabled through **Sophisticated Core's own config**, not by KubeJS
-   recipe removal as in v1. See the philosophy section for which ones and why.
-2. **No mod configs are tracked.** `config/` has zero tracked files. 1.20.1
-   configs have now generated inside the `iron-and-arcana_data` volume, so this
-   is unblocked — pull the tuned ones out and commit them. Do **not** copy the
-   v1 configs over; schemas change between mod versions.
-3. **packwiz-installer client route** — ends client/server drift, which has
-   already bitten twice.
-4. **Backups** — to be set up during the migration to the Linux host; the
-   backup/restore path is also the volume-migration path.
-5. Management scripts for the server host (install, start, stop, restart, logs).
+1. **Linux migration.** The runbook is in `server/README.md` ("Moving the
+   server to another host"). Only `world/` moves (~40 MB of the ~890 MB volume);
+   mods re-download, BlueMap re-renders, `config/` ships from the repo. The two
+   things that do not survive on their own are `world/serverconfig/` (23
+   per-world Forge configs, including the backpack slowness nerf, which
+   `defaultconfigs/` will NOT reseed into an existing world) and `.env`, which
+   is gitignored.
+2. **Backups.** `server/scripts/backup.sh` exists and is syntax-clean but has
+   never been run. The restore path is the migration path, so the migration is
+   also the first real test of it.
+3. **Cloudflare exposure.** Port-forward 25565, a `cloudflare-ddns` container,
+   DNS-only A record plus SRV, and a Tunnel for BlueMap only. No CGNAT (public
+   IP confirmed, gateway 192.168.1.254).
+4. **Config tuning** after some playtime. Serene Seasons stays at 8-day seasons.
+5. **Merge `2.0` into `main` and cut the 2.0.0 release** -- deliberately last.
+   The owner wants this only once the Linux host is running and has been played
+   on for a while.
 
-**Done since:** Sophisticated upgrade gating, config tracking, Fresh Animations
-+ `options.txt` with `preserve = true`, the Tinkers' addon set, server icon,
-root README, and the KubeJS port (resolved as "nothing to port" — see below).
+### Branch trap: `main` still serves v1
+
+Until that merge happens, **`main` serves v1.2.3 (1.21.1 / NeoForge 21.1.228)**
+and the newest GitHub Release is v1.2.3. Neither can join the 1.20.1 Forge
+server. So:
+
+- `server/.env` and `.env.example` point `PACKWIZ_URL` at the **`2.0`** branch.
+- The root `README.md` client auto-update route points at **`2.0`** too. It was
+  pointing at `main`, which silently handed players the 1.21.1 pack.
+- There is no 2.0.0 `.mrpack` on Releases. `publish.yml` runs on both `main` and
+  `2.0`, but only releases when `pack.toml`'s version *changes* between commits,
+  and it has read 2.0.0 since early in the rebuild. A release therefore needs a
+  version bump, or the locally exported mrpack handed over directly.
+- **Flip both URLs back to `main` as part of the merge.**
 
 **No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
 chapters are not being restored. They remain in git history at

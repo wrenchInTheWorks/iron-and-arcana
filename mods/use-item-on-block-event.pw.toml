@@ -1,0 +1,13 @@
+name = "Use Item on Block Event"
+filename = "useitemonblockevent-1.20.1-1.0.0.2.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/yl3AT4wD/versions/vp6EAk2Y/useitemonblockevent-1.20.1-1.0.0.2.jar"
+hash-format = "sha512"
+hash = "80bce9b36a0fbfc41372487d8e45dc7a3649cb7b9435af2af461a1d9d08947371ccfc18c8be9facc5a102962629ad358ebd00df3e433be63368323cf34f81eb7"
+
+[update]
+[update.modrinth]
+mod-id = "yl3AT4wD"
+version = "vp6EAk2Y"

@@ -1,0 +1,13 @@
+name = "Jumbo Furnace"
+filename = "jumbofurnace-1.20.1-4.0.0.5.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/KXQSDZIy/versions/Dg4hXqSE/jumbofurnace-1.20.1-4.0.0.5.jar"
+hash-format = "sha512"
+hash = "6ef02fbf9aabf371f736d44f649c51708053679966b3f19730dae2b6251c70f2bac1ee2399511def916b71e933394adb10565174c2aa26e84df2c79aa51bbe7b"
+
+[update]
+[update.modrinth]
+mod-id = "KXQSDZIy"
+version = "Dg4hXqSE"

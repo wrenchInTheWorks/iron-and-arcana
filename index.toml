@@ -277,6 +277,11 @@ hash = "1efef6e736712c66ad307f7eeeb0fb8cf344908c643ebcfada612b8312c2d144"
 metafile = true
 
 [[files]]
+file = "mods/jumbo-furnace.pw.toml"
+hash = "6ac076f98f40af66f042ee1107d25f0220a1fb004bf6a926916dc9f955452732"
+metafile = true
+
+[[files]]
 file = "mods/just-enough-effect-descriptions-jeed.pw.toml"
 hash = "ffb380d0c3a85701b3bb594ed39e76b9bd748e6282da79b7bea31765a8fce4c3"
 metafile = true
@@ -339,6 +344,11 @@ metafile = true
 [[files]]
 file = "mods/moonlight.pw.toml"
 hash = "685d7c61f7d5e1c16e3de6f7e16e090c0355cf38e7d416b730093d4dc239d9d2"
+metafile = true
+
+[[files]]
+file = "mods/more-red.pw.toml"
+hash = "ea4a8be0d3d889f0240a975a2ba25d8c39c29900fe47de950b667dd7f5c69a88"
 metafile = true
 
 [[files]]
@@ -499,6 +509,11 @@ metafile = true
 [[files]]
 file = "mods/towntalk.pw.toml"
 hash = "32e0f6bce7adc5b09ba3350110ac4be7ee04e556db35ba1db97bacfabd31e4dc"
+metafile = true
+
+[[files]]
+file = "mods/use-item-on-block-event.pw.toml"
+hash = "89f78c76fbc727743e9f66299d906d001fd55f5f5f401fbf0f514bc06d79421a"
 metafile = true
 
 [[files]]

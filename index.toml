@@ -17,6 +17,11 @@ file = "defaultconfigs/sophisticatedbackpacks-server.toml"
 hash = "2dfab87f63cbf0f38802a5a684b81558ef4ebb97bfb9d00ce0c03b03f3b243cf"
 
 [[files]]
+file = "mods/aether-treasure-reforging.pw.toml"
+hash = "5507d07be075713dd8d9824354a3b7a34a881144c40a7a7591279e6575da7411"
+metafile = true
+
+[[files]]
 file = "mods/aether.pw.toml"
 hash = "1aaba088a650cc1499e1871cfa92f97e3d10a9d8c612fbd784b36c12382196de"
 metafile = true
@@ -169,6 +174,11 @@ metafile = true
 [[files]]
 file = "mods/curios.pw.toml"
 hash = "9eefd607e0d54ec444e798ccdeede1a09a3939440bd1e11c11b84c07a5134be2"
+metafile = true
+
+[[files]]
+file = "mods/deep-aether.pw.toml"
+hash = "bf6be5e42afaafa615c63b6cac9500fbedd27ab54cdeca86afc8dc98a49618cb"
 metafile = true
 
 [[files]]
@@ -459,6 +469,11 @@ metafile = true
 [[files]]
 file = "mods/supplementaries.pw.toml"
 hash = "168b3ee3fa2fe18f712c593d9d90e8b3a8a6a10564376af98bcc6f9719506641"
+metafile = true
+
+[[files]]
+file = "mods/terrablender.pw.toml"
+hash = "14117b94c456598c9acece143c7a0da3cf56d13182d035a74a2da8a52dd19cbd"
 metafile = true
 
 [[files]]

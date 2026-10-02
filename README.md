@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 95 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 107 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -22,6 +22,7 @@ repository.
 | Gear | Tinkers' Construct |
 | Magic | Ars Nouveau (+ Ars Creo), Botania |
 | Exploration | Twilight Forest, The Aether, Alex's Caves, Terralith, YUNG's structures |
+| Redstone | More Red — logic gates, counters, timers, face-mounted wire |
 | Seasons | Serene Seasons |
 
 Design rules worth knowing before you play:

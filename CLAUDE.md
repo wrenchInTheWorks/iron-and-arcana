@@ -179,10 +179,34 @@ Checked 2026-10-01 by reading the jars. **Every v1 KubeJS job is obsolete on
 | 18 Silent Gear material overrides | Silent Gear removed from the pack |
 | EMI stack hiding | Unnecessary — config-disabled items do not appear |
 
-**KubeJS and Rhino are therefore currently doing nothing.** They are kept as the
-escape hatch for recipe fixes (v1 maintained a running list of broken recipes),
-not because anything needs them. Note Architectury API is a KubeJS dependency —
-check before removing either.
+**Nothing was ported, but KubeJS is no longer idle** — it now carries two
+`kubejs/data/` recipe overrides, which is exactly the escape-hatch use it was
+kept for (v1 maintained a running list of broken recipes). Note Architectury
+API is a KubeJS dependency — check before removing either.
+
+### Live KubeJS overrides
+
+Both fix upstream bugs in **Tinkers' Delight 2.0.3** (the Tinkers x Farmer's
+Delight integration), and both were diagnosed by probing the live registry with
+`rcon-cli give`, which reports `Unknown item '<id>'` for an unregistered id and
+`No player was found` for a valid one — a cheap existence probe with no player
+online.
+
+| Override | Upstream bug | Fix |
+|---|---|---|
+| `recipes/cooking/noodles/steak_and_ichor_pasta.json` | references `tconstruct:ichor_ball`, which is not registered | corrected to `tconstruct:ichor_slime_ball` |
+| `recipes/tinkering/tools/papas_fried_rice/repair_4.json` | repairs with `tinkers_delight:slime_rice`, which the mod never registers — only `slime_rice.png` ships, no item, no lang entry | ingredient swapped to `tinkers_delight:earth_slime_pasta` |
+
+A bad id does not just skip one ingredient, it fails the **whole** recipe at
+load, so Steak and Ichor Pasta was unobtainable rather than merely awkward.
+
+`the_rice_general` repair tiers, for picking future substitutes: 250 plain
+cooked rice, 750 mid (fried / mushroom / the dead slime slot), 1500 Queens
+Slime Braised Rice. `earth_slime_pasta` was chosen for the 750 slot because
+Earth Slime is Tinkers' entry-tier slime, so it stays below Queens Slime.
+
+Note `moms_spaghetti/repair_4.json` is a **different** tool's recipe and is
+fine — do not confuse the two when editing.
 
 Common-tag namespace on this pack is **`forge:`**, not `c:`. Anything copied
 from v1 scripts or from 1.21 examples will use the wrong namespace.

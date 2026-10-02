@@ -1,0 +1,9 @@
+{
+  "__comment": "Override of Tinkers' Delight 2.0.3. Upstream repairs with tinkers_delight:slime_rice, which the mod never registers -- only slime_rice.png ships, with no item and no lang entry, so it looks like content cut before release. Earth Slime Pasta fills the slot it was meant to: a slime dish at the 750 mid tier, above plain cooked rice (250) and below Queens Slime Braised Rice (1500), using entry-tier Earth Slime so the slime ladder still reads correctly.",
+  "type": "tconstruct:modifier_repair",
+  "modifier": "tinkers_delight:the_rice_general",
+  "ingredient": {
+    "item": "tinkers_delight:earth_slime_pasta"
+  },
+  "repair_amount": 750
+}

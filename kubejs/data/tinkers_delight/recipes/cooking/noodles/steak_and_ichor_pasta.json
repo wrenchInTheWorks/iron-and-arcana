@@ -1,0 +1,38 @@
+{
+  "__comment": "Override of Tinkers' Delight 2.0.3. Upstream uses tconstruct:ichor_ball, which is not a registered item; the real id is tconstruct:ichor_slime_ball. Without this the whole recipe fails to load and Steak and Ichor Pasta is unobtainable. Everything else is verbatim from the jar.",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tinkers_thinking"
+    }
+  ],
+  "type": "farmersdelight:cooking",
+  "ingredients": [
+    {
+      "item": "tinkers_delight:raw_potato_noodles"
+    },
+    {
+      "item": "tinkers_delight:ichor_slime_pasta"
+    },
+    {
+      "item": "minecraft:cooked_beef"
+    },
+    {
+      "item": "tconstruct:blazing_bone"
+    },
+    {
+      "item": "tconstruct:ichor_slime_ball"
+    },
+    {
+      "item": "tinkers_thinking:ichor_slime_drop"
+    }
+  ],
+  "result": {
+    "item": "tinkers_delight:steak_and_ichor_pasta"
+  },
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

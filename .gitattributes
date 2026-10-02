@@ -10,6 +10,10 @@
 *.properties text eol=lf
 *.yml   text eol=lf
 
+# Shell scripts MUST be LF. A CRLF shebang fails on Linux with the famously
+# unhelpful "bad interpreter: /usr/bin/env bash^M".
+*.sh    text eol=lf
+
 # Jars and images must never be line-ending converted.
 *.jar binary
 *.png binary

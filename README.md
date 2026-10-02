@@ -50,6 +50,32 @@ See [SKIPPED.md](SKIPPED.md) for what was considered and rejected, and why.
 An `.mrpack` is a snapshot, so it goes stale whenever the pack changes. The
 server self-updates from this repo on every restart; clients do not.
 
+### Auto-updating clients (recommended)
+
+Instead of re-importing an `.mrpack` after every change, point the client at
+this repo so it syncs on launch — the same mechanism the server uses. Requires
+**Prism Launcher** or MultiMC (they support pre-launch commands).
+
+1. Create the instance once from the `.mrpack` as above.
+2. Download `packwiz-installer-bootstrap.jar` from
+   [packwiz-installer-bootstrap releases](https://github.com/packwiz/packwiz-installer-bootstrap/releases)
+   and put it in the instance's `.minecraft` folder.
+3. Edit Instance → **Settings → Custom Commands** → tick *Custom Commands*, and
+   set **Pre-launch command**:
+
+   ```
+   "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml
+   ```
+
+Every launch then adds, removes and updates mods to match the repo — no more
+mod-mismatch kicks after a pack change, and no re-importing.
+
+> Your own files are safe: `options.txt` is marked `preserve = true`, so the
+> installer writes it only when it is absent and never overwrites your settings.
+
+The Modrinth App does not reliably expose pre-launch hooks; on that launcher,
+re-import the `.mrpack` when the pack changes.
+
 ### Shaders (optional, not bundled)
 
 Install **Oculus** alongside the pack — it works with Embeddium, which is

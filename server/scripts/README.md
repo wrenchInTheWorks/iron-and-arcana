@@ -22,6 +22,7 @@ If the executable bit is missing after a clone: `chmod +x *.sh`
 | `status.sh` | Container state, players, CPU/RAM, world size, and whether the server matches the repo |
 | `files.sh` | Reach `/data` with the server up or down — `path`, `ls`, `cat`, `pull`, `open` |
 | `backup.sh` | Stops the server, tars the world to `~/ia-backups`, keeps the last 10, restarts |
+| `auto-restart.sh` | Scheduled restart for cron. Warns players, saves, stops; Docker brings it back. `--now` skips warnings |
 | `docker-stats.sh` | Host-wide: all containers, resource usage, `system df`, volume sizes |
 
 ## Desktop launchers
@@ -38,6 +39,44 @@ Icon=~/iron-and-arcana/icon.png
 ```
 
 Then right-click → *Allow Launching*.
+
+## Automatic restarts
+
+No mod is needed. The container runs `restart: unless-stopped`, so a clean
+server stop exits Java with code 0 and Docker starts it again immediately --
+measured at under 5 seconds. A "restart" is therefore just a graceful stop, and
+`auto-restart.sh` is only the warning countdown around it.
+
+```bash
+# 05:30 daily. Warnings start then, so the server is actually back ~05:45.
+30 5 * * * /home/<user>/iron-and-arcana/server/scripts/auto-restart.sh >> /home/<user>/ia-restart.log 2>&1
+```
+
+Warning schedule defaults to 15/10/5/1 minutes and is overridable:
+`WARN_MINUTES="30 10 5 1" ./auto-restart.sh`. With nobody online it skips the
+countdown and restarts straight away.
+
+**The one thing to be careful about:** `PACKWIZ_URL` means every restart
+re-installs the pack from whatever that URL points at. If it points at a branch
+head, an unattended 5:30am restart will pick up whatever was last pushed --
+including half-finished work. Once friends are relying on the server, point
+`PACKWIZ_URL` at a **release tag** instead:
+
+```
+PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.1.0/pack.toml
+```
+
+Tags are immutable, so scheduled restarts become reproducible and updating
+becomes a deliberate one-line `.env` change plus a restart.
+
+## Restarting from in game
+
+`/stop` as an operator is already a restart, for the same reason -- Docker
+brings the container back. There is no `/restart` command in vanilla or Forge;
+`/stop` is the one to use. Verified 2026-10-11.
+
+Discord Integration is also in the pack, so server control from Discord is
+available without adding anything new.
 
 ## Two traps these scripts defend against
 

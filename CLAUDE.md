@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.0.0 (in progress, branch `2.0`) | Small private friend server**
+**Forge 1.20.1 | v2.1.0 (branch `2.0`, not yet on `main`) | Small private friend server**
 
 ---
 
@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Name | Iron & Arcana |
-| Version | 2.0.0 |
+| Version | 2.1.0 |
 | Minecraft | 1.20.1 |
 | Loader | **Forge 47.4.10** (not NeoForge) |
 | Author | iron-and-arcana |
@@ -162,6 +162,24 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 5. **Merge `2.0` into `main` and cut the 2.0.0 release** -- deliberately last.
    The owner wants this only once the Linux host is running and has been played
    on for a while.
+
+### Version and branch state
+
+**The pack version is `2.1.0`; the branch is still called `2.0`.** The branch
+name is just a name -- do not rename it or assume the version matches it. 2.1.0
+marks the state after the first test playthrough: JEI behind EMI, Fresh
+Animations removed, Deep Aether + Treasure Reforging, More Red, Tinkers
+Reforged, JER + profiler.
+
+**It moves to `main` when the server goes public for friends**, not before.
+That is the owner's gate, not a technical one.
+
+Bumping the version is what cuts a release: `publish.yml` runs `gh release
+create "v<version>"` whenever `pack.toml`'s version changes, on `main` *and*
+`2.0`. So pushing 2.1.0 produces a **v2.1.0 Release and git tag** off this
+branch, with the `.mrpack` and CurseForge `.zip` attached. That is useful
+beyond distribution: a tag is immutable, so `PACKWIZ_URL` can point at it
+instead of a branch head (see below).
 
 ### Branch trap: `main` still serves v1
 
@@ -363,6 +381,44 @@ should be dropped again rather than left in as dead weight.
 Tinkers Reforged adds three ores -- barium, thallium and yttrium (plus a
 coniferous-biome yttrium variant) -- so it needs fresh chunks. It also declares
 `jei` MANDATORY, which is what kept it out of the pack before.
+
+## Restarts: no mod required
+
+Verified 2026-10-11 by running it.
+
+**`/stop` is already a restart.** The container runs `restart: unless-stopped`,
+so a clean stop exits Java with code 0 and Docker starts it again -- back up in
+under 5 seconds. There is no `/restart` command in vanilla or Forge, which is
+why that did not work in game; `/stop` as an operator is the one to use. No
+server-side utility mod is needed for either scheduled or manual restarts, and
+none was added.
+
+**Scheduled restarts are a cron job, not a mod:**
+`server/scripts/auto-restart.sh` warns players (default 15/10/5/1 minutes),
+saves, then stops, and lets Docker relaunch. It skips the countdown when nobody
+is online, and `--now` skips it entirely. This is the **first of the server
+scripts to have actually been executed** rather than only syntax-checked; it
+ran clean end to end, exit 0.
+
+The player-count parser reads `There are N of a max of M players online`, and
+deliberately assumes players ARE online if that reply cannot be parsed -- the
+failure mode to avoid is silently skipping warnings on a populated server.
+
+**`PACKWIZ_URL` makes every restart a pack update, which scheduled restarts turn
+into a hazard.** Pointed at a branch head, an unattended 5:30am restart installs
+whatever was last pushed, including half-finished work. Once friends depend on
+the server, point it at a release tag:
+
+```
+PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.1.0/pack.toml
+```
+
+Tags are immutable, so restarts become reproducible and updating becomes a
+deliberate `.env` edit. **This has not been done yet** -- `.env` and
+`.env.example` still point at the `2.0` branch head.
+
+Discord Integration is already in the pack, so Discord-side server control is
+available without adding anything.
 
 ## Durable Technical Notes
 

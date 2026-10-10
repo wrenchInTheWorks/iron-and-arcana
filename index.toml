@@ -225,16 +225,6 @@ hash = "dbc04cf71baa724fea03c005d6d1513605aabd2089a0d167bbfe7d082f8da009"
 metafile = true
 
 [[files]]
-file = "mods/entity-model-features.pw.toml"
-hash = "7f7c6825b59aaba4353b8c5df4a21879357cc3a2b562e80f7403f67791f72008"
-metafile = true
-
-[[files]]
-file = "mods/entitytexturefeatures.pw.toml"
-hash = "b8055eaac5cf52c97a3f18704097ef9ee4ad38927406fb692e0e34fa6ed49307"
-metafile = true
-
-[[files]]
 file = "mods/farmers-delight.pw.toml"
 hash = "c83385838fbf5cdd40684e5f6d4b7bcc2126de4abca229a60b7063e57a5a4615"
 metafile = true
@@ -287,6 +277,11 @@ metafile = true
 [[files]]
 file = "mods/jade.pw.toml"
 hash = "5d03d20b037a8b7a4765ded0e25146fc970964be46401dff5f9b1059875084e8"
+metafile = true
+
+[[files]]
+file = "mods/jei.pw.toml"
+hash = "df724beef20c6a6458b6eced0a36d6ac72dffe00849676f80bdf328207f6d061"
 metafile = true
 
 [[files]]
@@ -347,6 +342,11 @@ metafile = true
 [[files]]
 file = "mods/mantle.pw.toml"
 hash = "8ecef53f6b117578b93fa02ffa324007d8335b73a7389fb4339948114f7c732b"
+metafile = true
+
+[[files]]
+file = "mods/mezzconfig.pw.toml"
+hash = "c25495262a852dc02886ec8c4b695f30e53264a2e3d881dd36ee9de16a1ef499"
 metafile = true
 
 [[files]]
@@ -572,16 +572,6 @@ metafile = true
 [[files]]
 file = "mods/yungs-better-strongholds.pw.toml"
 hash = "18dfe8ada0af83eb86d4b8ff8e202479b7c2ab1ee1f894d9bb07cda1744e8981"
-metafile = true
-
-[[files]]
-file = "options.txt"
-hash = "90adccf04be87f863d3fb756287737bbfbd2269e848328bcc88afcfd757ca987"
-preserve = true
-
-[[files]]
-file = "resourcepacks/fresh-animations.pw.toml"
-hash = "6a1556a0e4fcb411b33efafc3382b4abd9a6e671f140dc0d42e9aad2808e24f3"
 metafile = true
 
 [[files]]

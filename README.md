@@ -28,7 +28,8 @@ repository.
 Design rules worth knowing before you play:
 
 - **Tinkers' Construct is the only gear system.** Silent Gear was removed in 2.0.
-- **One recipe viewer: EMI.** JEI is deliberately absent.
+- **One recipe viewer: EMI.** JEI is installed but hidden -- it only feeds
+  recipes to EMI, which is what makes Tinkers' and Create recipes visible.
 - **Automation shortcuts are disabled.** Sophisticated Backpacks is present, but
   every stack upgrade, both Infinity upgrades, and the feeding, inception,
   everlasting, auto-cooking and alchemy upgrades are turned off. Carrying more
@@ -77,8 +78,8 @@ this repo so it syncs on launch — the same mechanism the server uses. Requires
 Every launch then adds, removes and updates mods to match the repo — no more
 mod-mismatch kicks after a pack change, and no re-importing.
 
-> Your own files are safe: `options.txt` is marked `preserve = true`, so the
-> installer writes it only when it is absent and never overwrites your settings.
+> Your own settings are safe: the pack ships no `options.txt`, so the installer
+> never touches your video, control or resource-pack choices.
 
 The Modrinth App does not reliably expose pre-launch hooks; on that launcher,
 re-import the `.mrpack` when the pack changes.

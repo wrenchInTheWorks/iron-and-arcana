@@ -1,0 +1,13 @@
+name = "Tinkers Reforged"
+filename = "Tinkers Reforged 1.20.1-2.20.0.7.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/cj8IZDhP/versions/hjYjMdw7/Tinkers%20Reforged%201.20.1-2.20.0.7.jar"
+hash-format = "sha512"
+hash = "debb7ac058b82c425d0bfa395b1ef5fbedff03f5bf273a3ecb40e4e11c30b040fbd765b981cfcf7c002b108cb6fdf0d4f1b047fed0cfa544cfa12368fa9d3752"
+
+[update]
+[update.modrinth]
+mod-id = "cj8IZDhP"
+version = "hjYjMdw7"

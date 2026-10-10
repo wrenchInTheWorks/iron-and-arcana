@@ -1,0 +1,13 @@
+name = "Just Enough Resources Profiler (JEARGH)"
+filename = "jeargh-1.20.1-1.0.3.jar"
+side = "server"
+
+[download]
+url = "https://cdn.modrinth.com/data/wOVCyncE/versions/DkaFp61D/jeargh-1.20.1-1.0.3.jar"
+hash-format = "sha512"
+hash = "0ee0473621a24813f693e8d4d02296a96c08f9dc4b56c8c38d00149a951b5d3aa3e71c41fdb219171d8bee78b469458814b64000b46bcf0c4500a25c6135a91c"
+
+[update]
+[update.modrinth]
+mod-id = "wOVCyncE"
+version = "DkaFp61D"

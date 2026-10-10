@@ -300,6 +300,16 @@ hash = "ffb380d0c3a85701b3bb594ed39e76b9bd748e6282da79b7bea31765a8fce4c3"
 metafile = true
 
 [[files]]
+file = "mods/just-enough-resources-jer.pw.toml"
+hash = "02977d28acd2089c39dbe5b65fd08e78094fb650b4afc810f757cb5cea1fbda8"
+metafile = true
+
+[[files]]
+file = "mods/just-enough-resources-profiler-(jeargh).pw.toml"
+hash = "adc87e06e043a674b58293aae649b77944ae1beebce4805464ff7c5e7b1df740"
+metafile = true
+
+[[files]]
 file = "mods/kotlin-for-forge.pw.toml"
 hash = "70a4ecd9d0c04ad20aeb976c1ee28933ce48a0a1f43df42deafaeb2ad7235297"
 metafile = true
@@ -517,6 +527,11 @@ metafile = true
 [[files]]
 file = "mods/tinkers-levelling-addon.pw.toml"
 hash = "0d8be7cf9a149da6eaf7a4bc24995d3eb094260c0f353516074b5fb33f9bdd0f"
+metafile = true
+
+[[files]]
+file = "mods/tinkers-reforged.pw.toml"
+hash = "3869aa7c0174655cdc98ea80906ee796d96180ad90aed2c5e621a19ce0721b09"
 metafile = true
 
 [[files]]

@@ -304,6 +304,47 @@ Consequence worth knowing: **Just Enough Resources and Tinkers Reforged were
 dropped solely for hard-depending on JEI** and are now re-addable if wanted.
 Neither has been re-added.
 
+## JER and ore distribution
+
+Added 2026-10-11 alongside Tinkers Reforged, both unblocked by JEI now being in
+the pack. Two things about JER are not obvious:
+
+**1. The World Gen tab starts empty, and nothing in JER can fill it.** JER's
+ore-distribution tab shows Y-level distribution, average blocks per chunk,
+valid biomes and dimensions, drops, and silk-touch/fortune flags -- but JER
+ships no world-gen data and does not read it out of the worldgen system. It
+only renders what is registered through `IWorldGenRegistry`, and the scan
+command that used to populate it was removed upstream. That is why **JEARGH**
+(Just Enough Resources Profiler) is in the pack: it restores the command.
+
+Profiling scans a chunk radius per dimension on several threads and writes
+`world-gen.json`, then says "You need to restart your world for changes to
+appear in JER."
+
+**packwiz infers JEARGH as `side = server` and JER as `side = client`**, which
+is correct but means the generated file lands on the *server* while the viewer
+that reads it is on the *client*. So the workflow is:
+
+1. Run the profile on the server once, on a fresh world, after any ore-adding
+   mod change.
+2. Pull the resulting `world-gen.json` out of the container.
+3. Commit it to `config/` -- packwiz then ships it to every client, which is
+   the repo-as-authority model doing exactly what it is for.
+
+Do not expect it to populate itself. An empty World Gen tab is the default
+state, not a bug.
+
+**2. JER is a JEI plugin with no EMI support at all** -- 19 classes use the JEI
+API, zero use EMI's. Its six tabs (mob, dungeon, villager, plant, enchantment,
+worldgen) are JEI categories, so they appear only if EMI's JEI-compat layer
+carries custom categories through. **Unverified as of 2026-10-11** -- it needs
+an in-game check. If JER's tabs never show in EMI, JER is doing nothing and
+should be dropped again rather than left in as dead weight.
+
+Tinkers Reforged adds three ores -- barium, thallium and yttrium (plus a
+coniferous-biome yttrium variant) -- so it needs fresh chunks. It also declares
+`jei` MANDATORY, which is what kept it out of the pack before.
+
 ## Durable Technical Notes
 
 ### Recipe removal pattern

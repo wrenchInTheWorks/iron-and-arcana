@@ -40,12 +40,10 @@ See [SKIPPED.md](SKIPPED.md) for what was considered and rejected, and why.
 
 ## Installing the client
 
-> **While 2.0 is on its branch:** the `.mrpack` on
-> [Releases](https://github.com/wrenchInTheWorks/iron-and-arcana/releases) is
-> current -- **v2.1.0** is the one to download. But `main` itself still serves
-> v1.2.3 (1.21.1 / NeoForge), which cannot join this server, so the
-> auto-update URL below points at the `2.0` branch and switches to `main` when
-> 2.0 is merged.
+> **While 2.0 is on its branch:** `main` still serves v1.2.3 (1.21.1 /
+> NeoForge) and the newest GitHub Release is v1.2.3 -- neither can join the
+> 1.20.1 Forge server. Get the `.mrpack` from the pack maintainer, and use the
+> `2.0` URL below. Both switch to `main` once 2.0 is merged.
 
 1. Download `Iron & Arcana-<version>.mrpack` from
    [Releases](https://github.com/wrenchInTheWorks/iron-and-arcana/releases).

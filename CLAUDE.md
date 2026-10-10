@@ -174,12 +174,25 @@ Reforged, JER + profiler.
 **It moves to `main` when the server goes public for friends**, not before.
 That is the owner's gate, not a technical one.
 
+Sequencing agreed 2026-10-11: the merge waits until after the singleplayer
+test run and the JEARGH profile, so `world-gen.json` is committed to `config/`
+*before* `main` is advanced. The merge itself is a clean fast-forward --
+`origin/main` -> `ab1a28c` -> ... -> branch head, no divergence -- and
+`ab1a28c` (the v1.x closeout commit, which looks unpushed on local `main`) is
+the merge-base of `2.0`, so it arrives with the merge and needs no separate
+handling. Flip `PACKWIZ_URL` and the README client route to `main` as part of
+the same change.
+
 Bumping the version is what cuts a release: `publish.yml` runs `gh release
 create "v<version>"` whenever `pack.toml`'s version changes, on `main` *and*
-`2.0`. So pushing 2.1.0 produces a **v2.1.0 Release and git tag** off this
-branch, with the `.mrpack` and CurseForge `.zip` attached. That is useful
-beyond distribution: a tag is immutable, so `PACKWIZ_URL` can point at it
-instead of a branch head (see below).
+`2.0`. Pushing 2.1.0 did produce a v2.1.0 Release, but **it was deleted on the
+owner's instruction** because its tag was wrong (see below), so `pack.toml`
+currently reads 2.1.0 with no release or tag of that name.
+
+A consequence to plan around: CI releases on a version *change* between
+commits, so merging `2.0` into `main` will **not** cut a release -- the version
+is the same on both sides of the merge. Getting a correctly-tagged release off
+`main` needs a version bump after the merge.
 
 ### Branch trap: `main` still serves v1
 
@@ -190,9 +203,10 @@ server. So:
 - `server/.env` and `.env.example` point `PACKWIZ_URL` at the **`2.0`** branch.
 - The root `README.md` client auto-update route points at **`2.0`** too. It was
   pointing at `main`, which silently handed players the 1.21.1 pack.
-- Releases now carries **v2.1.0** with a correct `.mrpack` and CurseForge
-  `.zip`, cut from this branch on 2026-10-11. Friends can download from
-  Releases again; before that the newest was v1.2.3.
+- The newest GitHub Release is **v1.2.3** again. A v2.1.0 release existed
+  briefly on 2026-10-11 and was deleted along with its tag, because the tag
+  pointed at the wrong commit. Until a post-merge version bump cuts a new one,
+  friends get the `.mrpack` from the maintainer directly.
 - **Flip both URLs back to `main` as part of the merge.**
 
 **No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
@@ -409,21 +423,23 @@ whatever was last pushed, including half-finished work. Once friends depend on
 the server, point it at a release tag:
 
 ```
-PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.1.0/pack.toml
+PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.1.1/pack.toml
 ```
 
 Tags are immutable, so restarts become reproducible and updating becomes a
 deliberate `.env` edit. **This has not been done yet** -- `.env` and
 `.env.example` still point at the `2.0` branch head.
 
-> **Do not pin to `v2.1.0` yet.** That tag is wrong: `gh release create` without
-> `--target` tags the **default branch's head**, so the release cut from this
-> branch tagged `main` -- `v2.1.0` resolves to a v1.2.3 / NeoForge commit, and
-> pinning `PACKWIZ_URL` to it would serve the v1 pack. The Release's attached
-> artifacts are correct because they were built from the right checkout, which
-> is exactly what made it easy to miss. `publish.yml` now passes
-> `--target "$GITHUB_SHA"`, so the *next* release tags correctly; the existing
-> `v2.1.0` tag still needs moving or superseding.
+> **There is no release tag to pin to yet.** The first attempt produced one
+> that pointed at the wrong commit: `gh release create` without `--target` tags
+> the **default branch's head**, so a release built from `2.0` tagged `main`,
+> and `v2.1.0` resolved to a v1.2.3 / NeoForge commit. Pinning `PACKWIZ_URL`
+> to it would have installed the v1 pack at the next unattended restart. The
+> Release's attached artifacts were correct, built from the right checkout,
+> which is what made it easy to miss. `publish.yml` now passes
+> `--target "$GITHUB_SHA"`, and the bad release and tag were deleted. So pin
+> only after a post-merge version bump produces a verified tag -- and check it
+> with `git rev-parse <tag>` plus `git show <sha>:pack.toml` before trusting it.
 
 Discord Integration is already in the pack, so Discord-side server control is
 available without adding anything.

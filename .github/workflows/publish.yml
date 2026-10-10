@@ -99,7 +99,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # --target is REQUIRED: without it, gh release create tags the DEFAULT
+          # branch head, so releases cut from the 2.0 branch tagged main (v1.2.3 /
+          # NeoForge). The attached artifacts were still built from the correct
+          # checkout, which is what made this easy to miss.
           gh release create "v${{ steps.pack.outputs.version }}" \
+            --target "$GITHUB_SHA" \
             --title "Iron & Arcana v${{ steps.pack.outputs.version }}" \
             --generate-notes \
             "${{ steps.exports.outputs.mrpack }}" \

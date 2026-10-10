@@ -190,10 +190,9 @@ server. So:
 - `server/.env` and `.env.example` point `PACKWIZ_URL` at the **`2.0`** branch.
 - The root `README.md` client auto-update route points at **`2.0`** too. It was
   pointing at `main`, which silently handed players the 1.21.1 pack.
-- There is no 2.0.0 `.mrpack` on Releases. `publish.yml` runs on both `main` and
-  `2.0`, but only releases when `pack.toml`'s version *changes* between commits,
-  and it has read 2.0.0 since early in the rebuild. A release therefore needs a
-  version bump, or the locally exported mrpack handed over directly.
+- Releases now carries **v2.1.0** with a correct `.mrpack` and CurseForge
+  `.zip`, cut from this branch on 2026-10-11. Friends can download from
+  Releases again; before that the newest was v1.2.3.
 - **Flip both URLs back to `main` as part of the merge.**
 
 **No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
@@ -416,6 +415,15 @@ PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v
 Tags are immutable, so restarts become reproducible and updating becomes a
 deliberate `.env` edit. **This has not been done yet** -- `.env` and
 `.env.example` still point at the `2.0` branch head.
+
+> **Do not pin to `v2.1.0` yet.** That tag is wrong: `gh release create` without
+> `--target` tags the **default branch's head**, so the release cut from this
+> branch tagged `main` -- `v2.1.0` resolves to a v1.2.3 / NeoForge commit, and
+> pinning `PACKWIZ_URL` to it would serve the v1 pack. The Release's attached
+> artifacts are correct because they were built from the right checkout, which
+> is exactly what made it easy to miss. `publish.yml` now passes
+> `--target "$GITHUB_SHA"`, so the *next* release tags correctly; the existing
+> `v2.1.0` tag still needs moving or superseding.
 
 Discord Integration is already in the pack, so Discord-side server control is
 available without adding anything.

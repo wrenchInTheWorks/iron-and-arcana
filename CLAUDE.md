@@ -321,15 +321,34 @@ Profiling scans a chunk radius per dimension on several threads and writes
 `world-gen.json`, then says "You need to restart your world for changes to
 appear in JER."
 
-**packwiz infers JEARGH as `side = server` and JER as `side = client`**, which
-is correct but means the generated file lands on the *server* while the viewer
-that reads it is on the *client*. So the workflow is:
+**JEARGH's side is hand-set to `client`, and must stay that way.** This is the
+one deliberate exception to the "do not hand-set side" rule, because the
+platform metadata is demonstrably wrong: Modrinth marks it `server`, packwiz
+inferred `server`, and it then **crashed the dedicated server on boot**:
 
-1. Run the profile on the server once, on a fresh world, after any ore-adding
-   mod change.
-2. Pull the resulting `world-gen.json` out of the container.
-3. Commit it to `config/` -- packwiz then ships it to every client, which is
-   the repo-as-authority model doing exactly what it is for.
+```
+Failed to create mod instance. ModID: jeargh
+Caused by: RuntimeException: Attempted to load class
+  net/minecraft/client/server/IntegratedServer for invalid dist DEDICATED_SERVER
+```
+
+`IntegratedServer` is singleplayer's server and does not exist on a dedicated
+one, and the reference is in JEARGH's static initializer, so it cannot even be
+constructed server-side. It is a **singleplayer-only** mod. If a future
+`packwiz update` or a re-add resets this to `server`, the server will not boot.
+
+So profiling happens in singleplayer, and the workflow is:
+
+1. Launch a singleplayer world on the client with this pack, on a fresh world,
+   after any ore-adding mod change.
+2. Run the profile command there; it writes `world-gen.json` into the client's
+   config folder.
+3. Commit that file to `config/` -- packwiz then ships it to every client,
+   which is the repo-as-authority model doing exactly what it is for.
+
+Ore placement comes from the pack's worldgen rules rather than the specific
+save, so a throwaway singleplayer world is a valid source for data that is then
+shipped to everyone.
 
 Do not expect it to populate itself. An empty World Gen tab is the default
 state, not a bug.

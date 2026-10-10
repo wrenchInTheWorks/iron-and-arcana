@@ -328,6 +328,33 @@ is validated at **server startup only** — `/kubejs reload` only reloads
 A file-lock `IOException` on startup means a stale `world/session.lock` from an
 unclean kill. Delete it.
 
+### Almost Unified: an intermittent, harmless-looking tag NPE
+
+Seen once in seven boots (2026-10-11), on an async worker during tag reload:
+
+```
+NullPointerException: ... "TagReloadHandler.RAW_ITEM_TAGS" is null
+  at TagReloadHandler.findDominantItemHolder -> applyInheritance
+  -> AlmostUnified.loadReplacementData -> onTagLoaderReload
+```
+
+It is a race inside Almost Unified 1.20.1-0.11.0, **not** caused by anything
+added to the pack -- the stack trace contains no frames from any other mod.
+It first appeared on the boot that added JEI, which is coincidence, not cause.
+
+**Impact appears to be nil.** On the erroring boot the unification still
+completed with counts identical to every clean boot (19703 -> 19663). Only the
+tag-inheritance step failed. If it ever does matter, the fix is a restart.
+
+Do not chase this as a symptom of a pack change. The per-boot evidence is
+`docker compose logs | grep -E 'Recipe count( afterwards)?:'` -- a boot that
+unified correctly prints both lines with the usual counts.
+
+Separately, Almost Unified logs a very long "the following tags are invalid and
+will be ignored" list (~400 `forge:` tags for materials from mods this pack does
+not have, e.g. thermal/mekanism metals). That is its default config being
+broader than the pack and is harmless noise.
+
 ### Java 17 is a hard ceiling — BlueMap is pinned because of it
 Forge 47 / 1.20.1 targets **Java 17** (class file major 61). A mod compiled for
 Java 21 (major 65) throws `UnsupportedClassVersionError` at class load.

@@ -445,13 +445,35 @@ cannot dilute existing data.
 
 ### Why Deep Aether's ores are still missing
 
-Not heights. Deep Aether registers 7 ore blocks (skyjade, adibium, agate,
-oratie, plus highstone variants) and `skyjade_ore` generates at `above_bottom
-0..60`, i.e. real Y 0..60 in the Aether -- a band the existing data already
-covers (its Aether entries span real Y 21..108). So the scan looked in the
-right place and found nothing, which points at **biome restriction**: Deep
-Aether's ores live in its own biomes, and the scan is a radius around one
-point.
+Not heights, and **Deep Aether has only one ore that exists at all**.
+
+The lang file lists seven ore names (skyjade, adibium, agate, oratie and
+highstone variants), which is where an inflated expectation comes from -- a
+`lang` entry is only a translation string. Checked against the rest of the jar:
+
+| Ore | classes | models | loot/recipe | worldgen |
+|---|---|---|---|---|
+| `skyjade_ore` | 24 (incl. `DABlocks`, `DAConfiguredFeatures`, `DAPlacedFeatures`) | yes | yes | **yes** |
+| `adibium_ore` | **0** | none | none | none |
+| `agate_ore` | **0** | none | none | none |
+| `oratie_ore` | **0** | 2 assets | none | none |
+
+So adibium, agate and oratie are orphaned translation strings for content that
+is not implemented in 1.1.7. They will never generate and are not worth
+chasing. **Do not infer a mod's content from its lang file.**
+
+`skyjade_ore` does generate: injected into `#aether:is_aether` (all Aether
+biomes, base ones included) by a Forge biome modifier at
+`data/deep_aether/forge/biome_modifier/skyjade_ore.json`, replacing the
+`aether:holystone` tag, 12 attempts per chunk, vein size 6, real Y 0..60, with
+`discard_chance_on_air_exposure: 0.65` so it sits buried inside islands rather
+than on their surfaces. Deep Aether biomes were confirmed present in world via
+`/locate biome`, so worldgen is applying. The profiler simply does not sample
+that band -- its Aether entries bottom out at real Y 21.
+
+Note **Sterling Aercloud is not an ore.** It is an `aether:aercloud` feature
+placed by the same biome-modifier route, and its loot table drops the block
+itself. It appears near ores in the wiki because it is a generated resource.
 
 `JEARGHProfilerRunnable` takes a `Player` in its scan signature, so the scan
 appears to centre on the player. If the ores are wanted, the cheap experiment

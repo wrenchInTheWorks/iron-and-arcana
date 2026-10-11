@@ -416,6 +416,48 @@ Tinkers Reforged adds three ores -- barium, thallium and yttrium (plus a
 coniferous-biome yttrium variant) -- so it needs fresh chunks. It also declares
 `jei` MANDATORY, which is what kept it out of the pack before.
 
+## world-gen.json: the Y encoding, and do NOT run `fixheights`
+
+`config/world-gen.json` stores **Y + 64**, i.e. an index from the Overworld's
+floor, for *every* dimension. Calibrated against vanilla:
+`minecraft:deepslate_diamond_ore` is stored as 1..79 peak 5, which decodes to
+**-63..15 peak -59** -- vanilla's range exactly. `ancient_debris` decodes to
+7..120 peak 15 against vanilla's 8..119 with the bulk at 8..24.
+
+**`/jeargh fixheights <radius>` corrupts this file.** Run on 2026-10-11, it
+added a second +64 to the 19 non-Overworld entries and left the 31 Overworld
+ones alone, which put ancient debris at a real Y of 71..184 in a dimension that
+caps at 127. It scans nothing (it completes instantly), finds no new blocks and
+changes no sample totals -- it only rewrites the Y labels, wrongly. The output
+was discarded.
+
+The command's description, "Fixing incorrect heights for non-overworld
+dimensions", reads like the fix for a thin Aether. It is not.
+
+### Merging is safe, and additive
+
+`distrib_raw` holds integer block counts per Y level and `distrib` is the
+normalised curve derived from it. `/jeargh start <radius> merge` loads the
+existing file, adds new samples to those counts, and rebuilds the curve
+(`loadMapFromWorldGen`, `addToMap`, `BuildRawDistrib`). So **short scans
+compound** -- several small merge runs beat one multi-hour run, and a small run
+cannot dilute existing data.
+
+### Why Deep Aether's ores are still missing
+
+Not heights. Deep Aether registers 7 ore blocks (skyjade, adibium, agate,
+oratie, plus highstone variants) and `skyjade_ore` generates at `above_bottom
+0..60`, i.e. real Y 0..60 in the Aether -- a band the existing data already
+covers (its Aether entries span real Y 21..108). So the scan looked in the
+right place and found nothing, which points at **biome restriction**: Deep
+Aether's ores live in its own biomes, and the scan is a radius around one
+point.
+
+`JEARGHProfilerRunnable` takes a `Player` in its scan signature, so the scan
+appears to centre on the player. If the ores are wanted, the cheap experiment
+is to stand in a Deep Aether biome (Aerglow Forest, Golden Heights) and run a
+small `/jeargh start 16 merge` there, rather than growing the radius at spawn.
+
 ## Restarts: no mod required
 
 Verified 2026-10-11 by running it.

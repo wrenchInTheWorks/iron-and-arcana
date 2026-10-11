@@ -117,10 +117,9 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
   # per jar: re.findall(r'\[\[dependencies\.[^\]]+\]\](.*?)(?=\[\[|\Z)', mods_toml, re.S)
   # keep blocks where mandatory = true, print modId + versionRange
   ```
-- **JEI is installed as a recipe-data provider, not as a viewer.** EMI is still
-  the only viewer the player sees. This reverses the old "anything depending on
-  JEI is out" rule, which was costing the pack most of its recipes -- see
-  "Recipe viewing" below before touching either mod.
+- **JEI is the recipe viewer. EMI was removed.** Every major mod here ships a
+  JEI plugin and none ship EMI support, so JEI renders them natively -- see
+  "Recipe viewing" below before reintroducing either.
 - Run `packwiz refresh` every 10–15 additions to catch index errors early.
 
 ---
@@ -139,7 +138,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 | Gear swap | Tinkers' Construct 3.12.1.231 + Mantle replace Silent Gear |
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |
 | Unofficial ports retired | Alex's Caves, Alex's Mobs, Citadel, Spartan Weaponry, Steam 'n' Rails now official 1.20.1 builds |
-| Recipe viewing | EMI as the viewer, JEI installed and hidden behind it as the recipe source |
+| Recipe viewing | JEI is the viewer; EMI tried first and removed 2026-10-11 (see Recipe viewing) |
 | Docker server | `server/` — itzg image, `PACKWIZ_URL` self-install (`bae071e`) |
 | Infra stripped | EventBridge and all Modrinth publishing removed (`2db8bf6`) |
 
@@ -167,7 +166,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 **The pack version is `2.1.0`; the branch is still called `2.0`.** The branch
 name is just a name -- do not rename it or assume the version matches it. 2.1.0
-marks the state after the first test playthrough: JEI behind EMI, Fresh
+marks the state after the first test playthrough: JEI as the viewer, Fresh
 Animations removed, Deep Aether + Treasure Reforging, More Red, Tinkers
 Reforged, JER + profiler.
 
@@ -296,13 +295,16 @@ confirmed working even on `2101.7.2`. Re-check the name for `2001.x`.
 
 ---
 
-## Recipe viewing: why JEI is installed
+## Recipe viewing: JEI, and why EMI was removed
 
-Found during the first test playthrough (2026-10-10): Tinkers' smeltery and
-casting recipes were invisible, Create's non-grid recipes were invisible, and
-the Tinkers' Crafting Station was not recognised for EMI auto-fill.
+Two rounds of this, both from the test playthrough. End state: **JEI is the
+viewer and EMI is not in the pack.**
 
-Cause, measured by scanning the jars for API references:
+### Round 1 (2026-10-10): recipes missing entirely
+
+Tinkers' smeltery and casting recipes were invisible, Create's non-grid recipes
+were invisible, and the Crafting Station was not recognised for auto-fill.
+Cause, measured by scanning jars for API references:
 
 | Mod | files in a `/jei/` package | classes using the JEI API | classes using the EMI API |
 |---|---|---|---|
@@ -310,30 +312,37 @@ Cause, measured by scanning the jars for API references:
 | Create | 68 | 40 | **0** |
 | Immersive Engineering | 56 | 25 | **0** |
 | Ars Nouveau | 19 | 16 | **0** |
+| JER | -- | 19 | **0** |
 
-**Every major mod in this pack ships a JEI plugin and none ship EMI support.**
-EMI on its own can only show recipes it infers generically (crafting table,
-furnace). Every custom category -- smeltery melting/alloying/casting, Create
-mixing/pressing/crushing, IE multiblocks, Ars rituals -- plus every recipe
-transfer handler lives in those JEI plugins.
+**Every major mod ships a JEI plugin and none ship EMI support.** EMI alone can
+only infer generic recipes (crafting table, furnace); every custom category and
+every recipe transfer handler lives in those JEI plugins. JEI was added as a
+hidden data source behind EMI's documented runtime compat.
 
-The fix is EMI's own documented runtime compatibility: *"For runtime JEI compat,
-all you need to do is install JEI alongside EMI and they will work together to
-share recipes. JEI will be hidden."* So JEI is in the pack purely as a data
-source; the player still only ever sees EMI.
+### Round 2 (2026-10-11): discovery fixed, rendering not
 
-**Do not "clean up" by removing JEI.** It looks redundant in the mod list and
-is not. Removing it silently blanks most of the pack's recipes again, and the
-symptom (recipes missing from a viewer that still works fine for vanilla) does
-not obviously point back at the missing mod.
+Recipes then appeared -- Casting and Jumbo Smelting both showed as tabs -- but
+rendered wrong: Jumbo Furnace drew magenta missing-texture blocks and Tinkers
+Casting showed an "Error" panel from an exception during draw.
 
-JEI's one mandatory dependency, `mezz_config[0.6.3,1.0.0)`, is bundled via
-jar-in-jar; MezzConfig is also a top-level entry at 0.6.8, and Forge's jarjar
-dedupes nested against top-level, so only one loads.
+**Not a version mismatch, and that was checked rather than assumed.** All
+**126** member references EMI 1.1.24 makes into JEI exist in JEI 15.62.0.219,
+and the only JEI class EMI references that is absent is Fabric-only.
+Downgrading JEI would have fixed nothing and would have broken Tinkers
+Reforged, which floors at `jei[15.56.0.204,)`.
 
-Consequence worth knowing: **Just Enough Resources and Tinkers Reforged were
-dropped solely for hard-depending on JEI** and are now re-addable if wanted.
-Neither has been re-added.
+The real cause: EMI's JEI-compat layer can enumerate foreign categories but
+cannot reproduce their custom `IDrawable` backgrounds and draw code. Inherent
+to translating one viewer's rendering model into another's, not a patchable bug.
+
+So EMI was removed and JEI became the visible viewer. Nothing depended on EMI:
+no EMI addons in the pack, and JEED -- the only viewer-adjacent mod -- ships
+support for both and mandates neither.
+
+**Do not reintroduce EMI expecting the pack to look better.** It renders this
+pack's categories worse, and the failure lands on the gear pillar (Tinkers
+casting). Revisit only if these mods ship EMI support, or EMI ships native
+plugins for them.
 
 ## JER and ore distribution
 
@@ -384,12 +393,11 @@ shipped to everyone.
 Do not expect it to populate itself. An empty World Gen tab is the default
 state, not a bug.
 
-**2. JER is a JEI plugin with no EMI support at all** -- 19 classes use the JEI
-API, zero use EMI's. Its six tabs (mob, dungeon, villager, plant, enchantment,
-worldgen) are JEI categories, so they appear only if EMI's JEI-compat layer
-carries custom categories through. **Unverified as of 2026-10-11** -- it needs
-an in-game check. If JER's tabs never show in EMI, JER is doing nothing and
-should be dropped again rather than left in as dead weight.
+**2. JER renders natively now.** It is a JEI plugin end to end (19 classes on
+the JEI API, zero on EMI's). While EMI was the viewer this was an open risk --
+its six tabs are custom-drawn categories, exactly the kind EMI's compat layer
+misrenders. With EMI removed the question is moot and the World Gen graphs
+render as built.
 
 Tinkers Reforged adds three ores -- barium, thallium and yttrium (plus a
 coniferous-biome yttrium variant) -- so it needs fresh chunks. It also declares
@@ -579,6 +587,7 @@ public pack, and no longer constrained by Modrinth's rules.
 - **Performance is a real constraint.** BlueMap, MineColonies AI and Create
   contraptions are the known cost centres — see `SERVER_PERFORMANCE_NOTES.md`
   before adding heavy server-side mods.
-- **One recipe viewer the player sees: EMI.** JEI is installed but hidden; it
-  exists only to feed recipes to EMI. Mods that depend on JEI are no longer
-  excluded.
+- **One recipe viewer: JEI.** EMI was the pack's viewer through 2.0 and was
+  removed on 2026-10-11 -- every major mod here is JEI-native and none support
+  EMI, so EMI could list their recipes but not draw them correctly. Do not add
+  a second viewer.

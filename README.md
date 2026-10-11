@@ -28,8 +28,9 @@ repository.
 Design rules worth knowing before you play:
 
 - **Tinkers' Construct is the only gear system.** Silent Gear was removed in 2.0.
-- **One recipe viewer: EMI.** JEI is installed but hidden -- it only feeds
-  recipes to EMI, which is what makes Tinkers' and Create recipes visible.
+- **One recipe viewer: JEI.** Every major mod here ships JEI integration, so
+  Tinkers' casting, Create's processing and JER's ore distribution all render
+  natively. EMI was trialled and removed.
 - **Automation shortcuts are disabled.** Sophisticated Backpacks is present, but
   every stack upgrade, both Infinity upgrades, and the feeding, inception,
   everlasting, auto-cooking and alchemy upgrades are turned off. Carrying more

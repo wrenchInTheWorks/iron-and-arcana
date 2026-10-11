@@ -59,6 +59,11 @@ hash = "fa96526cc55c9fbac742aea245930f1a2db2e68b50765f1bdbaf85477e1631bf"
 metafile = true
 
 [[files]]
+file = "mods/amendments.pw.toml"
+hash = "5922845f6c9bb57548eca500857ebd2268bffe3799373b7306c2bdfb706d5f95"
+metafile = true
+
+[[files]]
 file = "mods/apothic-attributes.pw.toml"
 hash = "1dc9e1a184ade4918dad17ef20de026053c841bd5a50f122fb783bb3f9185b89"
 metafile = true

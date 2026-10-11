@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 111 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 112 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -25,7 +25,7 @@ repository.
 | Combat | Better Combat, Bosses of Mass Destruction, Illager Invasion, Creeper Overhaul, Friends&Foes, Naturalist |
 | Redstone | More Red — logic gates, counters, timers, face-mounted wire |
 | Food & farming | Farmer's Delight, Serene Seasons (8-day seasons) |
-| Building | Chipped, Supplementaries, Macaw's Bridges/Doors/Roofs/Windows |
+| Building | Chipped, Supplementaries + Amendments, Macaw's Bridges/Doors/Roofs/Windows |
 | Storage | Sophisticated Backpacks (+ Create integration) |
 | Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps |
 | Performance | Embeddium, FerriteCore, ModernFix, Noisium, Clumps |

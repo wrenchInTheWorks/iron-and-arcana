@@ -481,34 +481,28 @@ appears to centre on the player. If the ores are wanted, the cheap experiment
 is to stand in a Deep Aether biome (Aerglow Forest, Golden Heights) and run a
 small `/jeargh start 16 merge` there, rather than growing the radius at spawn.
 
-## Known startup warning: "Amendments is not installed"
+## Supplementaries needs Amendments (resolved)
 
-Players see this once on first load:
+Supplementaries split at version 2.8.0 and moved content into a companion mod.
+Running `supplementaries-1.20-3.1.43-forge` without it produced a one-time
+startup warning for every player -- "Amendments is not installed" -- and left
+roughly 10 blocks and 46 items absent: wall lanterns, hanging flower pots, tool
+hooks, carpet stairs and slabs, directional and double cake, skull pile, dye
+and liquid cauldrons.
 
-> Amendments is not installed. Supplementaries update 2.8.0 moved some things
-> to a new mod, Amendments.
+**`amendments-1.20-2.2.6` was added on 2026-10-11**, which clears the warning
+and restores the content. It was a clean add:
 
-**Harmless, but not purely cosmetic.** Nothing breaks and the warning can be
-dismissed, but it does mean a slice of what used to be Supplementaries content
-is genuinely absent. Supplementaries split at 2.8.0; the pack ships
-`supplementaries-1.20-3.1.43-forge`, well past the split.
-
-**Amendments is a clean add if the content is wanted** (checked 2026-10-11, not
-added):
-
-- `amendments-1.20-2.2.6` (Modrinth `6iTJugQR`), 1.20.1 Forge, Aug 2026
-- mandatory deps: `forge[47.1.0,)`, `minecraft[1.20,1.21)`, and `moonlight`
+- mandatory deps are `forge[47.1.0,)`, `minecraft[1.20,1.21)` and `moonlight`
   at a **bare** `1.20-2.16.0` range -- non-binding per the Forge rule above,
   and the pack has Moonlight `2.16.35` regardless
 - `supplementaries` and `flywheel` are both **optional** and both present
-- worldgen is 3 **tag** files only (adds potion cauldrons to igloo and swamp
-  hut structure tags) -- no terrain generation, so it is safe mid-world
-- adds 10 blocks and 46 items: wall lanterns, hanging flower pots, tool hooks,
-  carpet stairs/slabs, directional and double cake, skull pile, dye and liquid
-  cauldrons
+- worldgen is 3 **tag** files only (potion cauldrons added to igloo and swamp
+  hut structure tags), so it was safe to add to the existing world
 
-It fits the pack's Building pillar and costs one entry. Left out pending a
-decision rather than for any technical reason.
+**Keep these two in step.** If Supplementaries is ever updated or removed,
+check Amendments with it -- the warning is the only signal that they have
+drifted apart, and it appears once at startup where it is easy to miss.
 
 ## Restarts: no mod required
 

@@ -1,17 +1,25 @@
-# Discord welcome message — pack 2.1.0
+# Discord welcome message — pack 2.2.0
 
-Paste-ready replacement for the pinned welcome post. Written 2026-10-11 against
-pack **2.1.0** (MC 1.20.1 / Forge 47.4.10 / 113 mods).
+Paste-ready replacement for the pinned welcome post. Updated 2026-10-12 against
+pack **2.2.0** (MC 1.20.1 / Forge 47.4.10 / 113 mods).
 
-**Two placeholders must be filled before posting** — marked `<<< >>>` below:
-the server address and the BlueMap URL. The old `fuzzy-horse364.modrinth.gg`
-host is from the Modrinth-hosted v1 server and is dead; the new address depends
-on the Cloudflare/DDNS setup on the Linux box.
+**No placeholders left — but do not post it until DNS is live.** Both addresses
+are filled in with their final values:
 
-**Also check before posting:** the Releases link points at `/releases/latest`,
-which currently serves **v1.2.3** — the old 1.21.1 NeoForge pack, which cannot
-join this server. Either cut a 2.x release first, or replace that step with
-"ask an admin for the `.mrpack`".
+| | |
+|---|---|
+| Server | `play.wrenchintheworks.online` |
+| BlueMap | `https://map.wrenchintheworks.online` |
+
+`play.` is an **SRV** record pointing at the `mc.` A record on port 25565, which
+is why players type no `:25565` — see step 3 of the
+[cloudflare-ddns runbook](https://github.com/wrenchInTheWorks/cloudflare-ddns).
+`map.` is a **CNAME** to a Cloudflare Tunnel, so it serves HTTPS on 443 with no
+port and no inbound hole. Neither resolves until the DDNS container and the
+tunnel are deployed on the Linux box.
+
+The `/releases/latest` link in step 1 is now correct — **v2.2.0** is Latest and
+carries a working `.mrpack`. It used to serve v1.2.3, which could not join.
 
 Discord's per-message limit is 2000 characters, so this is split into the
 messages it was already split into.
@@ -47,13 +55,13 @@ messages it was already split into.
 >
 > :satellite: **Connection**
 > ```
-> IP: <<< server address — not yet set >>>
+> IP: play.wrenchintheworks.online
 > ```
 > *Server is whitelisted — please DM a @Server Admin to get added.*
 >
 > :map: **Live World Web Map**
 > A live, interactive 3D map of the world, from the BlueMap mod.
-> **[BlueMap](<<< bluemap url — not yet set >>>)**
+> **[BlueMap](https://map.wrenchintheworks.online)**
 
 ## Message 3 — what's in the pack
 
@@ -110,8 +118,8 @@ messages it was already split into.
 | `Carry On` in QoL | Removed |
 | "EMI (the recipe panel on the right)" | EMI was removed; it's JEI now. The **R** and **U** keys are the same |
 | `IP: fuzzy-horse364.modrinth.gg` | The Modrinth-hosted v1 server, now dead |
-| BlueMap on `:23904` | Same — old host and port. BlueMap is on `8100` now |
-| Releases "latest" | Currently serves v1.2.3, which cannot join this server |
+| BlueMap on `:23904` | Same — old host and port. It is now `map.wrenchintheworks.online` over HTTPS via a Cloudflare Tunnel, with no port in the URL |
+| Releases "latest" | Served v1.2.3, which could not join. Fixed — **v2.2.0** is Latest since 2026-10-11 |
 | Mod list generally | Missing Tinkers' and its 7 addons, Botania, Twilight Forest, Deep Aether, More Red, JER, Farmer's Delight, Friends&Foes, Dungeons and Taverns |
 
 Added that weren't covered at all: the Tinkers' pointer (new players reliably

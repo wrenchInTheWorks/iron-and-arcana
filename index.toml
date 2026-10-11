@@ -21,6 +21,10 @@ file = "defaultconfigs/sophisticatedbackpacks-server.toml"
 hash = "2dfab87f63cbf0f38802a5a684b81558ef4ebb97bfb9d00ce0c03b03f3b243cf"
 
 [[files]]
+file = "kubejs/assets/jei/textures/jei/gui/gui_vanilla.png"
+hash = "8060a9a3035fff734f394e3e77853763a95cc4b46ec3674a7c5c5c2b2536e726"
+
+[[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"
 hash = "0fa91fbaf95c249750d0d381f2b8c70a9855d55c58abb6527b969ef9074ec2a9"
 

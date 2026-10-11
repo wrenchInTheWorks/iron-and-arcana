@@ -536,10 +536,26 @@ flagged five "missing" JEI members in Jumbo Furnace, but all five are declared
 on parent interfaces (`IIngredientAcceptor`, `IDrawable`) and a per-class
 member check does not walk the hierarchy. Only the texture is missing.
 
-Options if it ever matters: ship a resource pack supplying that one path (the
-licensing of redistributing JEI's own asset is unverified -- the jar contains no
-LICENSE file), or author a replacement sheet. Neither is worth it for a cosmetic
-bar. Accepted and documented for players in `docs/discord-welcome.md`.
+### Fixed by supplying the texture through KubeJS
+
+`kubejs/assets/` is a client-side resource-pack overlay and can serve **any**
+namespace, so the missing file is simply shipped at the path the mods ask for:
+
+```
+kubejs/assets/jei/textures/jei/gui/gui_vanilla.png
+```
+
+It is JEI's own 256x256 sheet, taken unmodified from
+`jei-1.20.1-forge-15.10.0.39.jar` — the last build that contained it. JEI is
+**MIT**, so redistribution is fine; the notice is in
+`docs/THIRD-PARTY-NOTICES.md`.
+
+This works because KubeJS is `side = both`, so clients receive it. If KubeJS is
+ever removed, this texture goes with it and the pink boxes return — and the
+link between the two is not obvious, hence this note.
+
+If a future JEI reinstates its own `gui_vanilla.png`, delete ours rather than
+letting two copies compete.
 
 ## Restarts: no mod required
 

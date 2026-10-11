@@ -2,7 +2,11 @@ name: Build and Publish Modpack
 
 on:
   push:
-    branches: [main, "2.0"]
+    # main ONLY. The 2.0 branch still exists as a legacy pointer at the same
+    # commit, and building both meant two concurrent runs racing to create the
+    # same tag -- one won, the other died with "Release.tag_name already
+    # exists" and reported the whole run as failed.
+    branches: [main]
 
 jobs:
   build-and-publish:

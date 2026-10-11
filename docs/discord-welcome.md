@@ -1,7 +1,7 @@
 # Discord welcome message — pack 2.1.0
 
 Paste-ready replacement for the pinned welcome post. Written 2026-10-11 against
-pack **2.1.0** (MC 1.20.1 / Forge 47.4.10 / 112 mods).
+pack **2.1.0** (MC 1.20.1 / Forge 47.4.10 / 113 mods).
 
 **Two placeholders must be filled before posting** — marked `<<< >>>` below:
 the server address and the BlueMap URL. The old `fuzzy-horse364.modrinth.gg`
@@ -57,7 +57,7 @@ messages it was already split into.
 
 ## Message 3 — what's in the pack
 
-> :package: **What's in the pack** *(112 mods)*
+> :package: **What's in the pack** *(113 mods)*
 >
 > `Colony` — MineColonies · Structurize · Domum Ornamentum · Stylecolonies · TownTalk
 > `Engineering` — Create · Crafts & Additions · Slice & Dice · Steam 'n' Rails

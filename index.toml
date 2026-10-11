@@ -359,6 +359,11 @@ hash = "c25495262a852dc02886ec8c4b695f30e53264a2e3d881dd36ee9de16a1ef499"
 metafile = true
 
 [[files]]
+file = "mods/mezzconfiggui.pw.toml"
+hash = "ea0af08d86563019daac64d2e5d940b54ba3e8e98e9e839efc54225d84576640"
+metafile = true
+
+[[files]]
 file = "mods/minecolonies.pw.toml"
 hash = "f82a6d3f1f00a144ca298497212d7915e9c658ab95a7f083758e1c5beaaecb1d"
 metafile = true

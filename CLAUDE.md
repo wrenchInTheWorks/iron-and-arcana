@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.1.0 (branch `2.0`, not yet on `main`) | Small private friend server**
+**Forge 1.20.1 | v2.2.0 (on `main`) | Small private friend server**
 
 ---
 
@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Name | Iron & Arcana |
-| Version | 2.1.0 |
+| Version | 2.2.0 |
 | Minecraft | 1.20.1 |
 | Loader | **Forge 47.4.10** (not NeoForge) |
 | Author | iron-and-arcana |
@@ -165,49 +165,27 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 ### Version and branch state
 
-**The pack version is `2.1.0`; the branch is still called `2.0`.** The branch
-name is just a name -- do not rename it or assume the version matches it. 2.1.0
-marks the state after the first test playthrough: JEI as the viewer, Fresh
-Animations removed, Deep Aether + Treasure Reforging, More Red, Tinkers
-Reforged, JER + profiler.
+**`main` is now the live branch.** `2.0` was fast-forwarded into `main` on
+2026-10-11 (53 commits, no divergence) and the pack went to **2.2.0**. The
+branch called `2.0` still exists and points at the same commit; it is a legacy
+name, not a separate line of work. Work on `main`.
 
-**It moves to `main` when the server goes public for friends**, not before.
-That is the owner's gate, not a technical one.
+Everything that used to point at the `2.0` branch now points at `main`:
+`README.md`'s packwiz-installer route, `server/.env.example`, and the
+verification snippet in `server/README.md`. The live `server/.env` on the host
+has to be changed by hand -- it is gitignored.
 
-Sequencing agreed 2026-10-11: the merge waits until after the singleplayer
-test run and the JEARGH profile, so `world-gen.json` is committed to `config/`
-*before* `main` is advanced. The merge itself is a clean fast-forward --
-`origin/main` -> `ab1a28c` -> ... -> branch head, no divergence -- and
-`ab1a28c` (the v1.x closeout commit, which looks unpushed on local `main`) is
-the merge-base of `2.0`, so it arrives with the merge and needs no separate
-handling. Flip `PACKWIZ_URL` and the README client route to `main` as part of
-the same change.
+Releases are cut by `publish.yml` whenever `pack.toml`'s version **changes**
+between commits, on `main` and `2.0`. It passes `--target "$GITHUB_SHA"`, so
+tags land on the commit actually built -- that was broken once and produced a
+v2.1.0 tag pointing at a v1.2.3 commit, which was deleted.
 
-Bumping the version is what cuts a release: `publish.yml` runs `gh release
-create "v<version>"` whenever `pack.toml`'s version changes, on `main` *and*
-`2.0`. Pushing 2.1.0 did produce a v2.1.0 Release, but **it was deleted on the
-owner's instruction** because its tag was wrong (see below), so `pack.toml`
-currently reads 2.1.0 with no release or tag of that name.
+**Verify any new tag before trusting it**, especially before pinning
+`PACKWIZ_URL` to one:
 
-A consequence to plan around: CI releases on a version *change* between
-commits, so merging `2.0` into `main` will **not** cut a release -- the version
-is the same on both sides of the merge. Getting a correctly-tagged release off
-`main` needs a version bump after the merge.
-
-### Branch trap: `main` still serves v1
-
-Until that merge happens, **`main` serves v1.2.3 (1.21.1 / NeoForge 21.1.228)**
-and the newest GitHub Release is v1.2.3. Neither can join the 1.20.1 Forge
-server. So:
-
-- `server/.env` and `.env.example` point `PACKWIZ_URL` at the **`2.0`** branch.
-- The root `README.md` client auto-update route points at **`2.0`** too. It was
-  pointing at `main`, which silently handed players the 1.21.1 pack.
-- The newest GitHub Release is **v1.2.3** again. A v2.1.0 release existed
-  briefly on 2026-10-11 and was deleted along with its tag, because the tag
-  pointed at the wrong commit. Until a post-merge version bump cuts a new one,
-  friends get the `.mrpack` from the maintainer directly.
-- **Flip both URLs back to `main` as part of the merge.**
+```bash
+git rev-parse v2.2.0 && git show $(git rev-parse v2.2.0):pack.toml | head -3
+```
 
 **No longer applicable:** FTB Quests was removed, so the 15 authored v1 quest
 chapters are not being restored. They remain in git history at

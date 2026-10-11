@@ -45,7 +45,7 @@ the server comes up healthy and looks correct, which is what makes this nasty.
 Either wait a few minutes, or verify what GitHub is actually serving first:
 
 ```powershell
-(Invoke-WebRequest "https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/2.0/pack.toml" -UseBasicParsing).Content
+(Invoke-WebRequest "https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml" -UseBasicParsing).Content
 ```
 
 To confirm a config really landed, compare sizes rather than trusting the boot:

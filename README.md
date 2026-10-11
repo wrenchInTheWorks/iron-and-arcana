@@ -46,11 +46,6 @@ See [SKIPPED.md](SKIPPED.md) for what was considered and rejected, and why.
 
 ## Installing the client
 
-> **While 2.0 is on its branch:** `main` still serves v1.2.3 (1.21.1 /
-> NeoForge) and the newest GitHub Release is v1.2.3 -- neither can join the
-> 1.20.1 Forge server. Get the `.mrpack` from the pack maintainer, and use the
-> `2.0` URL below. Both switch to `main` once 2.0 is merged.
-
 1. Download `Iron & Arcana-<version>.mrpack` from
    [Releases](https://github.com/wrenchInTheWorks/iron-and-arcana/releases).
 2. In the **Modrinth App** or **Prism Launcher**, create an instance *from file*
@@ -77,7 +72,7 @@ this repo so it syncs on launch — the same mechanism the server uses. Requires
    set **Pre-launch command**:
 
    ```
-   "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/2.0/pack.toml
+   "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml
    ```
 
 Every launch then adds, removes and updates mods to match the repo — no more

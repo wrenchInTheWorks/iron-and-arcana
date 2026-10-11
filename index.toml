@@ -194,11 +194,6 @@ hash = "bf6be5e42afaafa615c63b6cac9500fbedd27ab54cdeca86afc8dc98a49618cb"
 metafile = true
 
 [[files]]
-file = "mods/discord-integration.pw.toml"
-hash = "f3fa32193b474cce6dbd20811be992b02895e876ca063f675ff4a0bdeb9da6ba"
-metafile = true
-
-[[files]]
 file = "mods/domum-ornamentum.pw.toml"
 hash = "09d1ec8d202d90e6146086e107aefcd892f17fc3a4d98311c8b5e54845da4ef7"
 metafile = true

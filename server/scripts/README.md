@@ -75,8 +75,9 @@ becomes a deliberate one-line `.env` change plus a restart.
 brings the container back. There is no `/restart` command in vanilla or Forge;
 `/stop` is the one to use. Verified 2026-10-11.
 
-Discord Integration is also in the pack, so server control from Discord is
-available without adding anything new.
+Server control from Discord is **not** part of the pack -- there is no Discord
+mod in it. That lives in the Wrench's Toolkit bot, which runs on this host and
+reaches RCON over the internal Docker network rather than a published port.
 
 ## Two traps these scripts defend against
 

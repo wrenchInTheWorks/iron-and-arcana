@@ -39,6 +39,9 @@ services:
       DIFFICULTY: "${DIFFICULTY:-normal}"
       MOTD: "${MOTD:-Iron & Arcana 2.0}"
       ALLOW_FLIGHT: "TRUE" # Botania/Create flight otherwise trips the kick check
+      # Both MERGE into the live json files rather than replacing them, so
+      # names the Discord bot adds over RCON survive restarts. Never add
+      # OVERRIDE_WHITELIST/OVERRIDE_OPS here -- see .env.example for why.
       ENABLE_WHITELIST: "${ENABLE_WHITELIST:-TRUE}"
       WHITELIST: "${WHITELIST}"
       OPS: "${OPS}"

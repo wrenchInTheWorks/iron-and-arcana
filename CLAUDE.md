@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (112 entries, 12 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (111 entries, 11 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -141,6 +141,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 | Recipe viewing | JEI is the viewer; EMI tried first and removed 2026-10-11 (see Recipe viewing) |
 | Docker server | `server/` — itzg image, `PACKWIZ_URL` self-install (`bae071e`) |
 | Infra stripped | EventBridge and all Modrinth publishing removed (`2db8bf6`) |
+| Discord mod removed | DI dropped, 112 -> 111 mods. The bridge is bot-side (log tail + RCON), so the pack needs no Discord mod and stays playable with no bot |
 
 ### Not done yet
 
@@ -526,8 +527,19 @@ deliberate `.env` edit. **This has not been done yet** -- `.env` and
 > only after a post-merge version bump produces a verified tag -- and check it
 > with `git rev-parse <tag>` plus `git show <sha>:pack.toml` before trusting it.
 
-Discord Integration is already in the pack, so Discord-side server control is
-available without adding anything.
+The pack ships **no Discord mod**. Discord Integration was removed once the
+bridge design was settled (on `2.0`, no version bump yet -- a bump cuts a
+release, see "Version and branch state"). The bridge lives entirely in the Wrench's Toolkit
+bot, which tails `/data/logs/latest.log` for Minecraft -> Discord and sends
+RCON `tellraw` for Discord -> Minecraft. Two reasons it is not a mod. DI needs
+its own second Discord bot application, and its `[[commands]]` system has no
+role or permission gating at all -- verified in the 2.2.3 jar, where
+`CommandConfig` carries only `minecraft_command`, `discord_command`,
+`description`, `use_parameters` and `enabled`, with a single `channel_id`
+shared by chat and commands -- so privileged commands could not be restricted
+to moderators. Keeping it out also means the pack stays fully playable with no
+bot, which matters because it is published for anyone to use. The bot repo's
+`IRON_ARCANA_HANDOVER.md` carries the design.
 
 ## Durable Technical Notes
 

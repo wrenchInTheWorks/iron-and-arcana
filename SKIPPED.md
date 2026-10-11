@@ -35,6 +35,7 @@ out for a stated reason. Re-adding any of them means re-litigating that reason.
 | **FTB Quests / Teams / Library** | Removed at the owner's request — quests not wanted, and Open Parties & Claims covers chunk claiming. The 15 authored v1 quest chapters remain in git history at `git show 5a36352^:config/ftbquests/...` |
 | **Carry On** | Removed at the owner's request |
 | **SmallColonies** | Has CurseForge third-party distribution **disabled**, so packwiz cannot download it and CI export fails. Working around it means committing the author's jar to a public repo, which is precisely what they opted out of. Stylecolonies covers the style-pack role |
+| **Discord Integration** | Shipped through 2.1.0 but never configured (`active = false`, no token). Removed once the Discord bridge was settled in favour of the Wrench's Toolkit bot reading the server log. DI would need its own second Discord bot application, and its `[[commands]]` system has **no role or permission gating** — verified in the 2.2.3 jar: `CommandConfig` holds only `minecraft_command`, `discord_command`, `description`, `use_parameters`, `enabled`, and one `channel_id` serves both chat and commands, so moderator-only commands are impossible. The pack is now bridge-agnostic and needs no mod for Discord |
 
 ---
 
@@ -49,7 +50,7 @@ out for a stated reason. Re-adding any of them means re-litigating that reason.
 | **Sable** | Only ever present as a Create Aeronautics dependency |
 | **isCyclic StackOverflow Crash Fix** | Band-aid for the 1.21.1 unofficial-port stack. Those ports are now official 1.20.1 builds — re-add only if the crash actually reproduces |
 | **Byzantine Styles Pack** | packwiz resolved it to a **1.21.1 jar** because the CurseForge file metadata is mis-tagged. MineColonies blueprint formats are version-sensitive, so it was dropped rather than shipped untested |
-| **EventBridge** | The in-house WebSocket event mod. Its source targets **NeoForge 1.21.1**, so using it here means a port across both loader and version. Deferred; the Discord Integration mod in the pack covers the chat-bridge use case |
+| **EventBridge** | The in-house WebSocket event mod. Its source targets **NeoForge 1.21.1**, so using it here means a port across both loader and version. Deferred: the chat bridge is now done bot-side by tailing the server log, which needs no mod at all |
 
 ---
 

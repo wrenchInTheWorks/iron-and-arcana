@@ -21,7 +21,6 @@ If the executable bit is missing after a clone: `chmod +x *.sh`
 | `shell.sh` | Shell inside the container **as uid 1000** |
 | `status.sh` | Container state, players, CPU/RAM, world size, and whether the server matches the repo |
 | `files.sh` | Reach `/data` with the server up or down — `path`, `ls`, `cat`, `pull`, `open` |
-| `backup.sh` | Stops the server, tars the world to `~/ia-backups`, keeps the last 10, restarts |
 | `auto-restart.sh` | Scheduled restart for cron. Warns players, saves, stops; Docker brings it back. `--now` skips warnings |
 | `docker-stats.sh` | Host-wide: all containers, resource usage, `system df`, volume sizes |
 

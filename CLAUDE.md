@@ -152,9 +152,14 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    per-world Forge configs, including the backpack slowness nerf, which
    `defaultconfigs/` will NOT reseed into an existing world) and `.env`, which
    is gitignored.
-2. **Backups.** `server/scripts/backup.sh` exists and is syntax-clean but has
-   never been run. The restore path is the migration path, so the migration is
-   also the first real test of it.
+2. **Backups — now the bot's job.** `server/scripts/backup.sh` was deleted on
+   2026-10-12: Wrench's Toolkit takes scheduled backups without stopping the
+   server (`save-off`, flush, copy, `save-on`) and copies them off-host to
+   Google Drive with restic, deduplicated so two days of two-hourly snapshots
+   costs ~46 MB rather than ~716 MB of full copies. The manual recipe in
+   `server/README.md` is still the migration path and the fallback when the bot
+   is down. **A restore has still never been performed**, so the migration
+   remains its first real test.
 3. **Cloudflare exposure.** Port-forward 25565, a `cloudflare-ddns` container,
    DNS-only A record plus SRV, and a Tunnel for BlueMap only. No CGNAT (public
    IP confirmed, gateway 192.168.1.254).

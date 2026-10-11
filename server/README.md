@@ -92,8 +92,15 @@ Stop the server first — copying a live world can capture a torn save.
 restored server dies with a file-lock `IOException` on first start, which is
 indistinguishable from a stale lock after an unclean kill.
 
-`scripts/backup.sh` does all of the above, keeps the last 10, and restarts the
-server only if it was running.
+There is no backup script here any more. **Routine backups are the Discord
+bot's job** -- Wrench's Toolkit takes them on a schedule, without stopping the
+server (`save-off`, flush, copy, `save-on`) and copies them off-host to Google
+Drive with restic, deduplicated so two days of two-hourly snapshots costs about
+46 MB. See `IRON_ARCANA_HANDOVER.md` in that repo.
+
+The recipe above remains the way to take one **by hand** -- for a migration, or
+if the bot is not running. It stops the server, which the bot's version does
+not need to.
 
 ## Moving the server to another host
 
@@ -113,12 +120,17 @@ What is irreplaceable, and easy to lose:
   or let `scripts/setup.sh` generate a fresh one (it mints a new RCON password,
   which is fine).
 
-On the old host:
+On the old host, take the archive by hand (the recipe at the top of this file):
 
 ```bash
 cd server
-./scripts/backup.sh
+docker compose stop
+docker run --rm -v iron-and-arcana_data:/data -v "$PWD:/backup" alpine   tar czf /backup/world-$(date +%F).tar.gz --exclude=world/session.lock -C /data world
+docker compose start
 ```
+
+Or pull the newest archive the bot already made, which saves taking a fresh
+one: they are on the bot's `bot_data` volume under `backups/`.
 
 On the new host:
 

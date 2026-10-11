@@ -354,8 +354,21 @@ ore-distribution tab shows Y-level distribution, average blocks per chunk,
 valid biomes and dimensions, drops, and silk-touch/fortune flags -- but JER
 ships no world-gen data and does not read it out of the worldgen system. It
 only renders what is registered through `IWorldGenRegistry`, and the scan
-command that used to populate it was removed upstream. That is why **JEARGH**
+command that used to populate it is unreachable. That is why **JEARGH**
 (Just Enough Resources Profiler) is in the pack: it restores the command.
+
+> **`/jer_profile` does not exist in game, and the jar is misleading about it.**
+> JER 1.4.0.247 still ships `jeresources/profiling/ProfileCommand` with
+> `COMMAND_NAME = "jer_profile"`, so grepping the jar suggests a working
+> command. It is orphaned: `jeresources/forge/event/Commands` holds the only
+> `RegisterCommandsEvent` handler, is referenced by no other class, and carries
+> no `@EventBusSubscriber`; `JEResources` never references
+> `RegisterCommandsEvent` either. So nothing ever registers it. Verified in
+> game on 2026-10-11 with cheats on -- the command is not found.
+>
+> Note also that `/jer_profile` is permission-gated (`requires` +
+> `hasPermission`) while `/jeargh` is not, so "cheats are off" is a tempting
+> but wrong explanation. **Use `/jeargh`.**
 
 Profiling scans a chunk radius per dimension on several threads and writes
 `world-gen.json`, then says "You need to restart your world for changes to

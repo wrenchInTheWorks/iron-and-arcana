@@ -92,6 +92,12 @@ messages it was already split into.
 > **:skull: On Death**
 > Graves. Your items are locked in a grave where you died — they won't burn, despawn, or disappear. Go get them. You can have multiple graves, so dying on the way back isn't fatal to your stuff.
 >
+> **The red cross on the server list is normal**
+> Hover it and it says "mods are incompatible". It isn't — you'll connect fine. The pack deliberately ships some mods only to clients (Embeddium, the minimap, Mouse Tweaks) and some only to the server (BlueMap, the YUNG's structure mods), and Forge flags any difference between the two lists. Nothing to fix.
+>
+> **A couple of JEI screens have pink boxes**
+> The Ars Nouveau ritual tab and the Jumbo Smelting tab draw a pink/magenta placeholder where a progress bar should be. Purely cosmetic — the recipes are correct and everything works. Those two mods ask JEI for a texture it stopped shipping in 2024, and neither has had a 1.20.1 update since.
+>
 > *More notes will be added here as questions come up.*
 
 ---

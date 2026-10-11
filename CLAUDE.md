@@ -504,6 +504,43 @@ and restores the content. It was a clean add:
 check Amendments with it -- the warning is the only signal that they have
 drifted apart, and it appears once at startup where it is easy to miss.
 
+## Pink placeholder boxes in two JEI tabs -- upstream, not fixable here
+
+The **Ars Nouveau ritual** tab and the **Jumbo Smelting** tab draw magenta
+missing-texture boxes where a progress bar belongs. Confirmed cosmetic: the
+recipes themselves are correct.
+
+Both mods ask JEI for the same asset:
+
+```
+jei:textures/jei/gui/gui_vanilla.png
+```
+
+JEI used to ship a single GUI sprite sheet at that path. It now ships
+individual sprites under `assets/jei/textures/jei/atlas/gui/` instead
+(`recipe_arrow.png`, `slot.png`, `flame.png`, ...). Measured across versions,
+the sheet disappeared between **15.10.0.39 (2024-08-07)** and
+**15.19.5.98 (2024-09-20)**. Neither mod ships its own copy.
+
+**Downgrading JEI cannot fix it.** Tinkers Reforged floors at
+`jei[15.56.0.204,)`, and 15.56 already lacks the texture -- the last build that
+had it is roughly fifty minor versions and two years below that floor. There is
+no JEI that satisfies the pack and also renders these two tabs.
+
+**Neither mod will be fixed upstream.** Both are already on their newest 1.20.1
+Forge builds: Ars Nouveau `4.12.7` (2025-06-23) and Jumbo Furnace `4.0.0.5`
+(**2023-08-06**).
+
+This is NOT the same failure as the EMI one. The API is fine -- an earlier scan
+flagged five "missing" JEI members in Jumbo Furnace, but all five are declared
+on parent interfaces (`IIngredientAcceptor`, `IDrawable`) and a per-class
+member check does not walk the hierarchy. Only the texture is missing.
+
+Options if it ever matters: ship a resource pack supplying that one path (the
+licensing of redistributing JEI's own asset is unverified -- the jar contains no
+LICENSE file), or author a replacement sheet. Neither is worth it for a cosmetic
+bar. Accepted and documented for players in `docs/discord-welcome.md`.
+
 ## Restarts: no mod required
 
 Verified 2026-10-11 by running it.

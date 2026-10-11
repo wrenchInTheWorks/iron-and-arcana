@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 110 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 112 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -19,11 +19,16 @@ repository.
 | Colony | MineColonies, Structurize, Domum Ornamentum, Stylecolonies, TownTalk |
 | Engineering | Create + Crafts & Additions, Slice & Dice, Steam 'n' Rails |
 | Industry | Immersive Engineering, Immersive Petroleum |
-| Gear | Tinkers' Construct |
+| Gear | Tinkers' Construct + Compatibility, Delight, Jewelry, Levelling, Things, Thinking, Reforged |
 | Magic | Ars Nouveau (+ Ars Creo), Botania |
-| Exploration | Twilight Forest, The Aether (+ Deep Aether, Treasure Reforging), Alex's Caves, Terralith, YUNG's structures |
+| Exploration | Twilight Forest, The Aether (+ Deep Aether, Treasure Reforging), Alex's Caves, Terralith, YUNG's structures, Dungeons and Taverns |
+| Combat | Better Combat, Bosses of Mass Destruction, Illager Invasion, Creeper Overhaul, Friends&Foes, Naturalist |
 | Redstone | More Red — logic gates, counters, timers, face-mounted wire |
-| Seasons | Serene Seasons |
+| Food & farming | Farmer's Delight, Serene Seasons (8-day seasons) |
+| Building | Chipped, Supplementaries, Macaw's Bridges/Doors/Roofs/Windows |
+| Storage | Sophisticated Backpacks (+ Create integration) |
+| Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps |
+| Performance | Embeddium, FerriteCore, ModernFix, Noisium, Clumps |
 
 Design rules worth knowing before you play:
 

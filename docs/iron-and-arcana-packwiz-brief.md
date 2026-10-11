@@ -1,4 +1,8 @@
 # Iron & Arcana — packwiz Session Brief
+
+> **Historical — the original v1 packwiz session brief.** Kept for the mod
+> slugs and the reasoning of the time. The pack was rebuilt from scratch for
+> 1.20.1 Forge in 2.0; see `../CLAUDE.md` for current guidance.
 **For use with Claude Code**
 
 ---

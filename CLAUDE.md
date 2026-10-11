@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (95 entries, 11 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (112 entries, 12 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -585,7 +585,7 @@ public pack, and no longer constrained by Modrinth's rules.
   `options.txt` existed only to enable Fresh Animations and was removed with
   them. Do not reintroduce them for looks without re-testing mob-heavy scenes.
 - **Performance is a real constraint.** BlueMap, MineColonies AI and Create
-  contraptions are the known cost centres — see `SERVER_PERFORMANCE_NOTES.md`
+  contraptions are the known cost centres — see `docs/SERVER_PERFORMANCE_NOTES.md` (v1-era, still directionally right)
   before adding heavy server-side mods.
 - **One recipe viewer: JEI.** EMI was the pack's viewer through 2.0 and was
   removed on 2026-10-11 -- every major mod here is JEI-native and none support

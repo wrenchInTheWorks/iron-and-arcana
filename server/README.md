@@ -148,7 +148,7 @@ position - the surest sign the right world came across.
 ## Memory and performance
 
 `USE_AIKAR_FLAGS` applies the same G1GC tuning that the v1 investigation landed
-on (see `../SERVER_PERFORMANCE_NOTES.md`). Two things changed for the better by
+on (see `../docs/SERVER_PERFORMANCE_NOTES.md`). Two things changed for the better by
 self-hosting:
 
 - **`-Xmx` is ours now.** The Modrinth panel used to append `-Xmx6000M` last,

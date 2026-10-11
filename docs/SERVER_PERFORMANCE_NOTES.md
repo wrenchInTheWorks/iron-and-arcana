@@ -1,4 +1,8 @@
 # Iron & Arcana — Server Performance Investigation Notes
+
+> **Historical — written against v1.x (MC 1.21.1 / NeoForge).** The specific
+> numbers predate the 2.0 rebuild, but the conclusions still hold: BlueMap,
+> MineColonies AI and Create contraptions are the cost centres.
 _Last updated: 2026-05-16_
 
 ## Symptoms

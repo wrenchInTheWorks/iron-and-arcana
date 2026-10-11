@@ -92,6 +92,9 @@ messages it was already split into.
 > **:skull: On Death**
 > Graves. Your items are locked in a grave where you died — they won't burn, despawn, or disappear. Go get them. You can have multiple graves, so dying on the way back isn't fatal to your stuff.
 >
+> **A warning on first load is expected**
+> You'll see "Amendments is not installed — Supplementaries 2.8.0 moved some things to a new mod." Dismiss it; nothing is broken. It just means a handful of decorative blocks that used to be part of Supplementaries aren't in the pack.
+>
 > *More notes will be added here as questions come up.*
 
 ---

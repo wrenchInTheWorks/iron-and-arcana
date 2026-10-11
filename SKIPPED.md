@@ -54,6 +54,12 @@ out for a stated reason. Re-adding any of them means re-litigating that reason.
 
 ---
 
+## Not added (yet), with a visible symptom
+
+| Mod | Finding |
+|---|---|
+| **Amendments** | Supplementaries split at version 2.8.0 and moved content into Amendments, so the pack shows a one-time startup warning: *"Amendments is not installed."* Nothing breaks, but ~10 blocks and ~46 items of former Supplementaries content (wall lanterns, hanging flower pots, tool hooks, carpet stairs/slabs, directional and double cake, skull pile, cauldrons) are absent. `amendments-1.20-2.2.6` exists for 1.20.1 Forge, its only hard dependency beyond Forge/Minecraft is Moonlight (already in the pack at 2.16.35), and its worldgen is 3 structure-**tag** files, so it is safe to add mid-world. Not added pending a decision |
+
 ## Previously skipped, now in the pack
 
 These were excluded under the old "EMI is the viewer, anything needing JEI is

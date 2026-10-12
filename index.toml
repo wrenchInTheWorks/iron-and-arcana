@@ -25,8 +25,32 @@ file = "defaultconfigs/sophisticatedbackpacks-server.toml"
 hash = "2dfab87f63cbf0f38802a5a684b81558ef4ebb97bfb9d00ce0c03b03f3b243cf"
 
 [[files]]
+file = "kubejs/assets/ironarcana/lang/en_us.json"
+hash = "f85d3b30c3bac959a649e05a1765930a38d61a4ce9711a9301b9409ef9270de5"
+
+[[files]]
+file = "kubejs/assets/ironarcana/tinkering/materials/electrotine.json"
+hash = "16b43585b532993f073997cb4532c513d29559000861c4f11ef458fdf574a50e"
+
+[[files]]
 file = "kubejs/assets/jei/textures/jei/gui/gui_vanilla.png"
 hash = "8060a9a3035fff734f394e3e77853763a95cc4b46ec3674a7c5c5c2b2536e726"
+
+[[files]]
+file = "kubejs/data/ironarcana/recipes/tools/materials/electrotine.json"
+hash = "5a3c91808e9eabd00b7a638e8d85e7eeb09bb77bcd3b802f2dd45a689e8c3a40"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/definition/electrotine.json"
+hash = "756c77655c8686c570e5be83c1aaae85f33f42303d1c3515050217c0aca4f66f"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/stats/electrotine.json"
+hash = "166124e6364c8a0a3d139e2f93c727aa73d6850b46d03fc70ae9af7564e5df95"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/traits/electrotine.json"
+hash = "bf463b726ce12024d9e3e7195f9f6554fd7c49cbe831b4f89e63f685b87e1df6"
 
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"
@@ -39,6 +63,10 @@ hash = "8dd27e97e6e4c7f7d5dc3a69fb19ed9e079181185920dc253c10533c32f82843"
 [[files]]
 file = "kubejs/server_scripts/projectred_backpacks.js"
 hash = "af0bac49d226c8a50ad014e42e87e0f8e30cd53951f1e566d3240f8fffe91a3b"
+
+[[files]]
+file = "kubejs/server_scripts/projectred_gear.js"
+hash = "ef68590676151bee994d71b9a70e51485f3c8baa11c9df09a0d32aacb243e1a7"
 
 [[files]]
 file = "mods/aether-treasure-reforging.pw.toml"

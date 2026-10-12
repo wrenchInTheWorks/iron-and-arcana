@@ -37,6 +37,12 @@ services:
 
       MAX_PLAYERS: "${MAX_PLAYERS:-8}"
       DIFFICULTY: "${DIFFICULTY:-normal}"
+
+      # World seed. Applied ONLY when the world is first generated - setting it
+      # later does nothing to an existing world. Declared here rather than left
+      # in server.properties because that file lives inside the volume, so a
+      # fresh volume (a rebuild, or the move to another host) would lose it.
+      SEED: "${SEED:-}"
       MOTD: "${MOTD:-Iron & Arcana 2.0}"
       ALLOW_FLIGHT: "TRUE" # Botania/Create flight otherwise trips the kick check
       # Both MERGE into the live json files rather than replacing them, so

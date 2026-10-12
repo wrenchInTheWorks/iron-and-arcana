@@ -18,7 +18,7 @@ hash = "b4f5f6690932bf83c418518464b4e2d8f427d49cf375a12c65ee407fbf0b77e6"
 
 [[files]]
 file = "config/world-gen.json"
-hash = "a7199b6cdd965dbe91dffecf3103d03693e60c3da3ba872c3112e8673b6a01d8"
+hash = "25e20e4289caf9d01146749795620651e22fc3414f34dcd8b77a5b67543e5781"
 
 [[files]]
 file = "defaultconfigs/sophisticatedbackpacks-server.toml"
@@ -31,6 +31,22 @@ hash = "8060a9a3035fff734f394e3e77853763a95cc4b46ec3674a7c5c5c2b2536e726"
 [[files]]
 file = "kubejs/client_scripts/jei_hide.js"
 hash = "5879bbbbc35a24bfefbf74ed6a3d057b192c9f066e19628b9b7993d53de5713b"
+
+[[files]]
+file = "kubejs/data/projectred_exploration/worldgen/configured_feature/electrotine_ore.json"
+hash = "d17318e4426075170858cf783a94688726f7f95270aeb9452a5d629865dbb04a"
+
+[[files]]
+file = "kubejs/data/projectred_exploration/worldgen/configured_feature/peridot_ore.json"
+hash = "fa74200c788b0535e018968369d3928eb9e7dc1aaa040eb28d5b57ecb2630d4c"
+
+[[files]]
+file = "kubejs/data/projectred_exploration/worldgen/configured_feature/ruby_ore.json"
+hash = "e1c511b66e2827a3c71e7c235c9169ef85fc018dfab53cf401f40a316cc62adc"
+
+[[files]]
+file = "kubejs/data/projectred_exploration/worldgen/configured_feature/sapphire_ore.json"
+hash = "17eea6af9783be99a629c7e8992ad587d4f19df591003f0b5eae0c1a6bb9ac49"
 
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"

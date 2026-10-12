@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 10,
+    "targets": [
+      {
+        "state": {
+          "Name": "projectred_exploration:peridot_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:stone_ore_replaceables"
+        }
+      },
+      {
+        "state": {
+          "Name": "projectred_exploration:deepslate_peridot_ore"
+        },
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:deepslate_ore_replaceables"
+        }
+      }
+    ]
+  },
+  "__comment": "Override of Project Red Exploration 4.21.0. Upstream gives BOTH ore targets the tag minecraft:stone_ore_replaceables, so the vanilla ore feature always matches the first target and the deepslate variant can never place. The second target now uses minecraft:deepslate_ore_replaceables as intended."
+}

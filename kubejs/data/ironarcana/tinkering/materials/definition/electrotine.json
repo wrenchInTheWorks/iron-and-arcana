@@ -1,7 +1,0 @@
-{
-  "condition": { "type": "forge:mod_loaded", "modid": "projectred_core" },
-  "craftable": true,
-  "hidden": false,
-  "sortOrder": 3,
-  "tier": 2
-}

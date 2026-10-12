@@ -1,33 +1,28 @@
-// Iron & Arcana — remove Project Red's gem tool and armour tiers.
+// Iron & Arcana — remove Project Red's gem ARMOUR only.
 //
 // "Tinkers' Construct is the gear progression system ... do not add a third
-// gear mod" (CLAUDE.md, Pack Philosophy). Project Red Exploration ships three
-// complete vanilla-style tiers in ruby, sapphire and peridot — 9 pieces each,
-// tools and armour — which is exactly that.
+// gear mod" (CLAUDE.md, Pack Philosophy). Three full armour tiers in ruby,
+// sapphire and peridot is that; three sets of simple tools is not, so the
+// tools stay craftable.
 //
-// The gems themselves stay craftable and keep generating; they are Project Red
-// crafting components, and the intent is that gem value flows into Tinkers
-// rather than into a parallel tool tier.
+// History worth keeping: the tools were briefly removed too, on the theory
+// that Project Red's gems would instead become Tinkers materials. That was
+// reverted — datapack-defined materials cannot be melted or cast, because
+// fluids can only be registered by a mod, so they sat outside Tinkers'
+// progression rather than inside it, and the generated part textures did not
+// resolve. The gems are simply Project Red tool materials again.
 //
-// Deliberately NOT removed: saws, sickles, the Athame and the Wool Gin. Those
-// are utility tools with no Tinkers equivalent, so they compete with nothing.
-// The saws in particular are used for microblock cutting.
-//
-// As with the backpacks, ProjectRed.cfg has no item toggles, so KubeJS is the
-// only lever available here.
+// ProjectRed.cfg has no item toggles, so KubeJS remains the only lever here.
 
 const PR_GEMS = ['ruby', 'sapphire', 'peridot']
 
-const PR_GEAR_PIECES = [
-    'sword', 'pickaxe', 'axe', 'shovel', 'hoe',
-    'helmet', 'chestplate', 'leggings', 'boots'
-]
+const PR_ARMOUR_PIECES = ['helmet', 'chestplate', 'leggings', 'boots']
 
 ServerEvents.recipes(event => {
-    // 3 gems x 9 pieces = 27 removals. Removing by output rather than recipe id
-    // catches alternates too.
+    // 3 gems x 4 pieces = 12 removals. Tools (sword, pickaxe, axe, shovel,
+    // hoe) are deliberately left alone.
     PR_GEMS.forEach(gem => {
-        PR_GEAR_PIECES.forEach(piece => {
+        PR_ARMOUR_PIECES.forEach(piece => {
             event.remove({ output: `projectred_exploration:${gem}_${piece}` })
         })
     })

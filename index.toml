@@ -133,6 +133,11 @@ hash = "ff2aa5045d98d0303e288dd37a1613c6376d8cfe2c829219e6e7283fb86008bb"
 metafile = true
 
 [[files]]
+file = "mods/cb-multipart.pw.toml"
+hash = "367e5f74d3d249e01e899f9d6b9892a285d3c6ddf18d6876982b5a9694816983"
+metafile = true
+
+[[files]]
 file = "mods/cerbons-api.pw.toml"
 hash = "b04f3690005952fb2f0d93b742a00d4b25547cbb4e2975aaca89fb0af58a9539"
 metafile = true
@@ -160,6 +165,11 @@ metafile = true
 [[files]]
 file = "mods/clumps.pw.toml"
 hash = "903352ffbd84d4b95fed905893f4715d9c3f88ec9fff6fb06f6e359e0b839dc3"
+metafile = true
+
+[[files]]
+file = "mods/codechicken-lib.pw.toml"
+hash = "5d5049e9d4a886b2fa84215fc2bd8a38a8e0c0395c2e753d92907e4a30888d2a"
 metafile = true
 
 [[files]]
@@ -293,11 +303,6 @@ hash = "1efef6e736712c66ad307f7eeeb0fb8cf344908c643ebcfada612b8312c2d144"
 metafile = true
 
 [[files]]
-file = "mods/jumbo-furnace.pw.toml"
-hash = "6ac076f98f40af66f042ee1107d25f0220a1fb004bf6a926916dc9f955452732"
-metafile = true
-
-[[files]]
 file = "mods/just-enough-effect-descriptions-jeed.pw.toml"
 hash = "ffb380d0c3a85701b3bb594ed39e76b9bd748e6282da79b7bea31765a8fce4c3"
 metafile = true
@@ -383,11 +388,6 @@ hash = "685d7c61f7d5e1c16e3de6f7e16e090c0355cf38e7d416b730093d4dc239d9d2"
 metafile = true
 
 [[files]]
-file = "mods/more-red.pw.toml"
-hash = "ea4a8be0d3d889f0240a975a2ba25d8c39c29900fe47de950b667dd7f5c69a88"
-metafile = true
-
-[[files]]
 file = "mods/mouse-tweaks.pw.toml"
 hash = "679fa8f3b49b9ed3fbcb29d6ccdb99bce465faa01f9cec000464ac8d4fbe134f"
 metafile = true
@@ -425,6 +425,31 @@ metafile = true
 [[files]]
 file = "mods/playeranimator.pw.toml"
 hash = "765987a78e5d8c782d0da2de99998b43b5907d6c41347d3804045ad109e4a586"
+metafile = true
+
+[[files]]
+file = "mods/project-red-core.pw.toml"
+hash = "5cbc12354a9183ff5413ce4db81b28014049207f2cc815050776b295ab5ce404"
+metafile = true
+
+[[files]]
+file = "mods/project-red-exploration.pw.toml"
+hash = "aca496b9d88e2a964ff830f16fec7fb9358e56e0ad4115bb404c4ca8fab20b51"
+metafile = true
+
+[[files]]
+file = "mods/project-red-fabrication.pw.toml"
+hash = "9b0038008e5fa886b2df85cdba9ef7b371ef08dea77cea2113947d035358b23d"
+metafile = true
+
+[[files]]
+file = "mods/project-red-integration.pw.toml"
+hash = "8d58a3e519dfb00b7e494d3aaecb005f549b2491495507013fc5b309b49cd0ea"
+metafile = true
+
+[[files]]
+file = "mods/project-red-transmission.pw.toml"
+hash = "563f167ca45d026339e32310623fdf2daefd89c258936e32b566d2f46c404617"
 metafile = true
 
 [[files]]
@@ -555,11 +580,6 @@ metafile = true
 [[files]]
 file = "mods/towntalk.pw.toml"
 hash = "32e0f6bce7adc5b09ba3350110ac4be7ee04e556db35ba1db97bacfabd31e4dc"
-metafile = true
-
-[[files]]
-file = "mods/use-item-on-block-event.pw.toml"
-hash = "89f78c76fbc727743e9f66299d906d001fd55f5f5f401fbf0f514bc06d79421a"
 metafile = true
 
 [[files]]

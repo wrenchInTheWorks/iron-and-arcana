@@ -1,6 +1,10 @@
 hash-format = "sha256"
 
 [[files]]
+file = "config/ProjectRed.cfg"
+hash = "940669feeb472b75ca1c08c843a6326860d85fb8019dccabccf040073bba5503"
+
+[[files]]
 file = "config/bluemap/core.conf"
 hash = "090aca18cee223695261e6d4409d6f43b9e06de6c9f8b48afacdea6c65699953"
 
@@ -31,6 +35,10 @@ hash = "0fa91fbaf95c249750d0d381f2b8c70a9855d55c58abb6527b969ef9074ec2a9"
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/tinkering/tools/papas_fried_rice/repair_4.json"
 hash = "8dd27e97e6e4c7f7d5dc3a69fb19ed9e079181185920dc253c10533c32f82843"
+
+[[files]]
+file = "kubejs/server_scripts/projectred_backpacks.js"
+hash = "af0bac49d226c8a50ad014e42e87e0f8e30cd53951f1e566d3240f8fffe91a3b"
 
 [[files]]
 file = "mods/aether-treasure-reforging.pw.toml"

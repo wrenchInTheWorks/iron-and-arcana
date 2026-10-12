@@ -26,11 +26,23 @@ hash = "2dfab87f63cbf0f38802a5a684b81558ef4ebb97bfb9d00ce0c03b03f3b243cf"
 
 [[files]]
 file = "kubejs/assets/ironarcana/lang/en_us.json"
-hash = "f85d3b30c3bac959a649e05a1765930a38d61a4ce9711a9301b9409ef9270de5"
+hash = "bab330019df572d938126e5e17be9fc7e58a1e9b61ae458762b304b6f94b74fa"
 
 [[files]]
 file = "kubejs/assets/ironarcana/tinkering/materials/electrotine.json"
-hash = "02a7ee4a51b55d95555dfae3efc705a1b2d617f5deb6558ba076615dd3bf94fd"
+hash = "28da66966fb27387d53e5cac23303f043495d94062af6b496b8dca06bc21578c"
+
+[[files]]
+file = "kubejs/assets/ironarcana/tinkering/materials/peridot.json"
+hash = "fbf25d91015df19498e92d5546c4d656581518c59082d5911cea774d4aa26b09"
+
+[[files]]
+file = "kubejs/assets/ironarcana/tinkering/materials/ruby.json"
+hash = "1eeae02b5f36616be0158f2e30e3ccd49bce42520f1cbc3517309181308b44d1"
+
+[[files]]
+file = "kubejs/assets/ironarcana/tinkering/materials/sapphire.json"
+hash = "a85d34f1d736296ba38b37b7005486428e32cd359a95cc975e3d8f4ba788fc9b"
 
 [[files]]
 file = "kubejs/assets/jei/textures/jei/gui/gui_vanilla.png"
@@ -41,16 +53,64 @@ file = "kubejs/data/ironarcana/recipes/tools/materials/electrotine.json"
 hash = "5a3c91808e9eabd00b7a638e8d85e7eeb09bb77bcd3b802f2dd45a689e8c3a40"
 
 [[files]]
+file = "kubejs/data/ironarcana/recipes/tools/materials/peridot.json"
+hash = "ad39150c1faa3433ba5e2e055353fbdf004eb55ef1fcf323249e162a9b4eca4f"
+
+[[files]]
+file = "kubejs/data/ironarcana/recipes/tools/materials/ruby.json"
+hash = "9c03b2900ceba74ae57755e550805b5bab58f72e2867c97534511d7ffce4b31e"
+
+[[files]]
+file = "kubejs/data/ironarcana/recipes/tools/materials/sapphire.json"
+hash = "9c3c3e5b8f301bfe16b9fa0d8461a7066699755b6289bec2050447f8c765f72b"
+
+[[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/definition/electrotine.json"
 hash = "756c77655c8686c570e5be83c1aaae85f33f42303d1c3515050217c0aca4f66f"
 
 [[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/definition/peridot.json"
+hash = "a4f4a6b3edc08f0d1f2faa205e0ec49e4d8e03c056cb056dd02584f05a3c1700"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/definition/ruby.json"
+hash = "db1622effb4460a9c891bfbd213b5d13af3b7e5a21c9f39768124dc1d40e7196"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/definition/sapphire.json"
+hash = "285ac8e5ae775a9bb8e162bbf52a26357fcb986099eb6a302b93853fa1dcb65a"
+
+[[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/stats/electrotine.json"
-hash = "8f9f4071088139f0d4f331c98383cc3757519509746ee9b7a1350785b8a91e7b"
+hash = "c8027a185ca8c08b7efb404cd25ca6d25862354957c12117dc5c400878703c03"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/stats/peridot.json"
+hash = "0e8c332a08f26c267802294a3ac016eb8f67a763af7eb83aee33bbce31519da0"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/stats/ruby.json"
+hash = "a7c8f0e7f4d7dd75d403bb1aca1c76d3553f205ab61894fe48c54546ff458879"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/stats/sapphire.json"
+hash = "f3e4ad8a51c2c073d9656ff19f92f869bfc7ba8698b28a8f2436e3affecfe4aa"
 
 [[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/traits/electrotine.json"
 hash = "3669aabb29d1c8832c3b7627f790b6f4aaf7cc4ed784b3b6f03ed163079bc347"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/traits/peridot.json"
+hash = "15f1c5b48b5ef193e3d9d53f0f71b1dab547263b2549cf3d8c76d2a8110ed012"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/traits/ruby.json"
+hash = "0f5ee72b23404af28e9d6f91ddae1da1817734bafa3ad17a0935302ef46883eb"
+
+[[files]]
+file = "kubejs/data/ironarcana/tinkering/materials/traits/sapphire.json"
+hash = "4ae92031ce03ba79eff41d577352dbab8dcc3e7f9fc6ebe2cbc92e0eab9a3c72"
 
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"

@@ -1,4 +1,10 @@
 {
   "material.ironarcana.electrotine": "Electrotine",
-  "material.ironarcana.electrotine.flavor": "Charged"
+  "material.ironarcana.electrotine.flavor": "Charged",
+  "material.ironarcana.ruby": "Ruby",
+  "material.ironarcana.ruby.flavor": "Keen",
+  "material.ironarcana.sapphire": "Sapphire",
+  "material.ironarcana.sapphire.flavor": "Enduring",
+  "material.ironarcana.peridot": "Peridot",
+  "material.ironarcana.peridot.flavor": "Drawing"
 }

@@ -43,6 +43,8 @@
     },
     "tconstruct:plating_shield": {
       "durability": 215
-    }
+    },
+    "tconstruct:arrow_head": {},
+    "tconstruct:arrow_shaft": {}
   }
 }

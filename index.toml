@@ -46,11 +46,11 @@ hash = "756c77655c8686c570e5be83c1aaae85f33f42303d1c3515050217c0aca4f66f"
 
 [[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/stats/electrotine.json"
-hash = "166124e6364c8a0a3d139e2f93c727aa73d6850b46d03fc70ae9af7564e5df95"
+hash = "f376369e4e4b3382e344ca0ba414bcb975c5006b56fd2aad4c44223a43a277fa"
 
 [[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/traits/electrotine.json"
-hash = "bf463b726ce12024d9e3e7195f9f6554fd7c49cbe831b4f89e63f685b87e1df6"
+hash = "3669aabb29d1c8832c3b7627f790b6f4aaf7cc4ed784b3b6f03ed163079bc347"
 
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"

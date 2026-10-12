@@ -18,7 +18,7 @@ hash = "b4f5f6690932bf83c418518464b4e2d8f427d49cf375a12c65ee407fbf0b77e6"
 
 [[files]]
 file = "config/world-gen.json"
-hash = "25e20e4289caf9d01146749795620651e22fc3414f34dcd8b77a5b67543e5781"
+hash = "f8e98e3b061850949572cf113a488f7b75d091facc57d9a27988f7faf48518b1"
 
 [[files]]
 file = "defaultconfigs/sophisticatedbackpacks-server.toml"

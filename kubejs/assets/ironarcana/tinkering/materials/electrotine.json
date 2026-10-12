@@ -1,6 +1,8 @@
 {
   "color": "FF2878C8",
-  "fallbacks": [ "metal" ],
+  "fallbacks": [
+    "metal"
+  ],
   "generator": {
     "supported_stats": [
       "tconstruct:head",
@@ -8,7 +10,15 @@
       "tconstruct:binding",
       "tconstruct:repair_kit",
       "tconstruct:limb",
-      "tconstruct:grip"
+      "tconstruct:grip",
+      "tconstruct:armor_plating",
+      "tconstruct:plating_helmet",
+      "tconstruct:plating_chestplate",
+      "tconstruct:plating_leggings",
+      "tconstruct:plating_boots",
+      "tconstruct:plating_shield",
+      "tconstruct:maille",
+      "tconstruct:armor_maille"
     ],
     "transformer": {
       "type": "tconstruct:recolor_sprite",

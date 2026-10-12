@@ -30,7 +30,7 @@ hash = "f85d3b30c3bac959a649e05a1765930a38d61a4ce9711a9301b9409ef9270de5"
 
 [[files]]
 file = "kubejs/assets/ironarcana/tinkering/materials/electrotine.json"
-hash = "16b43585b532993f073997cb4532c513d29559000861c4f11ef458fdf574a50e"
+hash = "3ed2480dbaa508d185d45b0420da6b9a73dcdaa7dfef0f67eedad3386da9e155"
 
 [[files]]
 file = "kubejs/assets/jei/textures/jei/gui/gui_vanilla.png"
@@ -46,7 +46,7 @@ hash = "756c77655c8686c570e5be83c1aaae85f33f42303d1c3515050217c0aca4f66f"
 
 [[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/stats/electrotine.json"
-hash = "f376369e4e4b3382e344ca0ba414bcb975c5006b56fd2aad4c44223a43a277fa"
+hash = "b882c2b4853dff607909ff701b9371bbb8c06ba42be67074e7a28f02625dd1a1"
 
 [[files]]
 file = "kubejs/data/ironarcana/tinkering/materials/traits/electrotine.json"

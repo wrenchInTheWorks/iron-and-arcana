@@ -167,13 +167,25 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    `wrenchInTheWorks/cloudflare-ddns` repo; the record layout is summarised in
    `server/README.md`.
 
-   > **None of the three hostnames exist yet.** Checked over DoH on 2026-10-14:
-   > `mc.`, `play.` and `map.wrenchintheworks.online` all return NOERROR with
-   > an empty answer, and there is no `_minecraft._tcp.play` SRV. Cloudflare is
-   > authoritative for the zone, so the records simply have not been created.
-   > **`docs/discord-welcome.md` must not be posted until they resolve** -- it
-   > names both addresses, and a pinned welcome post with a dead address is
-   > worse than no post.
+   > **The addresses are `minecraft.` and `mc-map.`, and both resolve.**
+   > Measured over DoH on 2026-10-14: `minecraft.wrenchintheworks.online` is an
+   > **A** record to `122.58.125.30` -- the connection's own public IP, not a
+   > Cloudflare anycast address, so it is correctly grey-clouded.
+   > `mc-map.wrenchintheworks.online` answers with Cloudflare anycast
+   > (`104.21.32.198`, `172.67.154.115`), i.e. proxied through the tunnel.
+   >
+   > **There is no SRV record and none is needed.** The runbook's original
+   > shape was `play.` (SRV) -> `mc.` (A), which exists to serve a non-standard
+   > port. This is one A record with the server on the default 25565, so the
+   > bare hostname works on its own. **Neither `mc.` nor `play.` exists** --
+   > earlier drafts of this file and of `docs/discord-welcome.md` named them,
+   > and that was wrong.
+   >
+   > BlueMap is confirmed live: HTTP 200, `settings.json` reports version 5.3
+   > (the pinned build) and all five maps. **The game port is NOT verified** --
+   > TCP 25565 times out from inside the LAN, which proves nothing because
+   > consumer routers rarely hairpin to their own public IP. Test from mobile
+   > data.
 4. **Config tuning** after some playtime. Serene Seasons stays at 8-day seasons.
 5. **Pin `PACKWIZ_URL` to a tag** once friends depend on the server, so an
    unattended restart cannot install half-finished work. `v2.3.0` is verified

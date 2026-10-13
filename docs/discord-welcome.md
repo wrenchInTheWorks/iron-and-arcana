@@ -11,16 +11,33 @@ copied either way.
 
 | | |
 |---|---|
-| Server | `play.wrenchintheworks.online` |
-| BlueMap | `https://map.wrenchintheworks.online` |
+| Server | `minecraft.wrenchintheworks.online` |
+| BlueMap | `https://mc-map.wrenchintheworks.online` |
 
-> **Neither address resolves yet.** Checked over DNS-over-HTTPS on 2026-10-14:
-> `mc.`, `play.` and `map.wrenchintheworks.online` all return NOERROR with an
-> empty answer, and there is no `_minecraft._tcp.play` SRV record. Cloudflare
-> is authoritative for the zone, so the records simply have not been created —
-> they land when the Linux host comes up with the `cloudflare-ddns` container
-> and the tunnel. **Do not post this until both resolve.** A pinned welcome
-> post with a dead address is worse than no pinned post.
+**Both resolve.** Measured over DNS-over-HTTPS on 2026-10-14:
+
+| Name | Type | Answer | Reading |
+|---|---|---|---|
+| `minecraft.` | **A** | `122.58.125.30` | the connection's own public IP, **not** a Cloudflare anycast address — so the record is grey-clouded (DNS-only), which is what Minecraft needs |
+| `mc-map.` | **A** | `104.21.32.198`, `172.67.154.115` | Cloudflare anycast — proxied, i.e. fronted by the tunnel. A proxied record answers `A` with anycast IPs whatever the underlying record is, which is why a `CNAME` query returns nothing |
+
+**There is no SRV record, and none is needed.** The earlier design had
+`play.` (SRV) pointing at `mc.` (A); that was for serving a non-standard port.
+This is the simpler shape — one A record, and the server on the default 25565 —
+so players type the bare hostname and the client assumes the right port anyway.
+Neither `mc.` nor `play.` exists; do not reintroduce them.
+
+**BlueMap is confirmed working end to end**: `https://mc-map...` returns HTTP
+200 with real BlueMap HTML, `settings.json` reports version **5.3** (the pinned
+Java-17-safe build) and lists all five maps — `world`, the Nether, the End,
+`world_aether_the_aether` and `world_twilightforest_twilight_forest`.
+
+> **The game port has not been verified from outside.** A TCP connect to
+> 25565 times out from a machine on the same LAN (192.168.1.x behind
+> 192.168.1.254), which proves nothing either way — most consumer routers do
+> not hairpin a connection to their own public IP. **Test from a phone on
+> mobile data before posting.** Resolving correctly proves DNS; it does not
+> prove the port forward.
 
 Two more preconditions, both bot-side:
 
@@ -84,12 +101,12 @@ Two more preconditions, both bot-side:
 >
 > :satellite: **Connect**
 > ```
-> play.wrenchintheworks.online
+> minecraft.wrenchintheworks.online
 > ```
 > No port number needed — paste that straight into *Add Server*.
 >
 > :map: **Live world map**
-> A live 3D map of the world, updating as you build: **[map.wrenchintheworks.online](https://map.wrenchintheworks.online)**
+> A live 3D map of the world, updating as you build: **[mc-map.wrenchintheworks.online](https://mc-map.wrenchintheworks.online)**
 > `/ia map` gets you the link any time, and `/ia info` has the pack details.
 >
 > :speech_balloon: Chat is bridged both ways — what you type in the Minecraft chat channel reaches players in game, and their chat, joins, leaves and deaths show up here.

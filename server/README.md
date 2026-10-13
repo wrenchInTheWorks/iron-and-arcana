@@ -194,28 +194,37 @@ Spark reading guide.
 `VIEW_DISTANCE=8` / `SIMULATION_DISTANCE=4` carry over as the largest single TPS
 win found in v1.
 
-## Planned: exposing the server
+## Exposing the server
 
-Decided, to be built once the Linux host is ready. **No CGNAT** on this
-connection, which is what makes the simple route viable.
+**No CGNAT** on this connection, which is what makes the simple route viable.
 
-| Need | Approach |
-|---|---|
-| Game port | Forward TCP 25565 to the Linux host |
-| Dynamic IP | A `cloudflare-ddns` container updating the A record — no static IP needed |
-| Friendly address | DNS A record **grey-clouded (DNS-only)** plus an SRV record, so players type the hostname with no port. Orange-cloud proxying breaks Minecraft |
-| BlueMap | Cloudflare Tunnel → `http://minecraft:8100`. Keeps 8100 closed and gives TLS |
+| Need | Approach | State |
+|---|---|---|
+| Game port | Forward TCP 25565 to the Linux host | **unverified from outside** — see below |
+| Dynamic IP | A `cloudflare-ddns` container updating the A record — no static IP needed | live |
+| Friendly address | A record **grey-clouded (DNS-only)**. Orange-cloud proxying breaks Minecraft | live |
+| BlueMap | Cloudflare Tunnel → `http://minecraft:8100`. Keeps 8100 closed and gives TLS | **live**, serving 5.3 over HTTPS |
 
 The DDNS container, the tunnel and the exact Cloudflare record attributes are
 **not in this compose stack**. They live in their own repo with a step-by-step
-runbook, `wrenchInTheWorks/cloudflare-ddns` (private). Three records, with
+runbook, `wrenchInTheWorks/cloudflare-ddns` (private). Two records, with
 different owners and lifetimes:
 
 | Record | Type | Points at | Maintained by |
 |---|---|---|---|
-| `mc.<domain>` | **A** | this box's public IP | the DDNS container, TTL 60, **grey cloud** |
-| `play.<domain>` | **SRV** | `mc.<domain>` port 25565 | set once by hand |
-| `map.<domain>` | **CNAME** | `<tunnel-id>.cfargotunnel.com` | created once by `cloudflared` |
+| `minecraft.<domain>` | **A** | this box's public IP | the DDNS container, TTL 60, **grey cloud** |
+| `mc-map.<domain>` | **CNAME** | `<tunnel-id>.cfargotunnel.com` | created once by `cloudflared`, proxied |
+
+**No SRV record.** The runbook describes a `play.` SRV pointing at an `mc.` A
+record, which exists so players can omit a non-standard port. This deployment
+keeps the server on the default **25565**, so a single A record is enough and
+the bare hostname works by itself. `mc.` and `play.` do not exist.
+
+As live on 2026-10-14: `minecraft.` answers `122.58.125.30` (the public IP, not
+anycast -- so grey cloud is intact) and `mc-map.` answers Cloudflare anycast and
+serves BlueMap 5.3 over HTTPS with all five maps. **Grey cloud on the game
+record is load-bearing** -- orange-cloud proxying breaks Minecraft, and
+Cloudflare's proxy does not carry 25565 anyway.
 
 **Why not tunnel the game port too:** Cloudflare Tunnel is HTTP-native. Raw TCP
 requires `cloudflared` on every *client*, or Spectrum (Enterprise). The
@@ -235,8 +244,12 @@ port forwarding becomes impossible.
 | 25565 | Minecraft |
 | 8100 | BlueMap web UI |
 
-Forward these on the router/firewall as needed. BlueMap on 8100 is unauthenticated,
-so put it behind a reverse proxy before exposing it to the internet.
+Forward 25565 on the router/firewall. **Do not forward 8100.** BlueMap is
+unauthenticated, and it does not need a hole: the Cloudflare Tunnel reaches it
+over the compose network and terminates TLS, so 8100 stays closed to the
+internet. Cloudflare's proxy would not carry 8100 anyway — it accepts a fixed
+port list that does not include it, which is the other reason the map goes
+through a tunnel rather than a proxied record.
 
 ## If the repo ever goes private
 

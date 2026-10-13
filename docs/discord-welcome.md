@@ -1,7 +1,7 @@
-# Discord welcome message — pack 2.2.0
+# Discord welcome message — pack 2.3.0
 
 Paste-ready replacement for the pinned welcome post. Updated 2026-10-12 against
-pack **2.2.0** (MC 1.20.1 / Forge 47.4.10 / 117 mods).
+pack **2.3.0** (MC 1.20.1 / Forge 47.4.10 / 117 mods).
 
 **No placeholders left — but do not post it until DNS is live.** Both addresses
 are filled in with their final values:

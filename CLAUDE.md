@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.2.0 (on `main`) | Small private friend server**
+**Forge 1.20.1 | v2.3.0 (on `main`) | Small private friend server**
 
 ---
 
@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Name | Iron & Arcana |
-| Version | 2.2.0 |
+| Version | 2.3.0 |
 | Minecraft | 1.20.1 |
 | Loader | **Forge 47.4.10** (not NeoForge) |
 | Author | iron-and-arcana |

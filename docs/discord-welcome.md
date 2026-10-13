@@ -1,7 +1,7 @@
 # Discord welcome message — pack 2.2.0
 
 Paste-ready replacement for the pinned welcome post. Updated 2026-10-12 against
-pack **2.2.0** (MC 1.20.1 / Forge 47.4.10 / 113 mods).
+pack **2.2.0** (MC 1.20.1 / Forge 47.4.10 / 117 mods).
 
 **No placeholders left — but do not post it until DNS is live.** Both addresses
 are filled in with their final values:
@@ -65,7 +65,7 @@ messages it was already split into.
 
 ## Message 3 — what's in the pack
 
-> :package: **What's in the pack** *(113 mods)*
+> :package: **What's in the pack** *(117 mods)*
 >
 > `Colony` — MineColonies · Structurize · Domum Ornamentum · Stylecolonies · TownTalk
 > `Engineering` — Create · Crafts & Additions · Slice & Dice · Steam 'n' Rails
@@ -75,7 +75,7 @@ messages it was already split into.
 > `World` — Terralith · Alex's Caves · Alex's Mobs · The Aether · Deep Aether · Treasure Reforging · Twilight Forest · Serene Seasons
 > `Dungeons` — YUNG's Better Dungeons / Strongholds / Mineshafts · Dungeons and Taverns · Bosses of Mass Destruction · Illager Invasion
 > `Combat` — Better Combat · Naturalist · Creeper Overhaul · Friends&Foes
-> `Redstone` — More Red *(logic gates, counters, timers, wire on any block face)*
+> `Redstone` — Project Red *(timers, counters, sequencers, bundled cable, and circuits you design yourself)*
 > `Food` — Farmer's Delight
 > `Storage` — Sophisticated Backpacks
 > `Building` — Chipped · Macaw's (Bridges, Roofs, Windows, Doors) · Supplementaries · Amendments
@@ -93,6 +93,9 @@ messages it was already split into.
 >
 > **Backpacks are storage, not automation**
 > Sophisticated Backpacks is in, but the automation upgrades (feeding, magnets, auto-smelting, void, the Infinity upgrades and all stack upgrades) are deliberately turned off — building a Create or Immersive Engineering factory *is* the game here. Carrying more than one backpack gives you Slowness.
+>
+> **Project Red is the redstone mod, and it goes deep**
+> Wires that sit on any block face, bundled cable that carries 16 colours in one line, and proper logic parts — timers, counters, sequencers, latches. If you get far enough in, Fabrication lets you design a circuit on a workbench and print it to a single gate.
 >
 > **Seasons are on**
 > Serene Seasons, 8 real days per season. Crops only grow in the seasons that suit them, so check before you plant a field of something.

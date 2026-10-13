@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (111 entries, 11 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (117 entries, 11 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -139,6 +139,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 | Restored | Twilight Forest, Stylecolonies, SmallColonies, TownTalk, FTB Quests/Teams/Library, Botania |
 | Unofficial ports retired | Alex's Caves, Alex's Mobs, Citadel, Spartan Weaponry, Steam 'n' Rails now official 1.20.1 builds |
 | Recipe viewing | JEI is the viewer; EMI tried first and removed 2026-10-11 (see Recipe viewing) |
+| Redstone | Project Red (5 modules) replaced More Red 2026-10-13 — More Red had no timers, counters or sequencers |
 | Docker server | `server/` — itzg image, `PACKWIZ_URL` self-install (`bae071e`) |
 | Infra stripped | EventBridge and all Modrinth publishing removed (`2db8bf6`) |
 | Discord mod removed | DI dropped, 112 -> 111 mods. The bridge is bot-side (log tail + RCON), so the pack needs no Discord mod and stays playable with no bot |
@@ -170,10 +171,23 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 
 ### Version and branch state
 
-**`main` is now the live branch.** `2.0` was fast-forwarded into `main` on
-2026-10-11 (53 commits, no divergence) and the pack went to **2.2.0**. The
-branch called `2.0` still exists and points at the same commit; it is a legacy
-name, not a separate line of work. Work on `main`.
+**`main` is the live branch. Work on `main`.**  `2.0` was fast-forwarded into
+`main` on 2026-10-11 (53 commits, no divergence) and the pack went to **2.2.0**.
+
+> **The `2.0` branch is now a trap, and it cost real debugging time.** It is
+> frozen at `9bd0290` -- 113 mods, no Project Red -- while `main` has moved on.
+> CI no longer builds it, so it will never catch up. The failure is silent and
+> convincing: both branches report `version = "2.2.0"`, so a server whose
+> `PACKWIZ_URL` still ends in `/2.0/pack.toml` boots happily on a two-week-old
+> pack with no error anywhere. That happened on 2026-10-13.
+>
+> If a host is "not getting the new mods", **check `PACKWIZ_URL` in its `.env`
+> first**, before anything else. Note `docker compose pull` is unrelated -- it
+> fetches the server image; the pack is installed by packwiz-installer at
+> container start. And after editing `.env` use `docker compose up -d`, not
+> `restart`: restart reuses the existing container with its old environment.
+>
+> Deleting the branch would remove the trap entirely.
 
 Everything that used to point at the `2.0` branch now points at `main`:
 `README.md`'s packwiz-installer route, `server/.env.example`, and the
@@ -489,9 +503,11 @@ drifted apart, and it appears once at startup where it is easy to miss.
 
 ## Pink placeholder boxes in two JEI tabs -- upstream, not fixable here
 
-The **Ars Nouveau ritual** tab and the **Jumbo Smelting** tab draw magenta
-missing-texture boxes where a progress bar belongs. Confirmed cosmetic: the
-recipes themselves are correct.
+The **Ars Nouveau ritual** tab drew magenta missing-texture boxes where a
+progress bar belongs. Jumbo Smelting had the identical fault, but Jumbo Furnace
+left the pack with More Red, so Ars is the only affected tab now. Both are
+fixed -- see "Fixed by supplying the texture" below -- but the mechanism is
+recorded because any future mod built against old JEI will hit it too.
 
 Both mods ask JEI for the same asset:
 
@@ -539,6 +555,114 @@ link between the two is not obvious, hence this note.
 
 If a future JEI reinstates its own `gui_vanilla.png`, delete ours rather than
 letting two copies compete.
+
+## Project Red: what is in, and what is gated
+
+Replaced More Red on 2026-10-13. More Red only ever had fundamental logic --
+AND/NAND/OR/NOR/NOT/XOR/XNOR, bitwise variants, a Diode, a Multiplexer, a Latch
+and a Pulse Gate. No timer, no counter, no sequencer. Project Red Integration
+has those: Timer, Counter, Sequencer, State Cell, Pulse Former, three
+randomisers, Synchronizer, Repeater, Comparator, three latches, light and rain
+sensors, segment display and the cell blocks.
+
+Removed with it: **Use Item on Block Event** and **Jumbo Furnace**, both of
+which were only ever More Red's mandatory dependencies. Jumbo Furnace was never
+wanted.
+
+### The module set, and why each
+
+| Module | Why |
+|---|---|
+| Core | required by everything |
+| Integration | the gates -- the entire reason for the swap |
+| Transmission | **not optional**: 10 of Integration's 34 gates need `wired_plate` or `bundled_plate`, which only Transmission provides |
+| Exploration | the only source of electrotine, which Fabrication's silicon chain needs |
+| Fabrication | the FPGA module: IC Workbench, lithography, custom gates |
+
+Illumination was offered and declined. CodeChicken Lib and CB Multipart are the
+only libraries needed -- **`cb_microblock` is NOT a separate mod**, the CB
+Multipart jar declares `cb_multipart`, `cb_microblock` and
+`cb_multipart_minecraft` together.
+
+The Forge floor is a **bracketed** `[47.1.65,)`, so unlike a bare range it is
+genuinely enforced. 47.4.10 clears it; this is now the pack's hard Forge floor.
+
+### Gating, and which lever was used
+
+Exploration collides with two pack rules, so it is gated rather than accepted
+whole. Config first, KubeJS only where no config exists:
+
+| What | Lever | Detail |
+|---|---|---|
+| Tin and silver ore | **config** | `config/ProjectRed.cfg`, `world_gen` section, both `false` |
+| 16 backpacks | KubeJS | `server_scripts/projectred_backpacks.js`, 17 recipes |
+| Gem **armour** | KubeJS | `server_scripts/projectred_gear.js`, 12 recipes |
+| Gem **tools** | *(kept)* | simple tool tiers are not a third gear mod |
+
+Why those two ores specifically: **silver** is provided by both IE and Project
+Red under the same `forge` tags, so Almost Unified unifies them and IE remains
+the source. **Tin** is Project Red's alone -- IE has none -- but nothing
+consumes it either; every tin recipe is tin to tin, so disabling it breaks no
+chain.
+
+> Searching for this is booby-trapped: grepping recipes for `tin` also matches
+> elec**tin**e, and filtering item ids for the Wool **Gin** also matches
+> leg**gin**gs. Both nearly produced wrong conclusions.
+
+### Upstream bug fixed here: the deepslate ores could never generate
+
+All six of Exploration's ore features give **both** targets the same tag:
+
+```json
+{"state": "ruby_ore",           "tag": "minecraft:stone_ore_replaceables"}
+{"state": "deepslate_ruby_ore", "tag": "minecraft:stone_ore_replaceables"}
+```
+
+The vanilla ore feature takes the **first** matching target, so the stone
+variant always won and the deepslate block was unreachable. Fixed by datapack
+override in `kubejs/data/projectred_exploration/worldgen/configured_feature/`
+for the four enabled ores, pointing the second target at
+`minecraft:deepslate_ore_replaceables`.
+
+Verified two ways. On the server, `/place feature` at Y -40/-44/-48 in a
+force-loaded chunk then counted with `/fill ... replace`: **19 deepslate blocks,
+0 stone**. And in the ore data, every stone variant now peaks above Y 0 while
+every deepslate variant peaks below it.
+
+The ranges overlap at the margins -- stone variants reach Y -40, deepslate ones
+reach +53 -- which is correct, not leakage: **tuff is in both** replaceable
+tags and tuff blobs straddle the boundary.
+
+> Worldgen fixes only affect chunks generated **after** they land. Install the
+> override before pre-generating with Chunky, or the pre-generated area will
+> permanently lack deepslate ores.
+
+### Dead content hidden from JEI
+
+`client_scripts/jei_hide.js` hides 34 items: the 16 backpacks, the 12 gem
+armour pieces, and **6 basalt blocks**. The basalt is not a duplicate of
+vanilla's needing substitution -- it is unobtainable. Nothing generates it
+(`MarbleCaveWorldCarver` places marble and never mentions basalt) and no recipe
+produces `basalt_cobble`, which the whole chain roots on.
+
+Removing a recipe does not remove the item from JEI's list, so recipe removal
+and hiding must be kept in step. If a recipe is restored without dropping the
+matching hide line, the item becomes craftable but invisible -- worse than the
+problem being solved.
+
+### Tinkers materials: tried, reverted, do not retry
+
+Project Red's gems and electrotine were briefly added as Tinkers materials via
+datapack. Reverted on 2026-10-13 for a reason that cannot be engineered around:
+**datapack materials cannot be melted or cast**, because fluids can only be
+registered by a mod. They have to be `craftable` (Part Builder from the solid
+item), which puts them outside Tinkers' progression rather than inside it, and
+supplying a casting route would mean authoring a large set of part textures.
+The generated part textures also failed to resolve.
+
+Project Red has **no** electrotine gear of its own -- Core ships only dust,
+ingot and the silicon/iron compounds -- so electrotine tools and armour are not
+available from any mod in the pack.
 
 ## Restarts: no mod required
 

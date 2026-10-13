@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 113 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 117 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -23,7 +23,7 @@ repository.
 | Magic | Ars Nouveau (+ Ars Creo), Botania |
 | Exploration | Twilight Forest, The Aether (+ Deep Aether, Treasure Reforging), Alex's Caves, Terralith, YUNG's structures, Dungeons and Taverns |
 | Combat | Better Combat, Bosses of Mass Destruction, Illager Invasion, Creeper Overhaul, Friends&Foes, Naturalist |
-| Redstone | More Red — logic gates, counters, timers, face-mounted wire |
+| Redstone | Project Red — timers, counters, sequencers, latches, bundled cable, and circuits you design yourself |
 | Food & farming | Farmer's Delight, Serene Seasons (8-day seasons) |
 | Building | Chipped, Supplementaries + Amendments, Macaw's Bridges/Doors/Roofs/Windows |
 | Storage | Sophisticated Backpacks (+ Create integration) |
@@ -40,6 +40,9 @@ Design rules worth knowing before you play:
   every stack upgrade, both Infinity upgrades, and the feeding, inception,
   everlasting, auto-cooking and alchemy upgrades are turned off. Carrying more
   than one backpack applies Slowness.
+- **Storage is backpacks, not a second system.** Project Red's own backpacks are
+  disabled, as is its gem armour — Tinkers' stays the gear system. Its gem
+  *tools* are craftable.
 - **No flight/airship mod.**
 
 See [SKIPPED.md](SKIPPED.md) for what was considered and rejected, and why.

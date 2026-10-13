@@ -6,8 +6,10 @@
 sheet, taken unmodified from `jei-1.20.1-forge-15.10.0.39.jar`.
 
 It is shipped here because JEI stopped including that file somewhere between
-15.10.0.39 (2024-08-07) and 15.19.5.98 (2024-09-20), while Ars Nouveau and
-Jumbo Furnace still request it — see `CLAUDE.md`, "Pink placeholder boxes".
+15.10.0.39 (2024-08-07) and 15.19.5.98 (2024-09-20), while Ars Nouveau still
+requests it — see `CLAUDE.md`, "Pink placeholder boxes". Jumbo Furnace needed it
+too, but left the pack with More Red on 2026-10-13; Ars Nouveau alone keeps this
+file necessary.
 
 JEI is distributed under the MIT License.
 Source: https://github.com/mezz/JustEnoughItems

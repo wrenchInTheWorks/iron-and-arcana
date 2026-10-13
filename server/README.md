@@ -63,7 +63,26 @@ docker compose logs -f --tail=200               # follow logs
 ```
 
 RCON is enabled but its port is **not** published — it is reachable only from
-inside the container, so `RCON_PASSWORD` never crosses the network.
+inside the container, so `RCON_PASSWORD` never crosses the network. The Discord
+bot reaches it over the compose network rather than a published port, which is
+why the two have to run on the same host.
+
+## Whitelisting
+
+`ENABLE_WHITELIST=TRUE`, seeded from `WHITELIST` in `.env`. Day to day, though,
+**players whitelist themselves from Discord** — the Wrench's Toolkit bot
+resolves the name against Mojang and issues `whitelist add` over RCON, so
+`whitelist.json` stays the single source of truth and nobody edits it by hand.
+
+> **Do not set `OVERRIDE_WHITELIST=TRUE`.** The image's whitelist handling
+> defaults to `MERGE`, which is what makes bot-added players survive a restart.
+> `OVERRIDE_WHITELIST=TRUE` switches it to `SYNCHRONIZE`, which prunes everyone
+> not named in the `WHITELIST` variable — so every self-whitelisted player
+> would silently lose access at the next scheduled restart. This was confirmed
+> empirically, both ways, on 2026-10-12. The same applies to `OVERRIDE_OPS`.
+
+Removal is `/ia mod whitelist-remove` in Discord, or `whitelist remove <name>`
+over RCON for an entry added by hand.
 
 ## Mods packwiz cannot fetch
 
@@ -185,7 +204,18 @@ connection, which is what makes the simple route viable.
 | Game port | Forward TCP 25565 to the Linux host |
 | Dynamic IP | A `cloudflare-ddns` container updating the A record — no static IP needed |
 | Friendly address | DNS A record **grey-clouded (DNS-only)** plus an SRV record, so players type the hostname with no port. Orange-cloud proxying breaks Minecraft |
-| BlueMap | Cloudflare Tunnel (`cloudflare/cloudflared` service in this compose stack) → `http://minecraft:8100`. Keeps 8100 closed and gives TLS |
+| BlueMap | Cloudflare Tunnel → `http://minecraft:8100`. Keeps 8100 closed and gives TLS |
+
+The DDNS container, the tunnel and the exact Cloudflare record attributes are
+**not in this compose stack**. They live in their own repo with a step-by-step
+runbook, `wrenchInTheWorks/cloudflare-ddns` (private). Three records, with
+different owners and lifetimes:
+
+| Record | Type | Points at | Maintained by |
+|---|---|---|---|
+| `mc.<domain>` | **A** | this box's public IP | the DDNS container, TTL 60, **grey cloud** |
+| `play.<domain>` | **SRV** | `mc.<domain>` port 25565 | set once by hand |
+| `map.<domain>` | **CNAME** | `<tunnel-id>.cfargotunnel.com` | created once by `cloudflared` |
 
 **Why not tunnel the game port too:** Cloudflare Tunnel is HTTP-native. Raw TCP
 requires `cloudflared` on every *client*, or Spectrum (Enterprise). The
@@ -217,6 +247,19 @@ deploying that instead.
 
 ## Config files
 
-Mod configs are **not** tracked in this repo yet. Let the first boot generate
-them for 1.20.1, then tune and commit the ones that matter — copying the v1
-configs over would be wrong, because config schemas change between mod versions.
+Mod configs **are** tracked, in `config/` at the repo root, and packwiz ships
+them like any other pack file. The repo is authoritative: packwiz-installer
+rewrites them at every container start, so **an edit made inside the container
+is overwritten on the next restart**. Edit the repo, push, wait out the CDN
+cache, restart.
+
+Five files are tracked deliberately rather than the whole generated tree —
+`ProjectRed.cfg`, `bluemap/core.conf`, the two Sophisticated ones, and
+`world-gen.json`. Everything else is left at mod defaults and generated in the
+volume, which keeps the diff readable and avoids shipping schemas that change
+under us between mod versions.
+
+`defaultconfigs/` is a different mechanism. Forge server-scoped configs live
+per-world in `world/serverconfig/`, so `defaultconfigs/` seeds **new** worlds
+only — changing one means stopping the server and copying it into the running
+world by hand.

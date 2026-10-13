@@ -163,11 +163,21 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    remains its first real test.
 3. **Cloudflare exposure.** Port-forward 25565, a `cloudflare-ddns` container,
    DNS-only A record plus SRV, and a Tunnel for BlueMap only. No CGNAT (public
-   IP confirmed, gateway 192.168.1.254).
+   IP confirmed, gateway 192.168.1.254). The runbook lives in the private
+   `wrenchInTheWorks/cloudflare-ddns` repo; the record layout is summarised in
+   `server/README.md`.
+
+   > **None of the three hostnames exist yet.** Checked over DoH on 2026-10-14:
+   > `mc.`, `play.` and `map.wrenchintheworks.online` all return NOERROR with
+   > an empty answer, and there is no `_minecraft._tcp.play` SRV. Cloudflare is
+   > authoritative for the zone, so the records simply have not been created.
+   > **`docs/discord-welcome.md` must not be posted until they resolve** -- it
+   > names both addresses, and a pinned welcome post with a dead address is
+   > worse than no post.
 4. **Config tuning** after some playtime. Serene Seasons stays at 8-day seasons.
-5. **Merge `2.0` into `main` and cut the 2.0.0 release** -- deliberately last.
-   The owner wants this only once the Linux host is running and has been played
-   on for a while.
+5. **Pin `PACKWIZ_URL` to a tag** once friends depend on the server, so an
+   unattended restart cannot install half-finished work. `v2.3.0` is verified
+   and would do. See "Restarts" for why this matters.
 
 ### Version and branch state
 
@@ -710,19 +720,79 @@ deliberate `.env` edit. **This has not been done yet** -- `.env` and
 > only after a post-merge version bump produces a verified tag -- and check it
 > with `git rev-parse <tag>` plus `git show <sha>:pack.toml` before trusting it.
 
-The pack ships **no Discord mod**. Discord Integration was removed once the
-bridge design was settled (on `2.0`, no version bump yet -- a bump cuts a
-release, see "Version and branch state"). The bridge lives entirely in the Wrench's Toolkit
-bot, which tails `/data/logs/latest.log` for Minecraft -> Discord and sends
-RCON `tellraw` for Discord -> Minecraft. Two reasons it is not a mod. DI needs
-its own second Discord bot application, and its `[[commands]]` system has no
-role or permission gating at all -- verified in the 2.2.3 jar, where
-`CommandConfig` carries only `minecraft_command`, `discord_command`,
-`description`, `use_parameters` and `enabled`, with a single `channel_id`
-shared by chat and commands -- so privileged commands could not be restricted
-to moderators. Keeping it out also means the pack stays fully playable with no
-bot, which matters because it is published for anyone to use. The bot repo's
-`IRON_ARCANA_HANDOVER.md` carries the design.
+## The Discord bot — what the pack has to know about it
+
+The pack ships **no Discord mod**, and that is a decision, not an omission.
+Discord Integration was removed once the bridge design was settled. The bridge
+lives entirely in the **Wrench's Toolkit** bot, which tails
+`/data/logs/latest.log` for Minecraft -> Discord and sends RCON for
+Discord -> Minecraft.
+
+Two reasons it is not a mod. DI needs its own second Discord bot application,
+and its `[[commands]]` system has no role or permission gating at all --
+verified in the 2.2.3 jar, where `CommandConfig` carries only
+`minecraft_command`, `discord_command`, `description`, `use_parameters` and
+`enabled`, with a single `channel_id` shared by chat and commands -- so
+privileged commands could not be restricted to moderators. Keeping it out also
+means the pack stays fully playable with no bot, which matters because the pack
+is published for anyone to use.
+
+The bot repo is `wrenchInTheWorks/wrenchs-toolkit-discord-bot`, checked out at
+`Documents\Git\Wrench's Toolkit` -- **private**, so do not link it from this
+repo's public docs. Its `IRON_ARCANA_HANDOVER.md` is the design record and is
+more current than this file on bot-side matters.
+
+### Whitelisting is self-service, and that changes a server rule
+
+`/ia whitelist <username>` resolves the name against Mojang, calls
+`whitelist add` over RCON, and records the Discord-to-UUID link only **after**
+the server accepts. `whitelist.json` stays the single source of truth; the bot's
+table records who claimed what. One Minecraft account per Discord user, enforced
+by a `UNIQUE` index as well as a pre-flight check; re-running with a new name
+removes the old entry before adding the new one. Rate limited to two uses per
+ten minutes.
+
+The gate is a role set with `/ia config whitelist-role`, and **unset means
+closed, not open**. On this server it is deliberately set to `@everyone`, so
+anyone who can see the guild can whitelist themselves with no admin involved.
+
+> **Never set `OVERRIDE_WHITELIST=TRUE` (or `OVERRIDE_OPS`) in `server/.env`.**
+> The image defaults to `MERGE`, which is the only reason bot-added players
+> survive a restart. `SYNCHRONIZE` prunes everyone not named in the `WHITELIST`
+> variable, so every self-whitelisted player would silently lose access at the
+> next scheduled restart -- and scheduled restarts are unattended. Confirmed
+> both ways on 2026-10-12. `server/.env.example` and `server/docker-compose.yml`
+> both carry this warning; it is load-bearing, do not tidy it away.
+
+**The bot must run on the same host as the server.** Tailing a log file is not
+remote-capable, and RCON's port is deliberately unpublished, so co-location is a
+hard requirement of the Linux migration, not a preference.
+
+## Distribution: two artifacts, and what the CurseForge one costs
+
+Every release carries both, built by `publish.yml` from the same commit:
+
+| Asset | Route | Size at 2.3.0 |
+|---|---|---|
+| `Iron.Arcana-<v>.mrpack` | Modrinth App, Prism, ATLauncher | 178 MB |
+| `Iron.Arcana-<v>.zip` | CurseForge launcher | 420 MB |
+
+GitHub rewrites the spaces and `&` in the pack name, so the assets are
+`Iron.Arcana-...`, **not** `Iron & Arcana-...`. Anything that hardcodes the
+filename gets this wrong -- the README did.
+
+The `.zip` is twice the size because of how packwiz splits it. Measured on the
+2.3.0 export: **11** mods resolve as CurseForge manifest entries (the
+MineColonies stack, Twilight Forest, Illager Invasion, TownTalk, Json Things,
+Puzzles Lib), **101** client-side jars are bundled into `overrides/mods/`, and
+**5** are correctly absent as `side = "server"` (BlueMap, Noisium, YUNG's x3).
+11 + 101 + 5 = 117.
+
+**So the CurseForge launcher warns about 101 mods it did not serve and makes the
+player approve them.** That is inherent to a Modrinth-first pack imported into
+CurseForge, not a fault, but it looks alarming to someone installing their first
+pack -- `docs/discord-welcome.md` pre-empts it explicitly. Prefer the `.mrpack`;
+it is the route the pack is developed and tested on.
 
 ## Durable Technical Notes
 

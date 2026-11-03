@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.3.0 (on `main`) | Small private friend server**
+**Forge 1.20.1 | v2.4.0 (on `main`) | Small private friend server**
 
 ---
 
@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Name | Iron & Arcana |
-| Version | 2.3.0 |
+| Version | 2.4.0 |
 | Minecraft | 1.20.1 |
 | Loader | **Forge 47.4.10** (not NeoForge) |
 | Author | iron-and-arcana |
@@ -189,7 +189,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 4. **Config tuning** after some playtime. Serene Seasons was made cosmetic on
    2026-11-03 -- see "Serene Seasons is cosmetic" below.
 5. **Pin `PACKWIZ_URL` to a tag** once friends depend on the server, so an
-   unattended restart cannot install half-finished work. `v2.3.0` is verified
+   unattended restart cannot install half-finished work. `v2.4.0` is verified
    and would do. See "Restarts" for why this matters.
 
 ### Version and branch state
@@ -1056,7 +1056,7 @@ hard requirement of the Linux migration, not a preference.
 
 Every release carries both, built by `publish.yml` from the same commit:
 
-| Asset | Route | Size at 2.3.0 |
+| Asset | Route | Size at 2.4.0 |
 |---|---|---|
 | `Iron.Arcana-<v>.mrpack` | Modrinth App, Prism, ATLauncher | 178 MB |
 | `Iron.Arcana-<v>.zip` | CurseForge launcher | 421 MB |

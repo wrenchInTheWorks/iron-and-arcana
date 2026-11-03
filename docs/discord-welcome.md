@@ -1,7 +1,7 @@
-# Discord welcome message — pack 2.3.0
+# Discord welcome message — pack 2.4.0
 
 Paste-ready replacement for the pinned welcome post. Rewritten 2026-10-14
-against pack **2.3.0** (MC 1.20.1 / Forge 47.4.10 / 120 mods).
+against pack **2.4.0** (MC 1.20.1 / Forge 47.4.10 / 120 mods).
 
 Six messages, because Discord's per-message limit is 2000 characters. Each one
 below fits inside that limit *including* the `>` quote prefixes, so it can be
@@ -46,7 +46,7 @@ Two more preconditions, both bot-side:
    3 promises self-service whitelisting, so it is a lie until that is set.
 2. **`/ia setup` must have been run**, so `/ia map` has a BlueMap URL.
 
-`v2.3.0` is the Latest release and carries both install artifacts, so the
+`v2.4.0` is the Latest release and carries both install artifacts, so the
 `/releases/latest` links below resolve to the right files.
 
 ---
@@ -71,10 +71,10 @@ Two more preconditions, both bot-side:
 >
 > Grab **one** of the two files from **[the latest release](https://github.com/wrenchInTheWorks/iron-and-arcana/releases/latest)** — whichever matches your launcher. Both give you the same pack, and either way the launcher downloads Forge and Java 17 for you.
 >
-> :white_check_mark: **Modrinth App, Prism Launcher or ATLauncher** — `Iron.Arcana-2.3.0.mrpack` *(~170 MB)*
+> :white_check_mark: **Modrinth App, Prism Launcher or ATLauncher** — `Iron.Arcana-2.4.0.mrpack` *(~170 MB)*
 > `Add Instance → Import from file`, pick the `.mrpack`, done. **This is the recommended route** — it's the one the pack is built and tested on.
 >
-> :orange_circle: **CurseForge launcher** — `Iron.Arcana-2.3.0.zip` *(~400 MB)*
+> :orange_circle: **CurseForge launcher** — `Iron.Arcana-2.4.0.zip` *(~420 MB)*
 > `Minecraft → Create Custom Profile → Import`, pick the `.zip`.
 >
 > :warning: **CurseForge will warn you that the pack contains mods it can't verify, and make you approve them. That's expected — approve it.**
@@ -190,6 +190,6 @@ Two more preconditions, both bot-side:
 | Whitelisting rewritten as self-service | It said *"please DM a @Server Admin to get added"*. The bot's `/ia whitelist` now does it, gated on `@everyone` |
 | New message on staying updated | The server self-updates and clients do not — that asymmetry is the most likely cause of a confused "it won't let me in" |
 | Chat bridge mentioned | It exists and nothing said so |
-| Asset filenames corrected | GitHub rewrites `Iron & Arcana-2.3.0.mrpack` to `Iron.Arcana-2.3.0.mrpack`; the old post named a file that does not exist |
+| Asset filenames corrected | GitHub rewrites `Iron & Arcana-2.4.0.mrpack` to `Iron.Arcana-2.4.0.mrpack`; the old post named a file that does not exist |
 | Shaders and the packwiz auto-update route | Were only in the repo README, where no player looks |
 | Red-cross example corrected | The old post named *"Embeddium, the minimap, Mouse Tweaks"* as client-only. Xaero's Minimap is `side = "both"`, so it was the wrong example — the pack's 9 client-only mods are Embeddium, Mouse Tweaks, AmbientSounds, Athena, libIPN, Inventory Profiles Next, JER, JEED and JEARGH |

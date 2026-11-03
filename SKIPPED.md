@@ -1,6 +1,6 @@
 # Dropped & Skipped Mods
 
-**Current as of pack 2.3.0 (MC 1.20.1 / Forge 47.4.10), 2026-11-03.**
+**Current as of pack 2.4.0 (MC 1.20.1 / Forge 47.4.10), 2026-11-04.**
 See `docs/v1-mod-inventory.md` for the v1.2.3 snapshot and per-mod dispositions.
 
 ---

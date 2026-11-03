@@ -156,24 +156,24 @@ Two more preconditions, both bot-side:
 > :clipboard: **In-Game Notes**
 >
 > **The item list looks massive — ignore most of it**
-> JEI (the recipe panel on the right) is your friend. Hover any item and press **R** to see how to make it, **U** to see what it's used for. Search for things as you need them and don't worry about the rest.
+> JEI (the panel on the right) is your friend. Hover an item and press **R** for how to make it, **U** for what it's used for. Search as you need things and ignore the rest.
 >
 > **Tinkers' is how you make tools**
 > Don't craft a vanilla pickaxe and wonder why it's bad. Start with a Crafting Station and the Materials and You book you spawn with — tools are built from parts, and they level up as you use them.
 >
-> **Backpacks are storage, not automation**
-> Sophisticated Backpacks is in, but the automation upgrades (feeding, magnets, auto-smelting, void, the Infinity upgrades and all stack upgrades) are deliberately turned off — building a Create or Immersive Engineering factory *is* the game here. Carrying more than one backpack gives you Slowness.
+> **Storage is storage, not automation**
+> Sophisticated Backpacks *and* Storage chests are both in, but their automation upgrades — hoppers, magnets, auto-smelting, void, compression and every stack upgrade — are deliberately off. Building a Create or Immersive Engineering factory *is* the game here. Carrying more than one backpack gives you Slowness.
 >
 > **Project Red is the redstone mod, and it goes deep**
 > Wires that sit on any block face, bundled cable carrying 16 colours in one line, and real logic parts — timers, counters, sequencers, latches. Get far enough in and Fabrication lets you design a circuit on a workbench and print it to a single gate.
 >
-> **Seasons are on**
-> Serene Seasons, 8 real days per season. Crops only grow in the seasons that suit them, so check before you plant a field of something.
+> **Seasons are cosmetic**
+> Serene Seasons shifts the colours, changes the weather and brings snow in winter — but it doesn't gate farming. Every crop grows in every season, so plant what you like.
 >
 > **:skull: On death** — graves. Your items are locked in a grave where you died; they won't burn, despawn or disappear. You can have several at once, so dying on the way back isn't fatal to your stuff.
 >
 > **The red cross on the server list is normal**
-> Hover it and it says "mods are incompatible". It isn't — you'll connect fine. The pack ships 9 mods only to clients (Embeddium, Mouse Tweaks, the JEI add-ons) and 5 only to the server (BlueMap, the YUNG's structure mods), and Forge flags any difference between the two lists. Nothing to fix.
+> Hover it and it says "mods are incompatible". It isn't — you'll connect fine. Some mods ship only to clients (Embeddium, Mouse Tweaks) and some only to the server (BlueMap, the YUNG's structure mods), and Forge flags any difference. Nothing to fix.
 >
 > *More notes will be added here as questions come up.*
 

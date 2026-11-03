@@ -24,7 +24,7 @@ repository.
 | Exploration | Twilight Forest, The Aether (+ Deep Aether, Treasure Reforging), Alex's Caves, Terralith, YUNG's structures, Dungeons and Taverns |
 | Combat | Better Combat, Bosses of Mass Destruction, Illager Invasion, Creeper Overhaul, Friends&Foes, Naturalist |
 | Redstone | Project Red — timers, counters, sequencers, latches, bundled cable, and circuits you design yourself |
-| Food & farming | Farmer's Delight, Serene Seasons (8-day seasons) |
+| Food & farming | Farmer's Delight, Serene Seasons (cosmetic — no seasonal crop gating) |
 | Building | Chipped, Supplementaries + Amendments, Macaw's Bridges/Doors/Roofs/Windows |
 | Storage | Sophisticated Backpacks (+ Create integration), Sophisticated Storage |
 | Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps |

@@ -9,6 +9,10 @@ file = "config/bluemap/core.conf"
 hash = "090aca18cee223695261e6d4409d6f43b9e06de6c9f8b48afacdea6c65699953"
 
 [[files]]
+file = "config/sereneseasons/fertility.toml"
+hash = "efb5602527cb14f2ecbfff8c1d3473fc95ac18a797b0dd45d837fb679bbcfdf0"
+
+[[files]]
 file = "config/sophisticatedbackpacks-common.toml"
 hash = "b377e97ca3d8ae8560448b92ab820872d7c11bef0ca52dcf3f4901b44c6ddca7"
 

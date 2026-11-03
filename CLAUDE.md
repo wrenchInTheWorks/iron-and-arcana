@@ -186,7 +186,8 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    > TCP 25565 times out from inside the LAN, which proves nothing because
    > consumer routers rarely hairpin to their own public IP. Test from mobile
    > data.
-4. **Config tuning** after some playtime. Serene Seasons stays at 8-day seasons.
+4. **Config tuning** after some playtime. Serene Seasons was made cosmetic on
+   2026-11-03 -- see "Serene Seasons is cosmetic" below.
 5. **Pin `PACKWIZ_URL` to a tag** once friends depend on the server, so an
    unattended restart cannot install half-finished work. `v2.3.0` is verified
    and would do. See "Restarts" for why this matters.
@@ -821,6 +822,55 @@ shipped config. The doc was taken as authoritative, so **backpacks lost those
 eight too** -- players carrying one will find it no longer craftable and gone
 from JEI. That was a deliberate call, not an accident.
 
+## Serene Seasons is cosmetic (2026-11-03)
+
+Seasons stay for the look -- grass, foliage and birch colour shifts, seasonal
+weather, snow in winter -- but no longer gate farming. One tracked file,
+`config/sereneseasons/fertility.toml`:
+
+```toml
+[general]
+	seasonal_crops = false
+	crop_tooltips = false
+```
+
+`crop_tooltips` goes with it because it would otherwise lie: the tooltip lists
+the seasons a crop is "fertile" in, read from the crop's season tags rather
+than from `seasonal_crops`, so it would keep telling players wheat needs spring
+when it does not.
+
+### Why a partial file is correct here
+
+Serene Seasons does **not** use Forge's config system. It uses **GlitchCore**
+(`glitchcore/config/Config`), which loads the file, replaces anything missing
+or invalid with the default -- its own log line is `Invalid value {} for key
+{}. Reverting to default` -- and writes the completed file back. So shipping
+only the keys actually being changed is valid, and it keeps the diff to the
+decision rather than to a wall of defaults. Everything else stays at mod
+default by omission.
+
+### Where it lives, and why that matters
+
+`FertilityConfig.getConfigPath()` resolves `sereneseasons/fertility.toml`
+against **`FMLPaths.CONFIGDIR`**, so it is `config/sereneseasons/...` -- an
+ordinary packwiz-shipped file, overwritten in the container on every start.
+This is **not** a per-world `defaultconfigs/` case, so no hand-copying into
+`world/serverconfig/` is needed and it applies to the existing world
+immediately. GlitchCore also syncs config server -> client
+(`glitchcore/config/ConfigSync`), so the server's value is the one that counts.
+
+The companion file is `config/sereneseasons/seasons.toml`, which is
+**deliberately not tracked**. Colour shifts, snow and ice, and weather
+frequency are all left at their defaults, because those are the parts worth
+keeping.
+
+> **"8-day seasons" was a misreading, now corrected.** The option is
+> `time_settings.sub_season_duration`, and the jar's own comment is "The
+> duration of a **sub season** in days." Serene Seasons has twelve sub-seasons
+> (Early/Mid/Late of each season), so three of them make one season --
+> whatever the number, it is not days-per-season. The pack ships no override,
+> so this is on the mod's default either way.
+
 ## Restarts: no mod required
 
 Verified 2026-10-11 by running it.
@@ -1087,6 +1137,10 @@ public pack, and no longer constrained by Modrinth's rules.
   ETF/EMF are the per-entity cost, not the resource pack, so all three went.
   `options.txt` existed only to enable Fresh Animations and was removed with
   them. Do not reintroduce them for looks without re-testing mob-heavy scenes.
+- **Seasons are cosmetic, not a farming mechanic.** Serene Seasons is kept for
+  the colour, weather and snow; `seasonal_crops` is off. If a mod is ever added
+  that reads Serene Seasons' crop tags, check it does not reintroduce the
+  gating by its own route.
 - **Performance is a real constraint.** BlueMap, MineColonies AI and Create
   contraptions are the known cost centres — see `docs/SERVER_PERFORMANCE_NOTES.md` (v1-era, still directionally right)
   before adding heavy server-side mods.

@@ -1,0 +1,26 @@
+
+# Iron & Arcana — seasons are cosmetic.
+#
+# Serene Seasons stays in the pack for the look of it: the grass, foliage and
+# birch colour shifts, seasonal weather, and snow arriving in winter. What it
+# no longer does is gate farming.
+#
+# Only the two keys below are set here. Everything else in this file is left
+# to the mod's own defaults on purpose — GlitchCore loads the file, fills in
+# anything missing from its defaults ("Invalid value {} for key {}. Reverting
+# to default") and writes the completed file back, so a partial file like this
+# one is both valid and the smallest thing to review.
+#
+# The repo is authoritative: packwiz rewrites this file inside the container on
+# every start, so editing it on the server does nothing. Edit it here.
+
+[general]
+	# The whole point of the change. With this false, every crop grows in
+	# every season and out_of_season_crop_behavior below never applies.
+	seasonal_crops = false
+
+	# Off because it would otherwise lie. The tooltip lists the seasons a crop
+	# is "fertile" in, which is read straight from the crop's season tags and
+	# not from seasonal_crops — so with fertility disabled it would keep
+	# telling players that wheat needs spring when it does not.
+	crop_tooltips = false

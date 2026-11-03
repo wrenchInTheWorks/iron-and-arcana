@@ -52,9 +52,10 @@ packwiz refresh
 packwiz modrinth export
 packwiz curseforge export
 
-# Server: PACKWIZ_URL means restart == update
+# Server: PACKWIZ_URL is PINNED TO A TAG, so a restart is reproducible,
+# not an update. To update, edit the tag in .env then:
 cd server
-docker compose restart
+docker compose up -d          # NOT restart -- restart keeps the old env
 docker compose exec minecraft rcon-cli
 ```
 
@@ -188,9 +189,9 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    > data.
 4. **Config tuning** after some playtime. Serene Seasons was made cosmetic on
    2026-11-03 -- see "Serene Seasons is cosmetic" below.
-5. **Pin `PACKWIZ_URL` to a tag** once friends depend on the server, so an
-   unattended restart cannot install half-finished work. `v2.4.0` is verified
-   and would do. See "Restarts" for why this matters.
+5. ~~Pin `PACKWIZ_URL` to a tag~~ **done 2026-11-04** -- pinned to `v2.4.0`
+   in `server/.env.example`. The live `server/.env` is gitignored and has to
+   be changed by hand on the host. See "Restarts" below.
 
 ### Version and branch state
 
@@ -990,11 +991,23 @@ PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v
 ```
 
 Tags are immutable, so restarts become reproducible and updating becomes a
-deliberate `.env` edit. **This has not been done yet** -- `.env` and
-`.env.example` still point at the `2.0` branch head.
+deliberate `.env` edit followed by `docker compose up -d` -- **not `restart`**,
+which reuses the existing container with its old environment and would silently
+ignore the new tag.
 
-> **There is no release tag to pin to yet.** The first attempt produced one
-> that pointed at the wrong commit: `gh release create` without `--target` tags
+**Done on 2026-11-04.** `server/.env.example` is pinned to `v2.4.0`, verified
+first: the tag resolves to `b8a2fd0`, which is `main`'s head, and
+`raw.githubusercontent.com` serves that `pack.toml` at HTTP 200 with
+`version = "2.4.0"`. The live `server/.env` is gitignored, so it has to be
+changed by hand on the host.
+
+> One consequence worth knowing: **the 5-minute CDN cache stops mattering for
+> normal updates.** A tag's content never changes, so there is no stale version
+> to race. The warning still applies the moment anything points back at a
+> branch.
+
+> **Verify a tag before pinning to it.** An early attempt produced one that
+> pointed at the wrong commit: `gh release create` without `--target` tags
 > the **default branch's head**, so a release built from `2.0` tagged `main`,
 > and `v2.1.0` resolved to a v1.2.3 / NeoForge commit. Pinning `PACKWIZ_URL`
 > to it would have installed the v1 pack at the next unattended restart. The

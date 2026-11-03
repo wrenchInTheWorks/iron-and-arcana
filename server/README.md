@@ -22,18 +22,39 @@ while. Watch for packwiz-installer resolving all 104 mods, then Forge starting.
 
 ## How updating works
 
-`PACKWIZ_URL` points at `pack.toml` in this repo, and packwiz-installer runs on
-every container start. So:
+`PACKWIZ_URL` points at a `pack.toml` in this repo, and packwiz-installer runs
+on every container start — so whatever it points at **is** what the server
+runs. There is no separate push step and the server cannot drift from the repo,
+which was the failure mode of the old SFTP sync.
 
-```bash
-docker compose restart
+**It is pinned to a release tag, currently `v2.4.0`:**
+
+```
+PACKWIZ_URL=https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.4.0/pack.toml
 ```
 
-is the update. There is no separate push step, and the server can never drift
-from what the repo says — which is the failure mode the old SFTP sync had.
+That makes a restart *reproducible* rather than an update. Pointed at a branch
+head instead, an unattended 5:30am restart would install whatever was last
+pushed, half-finished work included. Updating is now a deliberate act:
 
-Change the branch in `PACKWIZ_URL` to control what the server tracks. It points
-at `2.0` during the rebuild; switch it to `main` once 2.0 is merged.
+```bash
+# edit PACKWIZ_URL in .env to the new tag, then
+docker compose up -d
+```
+
+**`up -d`, not `restart`.** A restart reuses the existing container with the
+environment it was created with, so the new tag would be ignored and nothing
+would appear to happen.
+
+Verify a tag before pinning to it — a release once tagged the wrong commit:
+
+```bash
+git rev-parse v2.4.0 && git show $(git rev-parse v2.4.0):pack.toml | head -3
+```
+
+> Because the tag is immutable, the CDN caching note below stops mattering for
+> normal updates: a tag's content never changes, so there is no stale version
+> to catch. It still applies if you ever point this back at a branch.
 
 ### Wait before restarting after a push
 
@@ -45,7 +66,7 @@ the server comes up healthy and looks correct, which is what makes this nasty.
 Either wait a few minutes, or verify what GitHub is actually serving first:
 
 ```powershell
-(Invoke-WebRequest "https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml" -UseBasicParsing).Content
+(Invoke-WebRequest "https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.4.0/pack.toml" -UseBasicParsing).Content
 ```
 
 To confirm a config really landed, compare sizes rather than trusting the boot:

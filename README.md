@@ -100,11 +100,18 @@ this repo so it syncs on launch — the same mechanism the server uses. Requires
    set **Pre-launch command**:
 
    ```
-   "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml
+   "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.4.0/pack.toml
    ```
 
-Every launch then adds, removes and updates mods to match the repo — no more
-mod-mismatch kicks after a pack change, and no re-importing.
+Every launch then adds, removes and updates mods to match that tag — no
+re-importing, and no mod-mismatch kicks.
+
+**Use the tag the server runs, not `main`.** The server is pinned to a release
+tag, so a client tracking `main` would pick up a mod change the moment it lands
+and be ahead of the server until the next release — which is a mismatch kick.
+Bump the tag in that command when a new release is announced; it is one line
+and it keeps client and server in lockstep. (Pointing it at `main` is still the
+right call if you ever run the server off `main` too.)
 
 > Your own settings are safe: the pack ships no `options.txt`, so the installer
 > never touches your video, control or resource-pack choices.

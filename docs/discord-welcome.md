@@ -124,10 +124,12 @@ Two more preconditions, both bot-side:
 > 2. Download `packwiz-installer-bootstrap.jar` from **[here](https://github.com/packwiz/packwiz-installer-bootstrap/releases)** and put it in the instance's `.minecraft` folder.
 > 3. `Edit Instance → Settings → Custom Commands`, tick **Custom Commands**, and set **Pre-launch command** to:
 > ```
-> "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/main/pack.toml
+> "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.4.0/pack.toml
 > ```
 >
 > Every launch then adds, removes and updates mods to match the server. No more re-importing and no more mismatch kicks.
+>
+> :warning: When a new version is announced in #psa, change the `v2.4.0` in that line to the new one. That one edit is the whole update.
 >
 > Your own settings are safe — the pack ships no `options.txt`, so your video settings, keybinds and resource-pack choices are never touched.
 >

@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 117 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 118 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -26,7 +26,7 @@ repository.
 | Redstone | Project Red — timers, counters, sequencers, latches, bundled cable, and circuits you design yourself |
 | Food & farming | Farmer's Delight, Serene Seasons (8-day seasons) |
 | Building | Chipped, Supplementaries + Amendments, Macaw's Bridges/Doors/Roofs/Windows |
-| Storage | Sophisticated Backpacks (+ Create integration) |
+| Storage | Sophisticated Backpacks (+ Create integration), Sophisticated Storage |
 | Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps |
 | Performance | Embeddium, FerriteCore, ModernFix, Noisium, Clumps |
 
@@ -40,9 +40,11 @@ Design rules worth knowing before you play:
   every stack upgrade, both Infinity upgrades, and the feeding, inception,
   everlasting, auto-cooking and alchemy upgrades are turned off. Carrying more
   than one backpack applies Slowness.
-- **Storage is backpacks, not a second system.** Project Red's own backpacks are
-  disabled, as is its gem armour — Tinkers' stays the gear system. Its gem
-  *tools* are craftable.
+- **Storage is Sophisticated Backpacks and Sophisticated Storage**, both with
+  their automation upgrades disabled — no hoppers, no compression, no stack
+  upgrades, no magnets or void. Project Red's own backpacks are disabled too,
+  as is its gem armour; Tinkers' stays the gear system. Its gem *tools* are
+  craftable.
 - **No flight/airship mod.**
 
 See [SKIPPED.md](SKIPPED.md) for what was considered and rejected, and why.
@@ -55,7 +57,7 @@ carries two files. Pick the one that matches your launcher:
 | File | For | Size |
 |---|---|---|
 | `Iron.Arcana-<version>.mrpack` | Modrinth App, Prism Launcher, ATLauncher | ~170 MB |
-| `Iron.Arcana-<version>.zip` | the CurseForge launcher | ~400 MB |
+| `Iron.Arcana-<version>.zip` | the CurseForge launcher | ~420 MB |
 
 Either way the launcher fetches Forge 47.4.10 and **Java 17** itself.
 
@@ -72,9 +74,9 @@ Create an instance *from file* and pick the `.mrpack`. Nothing else to do.
 
 CurseForge will show a warning that the pack contains mods that did not come
 from CurseForge, and make you approve them before it will install. **That is
-expected — approve it.** The pack is built with packwiz and sources 106 of its
-117 mods from Modrinth, so only 11 are CurseForge-hosted and resolve as normal
-manifest entries; the other 101 client-side jars are bundled inside the `.zip`
+expected — approve it.** The pack is built with packwiz and sources 107 of its
+118 mods from Modrinth, so only 11 are CurseForge-hosted and resolve as normal
+manifest entries; the other 102 client-side jars are bundled inside the `.zip`
 itself. CurseForge cannot verify what it did not serve, so it asks. That is also
 why the `.zip` is more than twice the size of the `.mrpack`.
 

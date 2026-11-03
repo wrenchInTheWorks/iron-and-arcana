@@ -1,6 +1,6 @@
 # Dropped & Skipped Mods
 
-**Current as of pack 2.3.0 (MC 1.20.1 / Forge 47.4.10), 2026-10-14.**
+**Current as of pack 2.3.0 (MC 1.20.1 / Forge 47.4.10), 2026-11-03.**
 See `docs/v1-mod-inventory.md` for the v1.2.3 snapshot and per-mod dispositions.
 
 ---
@@ -46,7 +46,6 @@ out for a stated reason. Re-adding any of them means re-litigating that reason.
 | Mod | Reason |
 |---|---|
 | **Silent Gear** + Silent Lib | Replaced by Tinkers' Construct. Weak default material traits, and a Materials Book advertising materials from absent mods, which needed 18 override JSONs plus a dummy tag to suppress and was never confirmed fixed in-game |
-| **Sophisticated Storage** | Deliberately absent. Storage is **Sophisticated Backpacks only**, plus its Create integration |
 | **Spartan Weaponry** | Dropped at the owner's request. Better Combat remains as the combat overhaul |
 | **Sodium** | Embeddium is the 1.20.1 Forge equivalent and is in the pack |
 | **Sable** | Only ever present as a Create Aeronautics dependency |

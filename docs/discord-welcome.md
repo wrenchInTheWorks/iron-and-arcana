@@ -1,7 +1,7 @@
 # Discord welcome message — pack 2.3.0
 
 Paste-ready replacement for the pinned welcome post. Rewritten 2026-10-14
-against pack **2.3.0** (MC 1.20.1 / Forge 47.4.10 / 117 mods).
+against pack **2.3.0** (MC 1.20.1 / Forge 47.4.10 / 118 mods).
 
 Six messages, because Discord's per-message limit is 2000 characters. Each one
 below fits inside that limit *including* the `>` quote prefixes, so it can be
@@ -78,7 +78,7 @@ Two more preconditions, both bot-side:
 > `Minecraft → Create Custom Profile → Import`, pick the `.zip`.
 >
 > :warning: **CurseForge will warn you that the pack contains mods it can't verify, and make you approve them. That's expected — approve it.**
-> Most of this pack comes from Modrinth rather than CurseForge: only 11 of the 117 mods are CurseForge-hosted, and the other 101 are bundled inside the `.zip` itself. CurseForge can't vouch for files it didn't serve, so it lists them and asks. Nothing is wrong — it's also why that file is more than twice the size of the `.mrpack`.
+> Most of this pack comes from Modrinth rather than CurseForge: only 11 of the 118 mods are CurseForge-hosted, and the other 102 are bundled inside the `.zip` itself. CurseForge can't vouch for files it didn't serve, so it lists them and asks. Nothing is wrong — it's also why that file is more than twice the size of the `.mrpack`.
 >
 > :bulb: Import as a **new instance** rather than on top of an old one. Reusing an instance leaves stale jars behind, which causes mod-mismatch kicks and launch crashes.
 >
@@ -135,7 +135,7 @@ Two more preconditions, both bot-side:
 
 ## Message 5 — what's in the pack
 
-> :package: **What's in the pack** *(117 mods)*
+> :package: **What's in the pack** *(118 mods)*
 >
 > `Colony` — MineColonies · Structurize · Domum Ornamentum · Stylecolonies · TownTalk
 > `Engineering` — Create · Crafts & Additions · Slice & Dice · Steam 'n' Rails
@@ -147,7 +147,7 @@ Two more preconditions, both bot-side:
 > `Combat` — Better Combat · Naturalist · Creeper Overhaul · Friends&Foes
 > `Redstone` — Project Red *(timers, counters, sequencers, bundled cable, and circuits you design yourself)*
 > `Food` — Farmer's Delight
-> `Storage` — Sophisticated Backpacks
+> `Storage` — Sophisticated Backpacks · Sophisticated Storage
 > `Building` — Chipped · Macaw's (Bridges, Roofs, Windows, Doors) · Supplementaries · Amendments
 > `QoL` — JEI · JER · Jade · Waystones · Xaero's Minimap & World Map · Lootr · Open Parties & Claims · GraveStone
 
@@ -184,7 +184,7 @@ Two more preconditions, both bot-side:
 | Change | Why |
 |---|---|
 | Install split into two labelled routes | The `.zip` exists on every release and nothing told players what it was for |
-| CurseForge approval prompt pre-empted, with the real numbers | 101 of 117 jars are bundled, so the warning lists a lot of mods and looks alarming. Explaining it beforehand is cheaper than answering it afterwards |
+| CurseForge approval prompt pre-empted, with the real numbers | 102 of 118 jars are bundled, so the warning lists a lot of mods and looks alarming. Explaining it beforehand is cheaper than answering it afterwards |
 | Whitelisting rewritten as self-service | It said *"please DM a @Server Admin to get added"*. The bot's `/ia whitelist` now does it, gated on `@everyone` |
 | New message on staying updated | The server self-updates and clients do not — that asymmetry is the most likely cause of a confused "it won't let me in" |
 | Chat bridge mentioned | It exists and nothing said so |

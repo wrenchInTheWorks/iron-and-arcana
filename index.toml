@@ -14,7 +14,7 @@ hash = "b377e97ca3d8ae8560448b92ab820872d7c11bef0ca52dcf3f4901b44c6ddca7"
 
 [[files]]
 file = "config/sophisticatedcore-common.toml"
-hash = "b4f5f6690932bf83c418518464b4e2d8f427d49cf375a12c65ee407fbf0b77e6"
+hash = "7c317c354c29bd1b577251d999c68092abd7ab61440f66d9b774f525fd002b08"
 
 [[files]]
 file = "config/world-gen.json"
@@ -521,12 +521,17 @@ metafile = true
 
 [[files]]
 file = "mods/sophisticated-backpacks.pw.toml"
-hash = "dcbb8301c31e095d0ead0aa21e2c139419cd8d36a46e3607adab2f8c5fce67bc"
+hash = "e7b15754c7456a9f91d485b033a30a4dfa72979c41cd86d690fc2d124ba84fa5"
 metafile = true
 
 [[files]]
 file = "mods/sophisticated-core.pw.toml"
-hash = "3f7b17a739dc781e37c46807169b268b58aa473a2d6cecda71d07e7065abedae"
+hash = "a0379de98df819b73d947e6cf93782fbf9a0c15520b7eb971340485c1cbf4684"
+metafile = true
+
+[[files]]
+file = "mods/sophisticated-storage.pw.toml"
+hash = "0cc948b6b3082dddc9029b923e7a6c8cffb6474da42f8d381c9cfb65837f1b2f"
 metafile = true
 
 [[files]]

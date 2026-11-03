@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (117 entries, 11 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (118 entries, 11 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -578,6 +578,73 @@ link between the two is not obvious, hence this note.
 If a future JEI reinstates its own `gui_vanilla.png`, delete ours rather than
 letting two copies compete.
 
+## Backpack tier upgrades show twice in JEI -- upstream, no lever
+
+Reported from the playthrough on 2026-11-03: every backpack tier upgrade
+appears twice in JEI, and "some coloured backpacks won't craft". Both come from
+one mechanism, and **it is not a pack bug** -- nothing we ship touches backpack
+recipes.
+
+Sophisticated Backpacks generates its **own** tier-upgrade entries for the
+recipe viewer, on top of the real ones. `BackpackTierUpgradeRecipesMaker` calls
+`addRecipeViewerVariants`, and the record it produces,
+`BackpackTierUpgradeDisplayRecipe`, carries:
+
+```
+displayVariants  globalVariants  variantPairs  exactPair  isUntinted
+getMainColor  getAccentColor  copyWithItem
+withComponentsFromSource  withComponentsFromResult
+```
+
+`isUntinted` is the tell: one generated entry holds an untinted variant plus
+tinted ones, and `withComponentsFromSource` copies dye components onto the
+result. It exists to show that **upgrading a dyed backpack keeps its colour**.
+
+Meanwhile the real recipes (`data/sophisticatedbackpacks/recipes/*.json`) are
+ordinary `CraftingRecipe`s, so JEI lists them itself. `BackpackJeiPlugin` has
+only `addTypedRecipeManagerPlugin` and `RecipeManagerPlugin` -- **no
+`hideRecipes`, no `IRecipeManager` hide path** -- so nothing suppresses the real
+copy and both show. Iron shows **four** because it genuinely has two base
+recipes (leather + 8 iron, or copper + 4 iron).
+
+The "coloured backpacks won't craft" half is the same thing: JEI's `+` on a
+tinted variant asks for a backpack with those exact colour components, which you
+only own if you already dyed one. The untinted entry always works.
+
+**Three levers were checked and none exist:**
+
+- **Updating does not fix it.** Build `3.26.19.2239` (2026-10-31), thirteen
+  releases ahead of our `3.26.6.2176`, has the identical
+  `TierUpgradeRecipesMaker`, the identical plugin with no hide calls, and the
+  same six recipe files. Do not take a mid-playthrough update for this.
+- **No config option.** Sophisticated Core's *entire* common config is
+  `enabledItems`; the client config is only `mouseTweaksScrollEnabled`,
+  `playButtonSound` and `sortButtonsPosition`.
+- **KubeJS cannot reach it.** The duplicates are generated inside the JEI plugin
+  at runtime, so there is no registered recipe for `event.remove` to match.
+
+The only lever that would remove a duplicate is disabling that tier in
+`enabledItems`, which removes the tier as well -- not worth it.
+
+> Incidental but useful: the tier chain is **leather -> copper -> iron -> gold
+> -> diamond -> netherite**, each consuming the previous tier. `gold_backpack`
+> takes an `iron_backpack` in the centre slot, not a leather one. The only real
+> shortcut is leather -> iron for 8 iron, against 4 iron via copper.
+
+### Disabled Sophisticated items do NOT litter JEI
+
+Verified while investigating the above, and it is the opposite of the Project
+Red case, so the distinction matters. `ItemBase.addCreativeTabItems` gates on
+`isItemEnabled`, so an item disabled through `enabledItems` never enters the
+creative tab -- and JEI builds its list from creative tab contents. The ~20
+upgrades disabled in `config/sophisticatedcore-common.toml` are therefore
+genuinely invisible, with no orphaned no-recipe entries.
+
+Project Red needed `kubejs/client_scripts/jei_hide.js` precisely because it does
+**not** gate its creative tab: removing its recipes via KubeJS left the items
+listed. So: **mod-config gating hides the item; KubeJS recipe removal does
+not.** Pick the config lever whenever one exists.
+
 ## Project Red: what is in, and what is gated
 
 Replaced More Red on 2026-10-13. More Red only ever had fundamental logic --
@@ -686,6 +753,74 @@ Project Red has **no** electrotine gear of its own -- Core ships only dust,
 ingot and the silicon/iron compounds -- so electrotine tools and armour are not
 available from any mod in the pack.
 
+## Sophisticated Storage: added 2026-11-03, and what is gated
+
+Reverses the old "Backpacks only" rule at the owner's request. Chests, barrels
+and shulker boxes in six tiers, limited barrels, a Decoration Table, and the
+controller/storage-connector network.
+
+### It forced the whole Sophisticated stack forward
+
+Storage's current build declares `sophisticatedcore [1.5.24.+,)` -- a
+**bracketed, enforced** range -- and the pack was on Core `1.5.2.2346`. So this
+was never "add one mod":
+
+| Mod | Was | Now | Its Core floor |
+|---|---|---|---|
+| Sophisticated Core | 1.5.2.2346 | **1.5.24.2453** | -- |
+| Sophisticated Backpacks | 3.26.6.2176 | **3.26.19.2239** | `[1.5.21.+,)` |
+| Sophisticated Storage | -- | **1.5.15.2220** | `[1.5.24.+,)` |
+| Backpacks Create Integration | 0.1.11.173 | unchanged | floors at `sophisticatedbackpacks [3.26.3,)` |
+
+**Treat these three as a matched set, like Tinkers' and Mantle.** The author
+ships almost daily -- 233 Storage, 285 Core and 164 Backpacks builds exist for
+1.20.1 -- and each release floors on a Core from the same week. Old Backpacks
+technically satisfies a new Core because its floor is open-ended, but that is a
+floor, not a compatibility promise. Update them together or not at all.
+
+> There was a no-update path and it was rejected: Storage `1.5.0.2137`
+> (2026-09-27) floors at `[1.5.2.+,)`, which the old Core satisfied. It would
+> have pinned a brand-new mod five weeks behind on a mod that moves this fast.
+
+### Adding Storage does NOT re-enable the disabled backpack upgrades
+
+Checked, because it would have been a silent regression. Storage ships **40
+recipes whose output is a `sophisticatedbackpacks:` upgrade** -- including the
+stack upgrades this pack deliberately disables -- craftable from storage-tier
+materials. Every one of those 40 is gated on the **backpacks** registry name,
+not the storage one, so the existing `enabledItems` entries still suppress them.
+
+More broadly: 343 of Storage's 345 recipes carry a
+`sophisticatedcore:item_enabled` condition. Only `decoration_table` and
+`paintbrush` do not, so those two are always craftable.
+
+### What is off, and why
+
+`config/sophisticatedcore-common.toml` now holds **216 entries, 76 disabled** --
+one list covering both mods, because they share Sophisticated Core.
+
+| Off on Storage | Reason |
+|---|---|
+| `hopper_upgrade`, `advanced_hopper_upgrade` | pulls items in and pushes them out by itself -- one item replacing a Create funnel-and-belt build, which is the pack's standing test |
+| `compression_upgrade` | auto-compresses into block form, replacing a Create press/packer |
+| all 22 `stack_upgrade_*` | same call already made for backpacks. Storage's ladder is bigger: tier 1 through **5**, a `tier_1_plus`, omega, and a full conversion matrix |
+| feeding, magnet, compacting, void, alchemy, auto_smelting/blasting/smoking (+ `advanced_`) | the standing automation list from Pack Philosophy |
+
+**Kept on purpose:** the controller and storage connectors (they organise
+rather than automate, and replace no Create or IE build), every tier upgrade
+(`basic_to_iron` and friends -- these are the storage equivalent of backpack
+tiers), filter, pickup, jukebox, crafting, stonecutter, the manual
+smelting/blasting/smoking trio, the seven `chipped/` workbench upgrades, and
+all 64 blocks.
+
+### The doc and the config had drifted
+
+Until this change the Pack Philosophy section named pump, magnet, compacting
+and void as disabled, while all eight of those entries were `true` in the
+shipped config. The doc was taken as authoritative, so **backpacks lost those
+eight too** -- players carrying one will find it no longer craftable and gone
+from JEI. That was a deliberate call, not an accident.
+
 ## Restarts: no mod required
 
 Verified 2026-10-11 by running it.
@@ -787,20 +922,24 @@ Every release carries both, built by `publish.yml` from the same commit:
 | Asset | Route | Size at 2.3.0 |
 |---|---|---|
 | `Iron.Arcana-<v>.mrpack` | Modrinth App, Prism, ATLauncher | 178 MB |
-| `Iron.Arcana-<v>.zip` | CurseForge launcher | 420 MB |
+| `Iron.Arcana-<v>.zip` | CurseForge launcher | 421 MB |
 
 GitHub rewrites the spaces and `&` in the pack name, so the assets are
 `Iron.Arcana-...`, **not** `Iron & Arcana-...`. Anything that hardcodes the
 filename gets this wrong -- the README did.
 
-The `.zip` is twice the size because of how packwiz splits it. Measured on the
-2.3.0 export: **11** mods resolve as CurseForge manifest entries (the
-MineColonies stack, Twilight Forest, Illager Invasion, TownTalk, Json Things,
-Puzzles Lib), **101** client-side jars are bundled into `overrides/mods/`, and
-**5** are correctly absent as `side = "server"` (BlueMap, Noisium, YUNG's x3).
-11 + 101 + 5 = 117.
+The `.zip` is twice the size because of how packwiz splits it. Re-measured
+after adding Sophisticated Storage (2026-11-03): **11** mods resolve as
+CurseForge manifest entries (the MineColonies stack, Twilight Forest, Illager
+Invasion, TownTalk, Json Things, Puzzles Lib), **102** client-side jars are
+bundled into `overrides/mods/`, and **5** are correctly absent as
+`side = "server"` (BlueMap, Noisium, YUNG's x3). 11 + 102 + 5 = 118.
 
-**So the CurseForge launcher warns about 101 mods it did not serve and makes the
+Re-run the export and recount after any mod change -- these numbers appear in
+`README.md` and `docs/discord-welcome.md` too, and a find-and-replace on the
+total silently leaves the split wrong.
+
+**So the CurseForge launcher warns about 102 mods it did not serve and makes the
 player approve them.** That is inherent to a Modrinth-first pack imported into
 CurseForge, not a fault, but it looks alarming to someone installing their first
 pack -- `docs/discord-welcome.md` pre-empts it explicitly. Prefer the `.mrpack`;
@@ -919,12 +1058,22 @@ public pack, and no longer constrained by Modrinth's rules.
   or storage feature: **if a single item replaces a Create or IE build, turn it
   off.** In v1 that meant stripping 29 Sophisticated upgrades via KubeJS; in 2.0
   it is done in Sophisticated Core's config instead.
-- **Storage is Sophisticated Backpacks only** (plus its Create integration).
-  Sophisticated *Storage* is deliberately **not** in the pack — only Backpacks.
+- **Storage is Sophisticated Backpacks and Sophisticated Storage**, both gated
+  through Sophisticated Core's `enabledItems`. Storage was added on 2026-11-03,
+  reversing the earlier "Backpacks only" rule — see "Sophisticated Storage"
+  below for what is off and why.
   The upgrades to disable are the automation ones: feeding, inception,
   everlasting, pump, magnet, compacting, void, auto_smelting, auto_blasting,
-  auto_smoking, alchemy, and their `advanced_` variants. Keep the manual
-  ones — filter, stack, sort, pickup, deposit, restock, tank, battery.
+  auto_smoking, alchemy, and their `advanced_` variants — plus, on Storage only,
+  hopper, compression and every stack upgrade. Keep the manual ones — filter,
+  sort, pickup, deposit, restock, tank, battery. **Stack upgrades are off on
+  both.**
+
+  > The doc and the config had drifted apart here. Until 2026-11-03 this list
+  > named pump, magnet, compacting and void, but all eight of those entries
+  > were `true` in the live config. The doc was taken as authoritative and the
+  > config corrected, so the two now agree. If they ever disagree again, the
+  > config is what players actually experience — check it first.
 - **No flight/airship mod.** Create Aeronautics has no 1.20.1 release;
   Valkyrien Skies + Clockwork were added and then removed as too advanced and
   off-theme for this pack. Do not reintroduce them unasked.

@@ -34,7 +34,7 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 | Path | Purpose |
 |---|---|
 | `.` | packwiz project root, git repo |
-| `mods/*.pw.toml` | one metadata file per mod (118 entries, 11 CurseForge-sourced) |
+| `mods/*.pw.toml` | one metadata file per mod (120 entries, 11 CurseForge-sourced) |
 | `server/` | Docker deployment — compose file, `.env.example`, README |
 | `server/mods-override/` | jars packwiz-installer cannot fetch |
 | `docs/v1-mod-inventory.md` | v1.2.3 snapshot + per-mod 2.0 disposition |
@@ -871,6 +871,93 @@ keeping.
 > whatever the number, it is not days-per-season. The pack ships no override,
 > so this is on the mod's default either way.
 
+## Shaped recipe collisions, and how to find them
+
+A player reported on 2026-11-03 that the **Drying Rack cannot be crafted**.
+Diagnosis: two shaped recipes with the same *trimmed* grid and the same
+ingredients are a conflict. Minecraft trims blank leading and trailing rows and
+columns before matching, so Tinkers' Thinking's
+`["   ","###","   "]` of `minecraft:wooden_slabs` is **the same recipe** as
+Supplementaries' `["###"]`. Only whichever the RecipeManager reaches first can
+ever be crafted; the other is silently unobtainable, and **JEI still shows
+both**, which is why it reads as a bug rather than a conflict.
+
+> Note the item was **not** Farmer's Delight's. "Drying Rack" is
+> `tinkers_thinking:drying_rack`. Searching the obvious mod first wasted a
+> step.
+
+### Scan the whole pack, not just the reported pair
+
+Normalise every `minecraft:crafting_shaped` recipe to (trimmed pattern x
+per-cell ingredient id) and group. Any group with more than one distinct result
+is a conflict. On 2026-11-03 that found **five**, from 4702 shaped recipes:
+
+| Grid | Ingredient | Colliding outputs |
+|---|---|---|
+| `###` | `minecraft:wooden_slabs` | `supplementaries:item_shelf` vs `tinkers_thinking:drying_rack` |
+| `#/#` | `forge:cobblestone` | `cb_microblock:stone_rod` vs `tinkers_thinking:stone_stick` |
+| `#/#/#` | `minecraft:bamboo` | `mcwwindows:bamboo_shutter` vs `supplementaries:flute` |
+| `##/##` x2 | railways locometal | two Steam 'n' Rails hazard stripes, **left alone** |
+
+**Hash the jars against `mods/*.pw.toml` first.** A naive walk of the packwiz
+cache scans jars that are no longer in the pack -- the first run of this
+reported a sixth conflict involving **Create Deco**, which was removed months
+ago. Match `hash-format = "sha512"` for Modrinth entries and `"sha1"` for the
+11 CurseForge ones; all 120 resolve.
+
+### The three that were fixed, and which side was changed
+
+Changing *either* side fixes a conflict, so the choice is about which recipe is
+least surprising to alter. Overrides live in `kubejs/data/` at the **exact jar
+path**, with a `__comment` key as the existing overrides do.
+
+| Changed | New grid | Why that side |
+|---|---|---|
+| `tinkers_thinking:drying_rack` | 3 slabs **vertical** | the known loser, and Supplementaries' item shelf keeps its documented recipe |
+| `tinkers_thinking:stone_stick` | 2 cobblestone **horizontal** | `cb_microblock:stone_rod` feeds **Project Red's four saws**, a progression item; Tinkers' Thinking is the smaller addon. Both matter -- stone_stick feeds its stone torch, soul torch, ladder and the rock tool material, so one of those chains was blocked |
+| `supplementaries:flute` | 3 bamboo **horizontal** | every Macaw's shutter is three of its material stacked vertically; breaking that for bamboo alone would confuse a set players craft repeatedly, while the flute is a one-off. Its `supplementaries:flag` condition is preserved verbatim |
+
+Every replacement keeps the same materials and output count, and each new grid
+was checked against every other single-ingredient pattern in the pack first.
+
+### The two left alone
+
+Steam 'n' Rails ships `hazard_stripes_a` and `hazard_stripes_b` folders holding
+mirror arrangements, so `a/black_on_white` produces the same physical grid as
+`b/white_on_black`. Purely decorative, upstream, and confined to the
+black/white combination. Fixing it would mean breaking the systematic a/b
+pattern the rest of that large family follows, which is worse than the bug.
+
+### Re-run after adding mods
+
+This is a whole-pack property: any new mod can collide with an existing one,
+and nothing warns you. Re-run the scan after a mod add, and check that the
+`kubejs/data/` override paths still **replace** a real jar file rather than
+landing as new files -- a path that stops matching turns the fix into a
+silently-ignored extra recipe.
+
+## Armor Visibility: hiding armour, client-side only
+
+Added 2026-11-04 on a player request. Keybind-driven toggle with three states
+(visible / all armour hidden / own armour hidden), per-slot switches for
+helmet, chestplate, leggings and boots, and options to keep the elytra and cape
+visible and to leave mobs and armour stands alone. No gameplay effect at all --
+it changes rendering, not stats.
+
+`armor_visibility` is `side = "client"` by platform metadata, which is correct.
+It pulls in **Ash API** (`ash_api [3.0.0,)`, bracketed and enforced), a
+Fabric/Forge abstraction layer, which packwiz infers as `side = "both"`.
+
+That was checked rather than accepted, because shipping a client library to a
+dedicated server is exactly how JEARGH crash-looped it. Ash API is safe: its
+`@Mod` entry class `com/diontryban/ash/AshForge` references no client package,
+and nothing anywhere in the jar touches `IntegratedServer`. One class,
+`impl/resource/ResourceLoaderImpl`, references `net/minecraft/client/Minecraft`
+without a dist guard, but it is only loaded if something calls the resource
+API, and on the server nothing does -- Armor Visibility is not installed there.
+Left at `both` rather than hand-set, since nothing is actually broken and the
+"do not hand-set side" rule stands.
+
 ## Restarts: no mod required
 
 Verified 2026-10-11 by running it.
@@ -981,15 +1068,15 @@ filename gets this wrong -- the README did.
 The `.zip` is twice the size because of how packwiz splits it. Re-measured
 after adding Sophisticated Storage (2026-11-03): **11** mods resolve as
 CurseForge manifest entries (the MineColonies stack, Twilight Forest, Illager
-Invasion, TownTalk, Json Things, Puzzles Lib), **102** client-side jars are
+Invasion, TownTalk, Json Things, Puzzles Lib), **104** client-side jars are
 bundled into `overrides/mods/`, and **5** are correctly absent as
-`side = "server"` (BlueMap, Noisium, YUNG's x3). 11 + 102 + 5 = 118.
+`side = "server"` (BlueMap, Noisium, YUNG's x3). 11 + 104 + 5 = 120.
 
 Re-run the export and recount after any mod change -- these numbers appear in
 `README.md` and `docs/discord-welcome.md` too, and a find-and-replace on the
 total silently leaves the split wrong.
 
-**So the CurseForge launcher warns about 102 mods it did not serve and makes the
+**So the CurseForge launcher warns about 104 mods it did not serve and makes the
 player approve them.** That is inherent to a Modrinth-first pack imported into
 CurseForge, not a fault, but it looks alarming to someone installing their first
 pack -- `docs/discord-welcome.md` pre-empts it explicitly. Prefer the `.mrpack`;

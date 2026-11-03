@@ -2,7 +2,7 @@
 
 # Iron & Arcana
 
-**Minecraft 1.20.1 · Forge 47.4.10 · 118 mods**
+**Minecraft 1.20.1 · Forge 47.4.10 · 120 mods**
 
 A colony-building, engineering and exploration pack for a small friend server.
 Colonies and factories first, magic second, no automation shortcuts.
@@ -27,7 +27,7 @@ repository.
 | Food & farming | Farmer's Delight, Serene Seasons (cosmetic — no seasonal crop gating) |
 | Building | Chipped, Supplementaries + Amendments, Macaw's Bridges/Doors/Roofs/Windows |
 | Storage | Sophisticated Backpacks (+ Create integration), Sophisticated Storage |
-| Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps |
+| Quality of life | JEI, JER, Jade, Waystones, Xaero's Minimap & World Map, Lootr, Open Parties & Claims, GraveStone, AppleSkin, Clumps, Armor Visibility |
 | Performance | Embeddium, FerriteCore, ModernFix, Noisium, Clumps |
 
 Design rules worth knowing before you play:
@@ -74,9 +74,9 @@ Create an instance *from file* and pick the `.mrpack`. Nothing else to do.
 
 CurseForge will show a warning that the pack contains mods that did not come
 from CurseForge, and make you approve them before it will install. **That is
-expected — approve it.** The pack is built with packwiz and sources 107 of its
-118 mods from Modrinth, so only 11 are CurseForge-hosted and resolve as normal
-manifest entries; the other 102 client-side jars are bundled inside the `.zip`
+expected — approve it.** The pack is built with packwiz and sources 109 of its
+120 mods from Modrinth, so only 11 are CurseForge-hosted and resolve as normal
+manifest entries; the other 104 client-side jars are bundled inside the `.zip`
 itself. CurseForge cannot verify what it did not serve, so it asks. That is also
 why the `.zip` is more than twice the size of the `.mrpack`.
 

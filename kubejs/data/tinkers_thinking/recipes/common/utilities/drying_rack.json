@@ -1,0 +1,18 @@
+{
+  "__comment": "Override of Tinkers' Thinking. Upstream is [\"   \",\"###\",\"   \"] of minecraft:wooden_slabs, which Minecraft trims to [\"###\"] -- byte-identical to Supplementaries' item_shelf. Two shaped recipes with the same trimmed grid and the same ingredients conflict: only whichever the RecipeManager reaches first can be crafted, and here that was item_shelf, so the drying rack was unobtainable. Rotated to a vertical column, which no other recipe in the pack uses with wooden slabs. Same materials, same count. Reported by a player 2026-11-03.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "result": {
+    "item": "tinkers_thinking:drying_rack",
+    "count": 1
+  }
+}

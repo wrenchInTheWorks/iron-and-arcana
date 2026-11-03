@@ -53,12 +53,24 @@ file = "kubejs/data/projectred_exploration/worldgen/configured_feature/sapphire_
 hash = "17eea6af9783be99a629c7e8992ad587d4f19df591003f0b5eae0c1a6bb9ac49"
 
 [[files]]
+file = "kubejs/data/supplementaries/recipes/flute.json"
+hash = "2b7592c8761337a619d3269b8c92e4025a8983745175dc01525c16e47836c295"
+
+[[files]]
 file = "kubejs/data/tinkers_delight/recipes/cooking/noodles/steak_and_ichor_pasta.json"
 hash = "0fa91fbaf95c249750d0d381f2b8c70a9855d55c58abb6527b969ef9074ec2a9"
 
 [[files]]
 file = "kubejs/data/tinkers_delight/recipes/tinkering/tools/papas_fried_rice/repair_4.json"
 hash = "8dd27e97e6e4c7f7d5dc3a69fb19ed9e079181185920dc253c10533c32f82843"
+
+[[files]]
+file = "kubejs/data/tinkers_thinking/recipes/common/utilities/drying_rack.json"
+hash = "5f9a82254c499c78dc25acf959293fab6ef7723296d703a4df38ad603d605b91"
+
+[[files]]
+file = "kubejs/data/tinkers_thinking/recipes/common/utilities/stone_stick.json"
+hash = "bcc5d046a03116bb26a7f39391e2b868e60e4d7d40c15de3da27db1c323171dc"
 
 [[files]]
 file = "kubejs/server_scripts/projectred_backpacks.js"
@@ -119,6 +131,11 @@ hash = "4e81241ba2da06f425efc5e09fb6b38470125c1581c39e1310c5843a0b96ec76"
 metafile = true
 
 [[files]]
+file = "mods/armor-visibility.pw.toml"
+hash = "10fcc50f880e80db24b799ca8e65b9a2b91609859432e4445e93f2253c30a8d9"
+metafile = true
+
+[[files]]
 file = "mods/ars-creo.pw.toml"
 hash = "37674bd20bdb8a375ecd0fdcefd50b7c4b10134aeb0f6a5413293841e39af8f3"
 metafile = true
@@ -126,6 +143,11 @@ metafile = true
 [[files]]
 file = "mods/ars-nouveau.pw.toml"
 hash = "705856841852ca6823fb2b16c7e82c15ce251bf995ac6ac725ee5665d3b54dd1"
+metafile = true
+
+[[files]]
+file = "mods/ash-api.pw.toml"
+hash = "7e5b43a4b0e99366d49c2ad55672ae67bb8d13f9f656475ae23385f6ccfb0c1e"
 metafile = true
 
 [[files]]

@@ -1,0 +1,16 @@
+{
+  "__comment": "Override of Tinkers' Thinking. Upstream is [\"#\",\"#\"] of forge:cobblestone, identical to cb_microblock:stone_rod from CB Multipart, so only one of the two could be crafted. That matters both ways: stone_rod feeds Project Red's four saws (gold, peridot, ruby, sapphire) and stone_stick feeds Tinkers' Thinking's stone torch, soul torch, ladder and the rock tool material. Laid flat here because stone_rod is the more widely documented of the two and Project Red's saws are a progression item. Same materials, same count of 4.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:cobblestone"
+    }
+  },
+  "result": {
+    "item": "tinkers_thinking:stone_stick",
+    "count": 4
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "__comment": "Override of Supplementaries. Upstream is three minecraft:bamboo in a vertical column, identical to mcwwindows:bamboo_shutter, so only one of the two could be crafted. The flute is changed rather than the shutter because every Macaw's shutter is three of its material stacked vertically -- breaking that pattern for bamboo alone would be the more confusing change, and the flute is a one-off item players look up once. The supplementaries:flag condition is preserved verbatim so the mod's own config toggle still governs it. Same materials, same count.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "result": {
+    "item": "supplementaries:flute",
+    "count": 1
+  },
+  "conditions": [
+    {
+      "type": "supplementaries:flag",
+      "flag": "flute"
+    }
+  ]
+}

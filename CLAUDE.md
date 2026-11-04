@@ -1017,6 +1017,121 @@ changed by hand on the host.
 > only after a post-merge version bump produces a verified tag -- and check it
 > with `git rev-parse <tag>` plus `git show <sha>:pack.toml` before trusting it.
 
+### A stop must outlive Docker's 10-second kill (2026-11-05)
+
+Reported from 2.4.0: after a crash or an update, **inventories were kept but
+the world rolled back**, so placed blocks were simply gone. Minecraft's
+shutdown saves **players first, chunks second** (`Saving players`, then
+`Saving worlds`, then `All dimensions are saved`). Docker SIGKILLs a container
+10 seconds after asking it to stop. Any kill between those two log lines
+produces exactly that asymmetry. Moved-into-chest items vanish the same way,
+and taken-out-of-chest items duplicate.
+
+Every non-RCON stop went through that window: `stop.sh` (`docker compose
+stop`), `restart.sh` (`docker compose restart`), `down`, and every update,
+because `up -d` recreates the container. `auto-restart.sh` and in-game `/stop`
+were never exposed, because Java exits on its own and the restart policy does
+the rest.
+
+Fixed in `server/docker-compose.yml`: `stop_grace_period: 3m`, with the image's
+`STOP_DURATION: "150"` below it, because itzg's wrapper kills Java itself once
+`STOP_DURATION` (default 60s) runs out. `stop.sh` and `restart.sh` now
+`save-all flush` first so the shutdown save is small, and `stop.sh` reports
+exit 137 instead of announcing that the world is safe.
+
+**Diagnosed from the code paths, not yet confirmed from the server's logs.**
+`server/README.md` ("Crashes, logs and rollbacks") has a one-liner that counts
+`All dimensions are saved` in every rolled log. A `0` is a run that never
+finished saving. Run it before treating this as closed. The **first** `up -d`
+after pulling this change must be preceded by `docker compose stop -t 180`,
+because the container being replaced still carries the old 10-second limit.
+
+## Player reports from 2.4.0 (2026-11-05)
+
+Diagnosed by reading jars, and none needed a pack change, so **there was no
+2.4.1 release**. Shipping identical content under a new version would only
+make every player re-import, which itself costs them their map (see below).
+
+**"Trees don't grow outside their biomes" is Serene Seasons, and 2.4.0 already
+turns it off.** SS tags every vanilla sapling to seasons (jungle and acacia
+summer only, dark oak autumn only), and `ModFertility.isCropFertile` treats
+**`#sereneseasons:tropical_biomes` as permanent summer**. So a jungle sapling
+grows in a jungle all year and elsewhere only in summer, which looks exactly
+like a biome lock. `SeasonalCropGrowthHandler.onCropGrowth` and
+`applyBonemeal` both return immediately when `seasonal_crops` is false,
+verified in 9.1.0.3 bytecode. So the 2.4.0 config fixes it, **provided the
+server is actually running 2.4.0**. Check
+`grep seasonal_crops /data/config/sereneseasons/fertility.toml` before
+investigating further. Dark oak and the giant spruce/jungle variants still
+need a 2x2 of saplings, which is vanilla.
+
+**"Items don't despawn" is simulation distance, not a mod.** Nothing in the
+pack disables despawning globally. Scanned for `ItemExpireEvent`,
+`getEntityLifespan`, `ItemEntity.age` (`f_31985_`) and `ItemEntity` mixins.
+Items only age in entity-ticking chunks, and `SIMULATION_DISTANCE=4` means
+only 4 chunks around a player. Leave and the timer freezes. The real
+exceptions are deliberate:
+
+| Source | Behaviour |
+|---|---|
+| Tinkers' `IndestructibleItemEntity` | lifespan `Integer.MAX_VALUE`, set by the `netherite`, `reclaim` and `worldbound` modifiers |
+| Botania `ItemEntityMixin.disableDespawn` | only for items in `BotaniaItems.isNoDespawn` |
+| Open Parties and Claims `MixinItemEntity` | blocks *merging* stacks from different throwers. Does not affect despawn |
+
+**"Explored map resets on update" is the client, not the container.**
+Xaero's World Map identifies the server's world by a level id in
+`world/xaeromap.txt` (`CommonEvents` resolves it against the world save), so it
+lives in the volume and survives rebuilds. Map data, though, sits in the
+**instance** folder (`xaero/world-map/Multiplayer_<address>/`), and the install
+docs told players to import every release as a new instance. The Modrinth App
+names it `Iron.Arcana-<version>`, so each update is a blank map. The docs now
+say to copy `xaero/` across, and the packwiz-bootstrap route avoids the
+problem entirely. Maps are also filed **per server address**. As of
+2026-11-04 the host connects as `Garage-server_wireless` (192.168.1.69) while
+players use `minecraft.wrenchintheworks.online`, so those are two separate maps.
+
+**"Failed to verify username" needs the server log.** It is the vanilla
+`multiplayer.disconnect.unverified_username`: Mojang's `hasJoined` returned no
+profile. A network failure would show *Authentication servers are down*
+instead. The bot is not the cause, since it only calls Mojang on
+`/ia whitelist`, so rate limiting is out. Client logs from 2026-11-04 show
+bursts of 10-15 reconnects inside two minutes, some dropping before Forge's
+mod negotiation (where auth happens) and some just after it, and the client
+never logs the reason. `server/README.md` lists the two server log lines that
+tell the cases apart.
+
+### Overnight pregen lives in the bot, driving the pack's Chunky
+
+Built on 2026-11-05 in the bot repo, branch `feat/chunky-pregen` (not yet
+merged or deployed): `pregen.py`, `/ia mod pregen-status|pregen-now|pregen-stop`
+and a `PREGEN_AT` schedule that is off by default. The pack needed **no
+change**. Chunky was already in it, and the bot reads region files through its
+existing read-only mount. The design record is the bot's handover, "Overnight
+pre-generation".
+
+The one fact the pack side should keep in mind: the bot counts a chunk as
+explored only when **`InhabitedTime > 0`**, so its own pregenerated ring never
+seeds the next night's. Anything that bulk-touches chunks with players nearby
+would change that picture, for example a chunk loader parked at the frontier.
+
+`Chunky-1.3.146`, `side = both`. Read out of the jar while designing it:
+
+- `GenerationTask` calls `World.isChunkGenerated` before generating, so a
+  selection overlapping explored land costs only its new chunks. That makes
+  "a few rectangles around the frontier" cheap.
+- Patterns include `csv` (`chunky pattern csv <name>`, one `x,z` chunk per
+  line). It needs a file inside the server's config dir, though, and the bot's
+  mount is **read-only by design** (bot handover S5). The RCON-only route is
+  `chunky world` + `chunky shape rectangle` + `chunky corners`, run one task at
+  a time.
+- Completion logs `Task finished for <world>. Processed: ...`, which the bot's
+  log tail can wait on before starting the next rectangle. A second
+  `chunky start` on a busy world asks for confirmation rather than queueing.
+
+**Pregenerated chunks freeze the worldgen they were made with.** The Project Red
+deepslate fix rule applies to every future worldgen mod too, so keep the ring
+modest rather than pregenerating far ahead.
+
 ## The Discord bot — what the pack has to know about it
 
 The pack ships **no Discord mod**, and that is a decision, not an omission.

@@ -105,6 +105,11 @@ Two more preconditions, both bot-side:
 > ```
 > No port number needed — paste that straight into *Add Server*.
 >
+> **The red cross on the server list is normal**
+> Hover it and it says "mods are incompatible". It isn't — you'll connect fine. Some mods ship only to clients (Embeddium, Mouse Tweaks) and some only to the server (BlueMap, the YUNG's structure mods), and Forge flags any difference. Nothing to fix.
+>
+> **"Failed to verify username"?** Close the message and connect again — it usually works on the second or third try. If it happens to you every time, sign out of your launcher and back in.
+>
 > :map: **Live world map**
 > A live 3D map of the world, updating as you build: **[mc-map.wrenchintheworks.online](https://mc-map.wrenchintheworks.online)**
 > `/ia map` gets you the link any time, and `/ia info` has the pack details.
@@ -118,6 +123,7 @@ Two more preconditions, both bot-side:
 > The server updates itself from the pack repo every time it restarts. **Your client doesn't** — so when the pack changes you need to update too, or you'll get a mod-mismatch kick. Watch #psa for announcements.
 >
 > **The simple way:** download the new release and import it as a new instance.
+> :map: **Bring your map.** A new instance starts with a blank world map and no waypoints. With the game closed, copy the old instance's `xaero` folder into the new one before you delete the old one.
 >
 > **The better way — auto-updating, Prism Launcher only.** Set this up once and your client syncs itself on every launch:
 > 1. Create the instance from the `.mrpack` as normal.
@@ -127,7 +133,7 @@ Two more preconditions, both bot-side:
 > "$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://raw.githubusercontent.com/wrenchInTheWorks/iron-and-arcana/v2.4.0/pack.toml
 > ```
 >
-> Every launch then adds, removes and updates mods to match the server. No more re-importing and no more mismatch kicks.
+> Every launch then adds, removes and updates mods to match the server. No more re-importing, no more mismatch kicks, and your map stays put.
 >
 > :warning: When a new version is announced in #psa, change the `v2.4.0` in that line to the new one. That one edit is the whole update.
 >
@@ -174,10 +180,10 @@ Two more preconditions, both bot-side:
 > **Seasons are cosmetic**
 > Serene Seasons shifts the colours, changes the weather and brings snow in winter — but it doesn't gate farming. Every crop grows in every season, so plant what you like.
 >
-> **:skull: On death** — graves. Your items are locked in a grave where you died; they won't burn, despawn or disappear. You can have several at once, so dying on the way back isn't fatal to your stuff.
+> **Dropped items only age while someone is nearby**
+> Items despawn after 5 minutes, but the clock only runs while a player is within about 4 chunks. Walk away and it stops; come back and they're still there. Tinkers' tools with the Netherite upgrade or the Worldbound trait never despawn at all, on purpose.
 >
-> **The red cross on the server list is normal**
-> Hover it and it says "mods are incompatible". It isn't — you'll connect fine. Some mods ship only to clients (Embeddium, Mouse Tweaks) and some only to the server (BlueMap, the YUNG's structure mods), and Forge flags any difference. Nothing to fix.
+> **:skull: On death** — graves. Your items are locked in a grave where you died; they won't burn, despawn or disappear. You can have several at once, so dying on the way back isn't fatal to your stuff.
 >
 > *More notes will be added here as questions come up.*
 
@@ -195,3 +201,11 @@ Two more preconditions, both bot-side:
 | Asset filenames corrected | GitHub rewrites `Iron & Arcana-2.4.0.mrpack` to `Iron.Arcana-2.4.0.mrpack`; the old post named a file that does not exist |
 | Shaders and the packwiz auto-update route | Were only in the repo README, where no player looks |
 | Red-cross example corrected | The old post named *"Embeddium, the minimap, Mouse Tweaks"* as client-only. Xaero's Minimap is `side = "both"`, so it was the wrong example — the pack's 9 client-only mods are Embeddium, Mouse Tweaks, AmbientSounds, Athena, libIPN, Inventory Profiles Next, JER, JEED and JEARGH |
+
+### Revised 2026-11-05, from 2.4.0 player reports
+
+| Change | Why |
+|---|---|
+| "Bring your map" line in Message 4 | Xaero keeps the map inside the instance folder, so every re-import starts blank. Players reported it as "updating reset the map", which reads as a server fault when it is not one |
+| Dropped-items note in Message 6 | Items only age within simulation distance (4 chunks), so items left behind look like they never despawn. Tinkers' Netherite, Reclaim and Worldbound tools genuinely never do |
+| Red-cross note moved to Message 3, with a "Failed to verify username" line added | Both are about connecting. Message 6 also needed the room: with the items note it reached 2242 characters, over Discord's 2000 |

@@ -64,6 +64,17 @@ Either way the launcher fetches Forge 47.4.10 and **Java 17** itself.
 > Import as a **new instance** rather than over an old one. Reusing an instance
 > can leave stale jars behind, which causes mod-mismatch kicks or launch crashes.
 
+**Bring your map with you.** Xaero's World Map and Minimap keep their data in
+the instance folder, so a new instance starts with a blank map and no
+waypoints, even though the world itself has not changed. With the game closed,
+copy the old instance's `xaero` folder into the new one before deleting the
+old one. Copy `servers.dat` and `options.txt` across too if you want your
+server list, keybinds and video settings back.
+
+> The map is filed under the **server address** you connect with. Connecting
+> with a different one, such as a LAN name instead of
+> `minecraft.wrenchintheworks.online`, starts a separate, empty map.
+
 ### Modrinth App / Prism Launcher — the `.mrpack`
 
 Create an instance *from file* and pick the `.mrpack`. Nothing else to do.
@@ -104,7 +115,9 @@ this repo so it syncs on launch — the same mechanism the server uses. Requires
    ```
 
 Every launch then adds, removes and updates mods to match that tag — no
-re-importing, and no mod-mismatch kicks.
+re-importing, and no mod-mismatch kicks. It is also the one route that keeps
+your map and waypoints without copying anything, because the instance never
+changes.
 
 **Use the tag the server runs, not `main`.** The server is pinned to a release
 tag, so a client tracking `main` would pick up a mod change the moment it lands

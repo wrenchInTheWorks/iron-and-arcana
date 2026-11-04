@@ -5,7 +5,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 require_docker; require_env
 [ "${1:-}" = "--now" ] || wait_for_cdn
 if is_running; then
-  docker compose exec -T "$SERVICE" rcon-cli save-all >/dev/null 2>&1 || true
+  docker compose exec -T "$SERVICE" rcon-cli save-all flush >/dev/null 2>&1 || true
 fi
 docker compose restart
 c_grn "restarting — follow with ./logs.sh"

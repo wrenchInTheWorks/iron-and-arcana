@@ -8,6 +8,17 @@ services:
     stdin_open: true
     tty: true
 
+    # LOAD-BEARING -- this is what stops a stop from eating placed blocks.
+    # Docker SIGKILLs a container 10 seconds after asking it to stop unless told
+    # otherwise, and Minecraft's shutdown saves PLAYERS first and CHUNKS second.
+    # A kill inside that window keeps every inventory as it is now and rolls the
+    # world back to the last autosave: placed blocks vanish and do not come back
+    # to anyone's inventory. Every `docker compose stop`, `restart` and `down`,
+    # and every update (`up -d` recreating the container), goes through this.
+    # It must be longer than STOP_DURATION below, or Docker kills Java while the
+    # image is still waiting for it. Exit code 137 after a stop = too short.
+    stop_grace_period: 3m
+
     ports:
       - "${GAME_PORT:-25565}:25565"
       - "${BLUEMAP_PORT:-8100}:8100"
@@ -57,6 +68,11 @@ services:
 
       TZ: "${TZ:-Pacific/Auckland}"
       ENABLE_ROLLING_LOGS: "TRUE"
+
+      # How long the image's wrapper waits for Java to exit after sending
+      # `stop` (default 60s). Saving five-plus dimensions and MineColonies'
+      # colony data can outrun a minute. Keep it below stop_grace_period above.
+      STOP_DURATION: "150"
 
     volumes:
       - data:/data

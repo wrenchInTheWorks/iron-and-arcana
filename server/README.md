@@ -46,6 +46,16 @@ docker compose up -d
 environment it was created with, so the new tag would be ignored and nothing
 would appear to happen.
 
+**Pull this repo on the host before the first `up -d` after 2026-11-05.** That
+change added `stop_grace_period` to `docker-compose.yml` (see "Placed blocks
+vanished" below). The container being replaced still has Docker's old
+10-second limit, so stop it with an explicit timeout first, once:
+
+```bash
+git pull
+docker compose stop -t 180 && docker compose up -d
+```
+
 Verify a tag before pinning to it — a release once tagged the wrong commit:
 
 ```bash
@@ -87,6 +97,91 @@ RCON is enabled but its port is **not** published — it is reachable only from
 inside the container, so `RCON_PASSWORD` never crosses the network. The Discord
 bot reaches it over the compose network rather than a published port, which is
 why the two have to run on the same host.
+
+## Crashes, logs and rollbacks
+
+### Where to find the logs
+
+Everything is in the volume, under `/data`. `scripts/files.sh` reaches it
+whether the server is up or not, and `pull` copies into `server/pulled/`.
+
+| What | Where in `/data` | Get it |
+|---|---|---|
+| Crash reports | `crash-reports/crash-<date>-server.txt` | `./scripts/files.sh pull crash-reports` |
+| This run's log | `logs/latest.log` | `./scripts/logs.sh 500`, or `/ia mod logs` in Discord |
+| Earlier runs | `logs/<date>-<n>.log.gz`, one per start | `./scripts/files.sh pull logs` |
+| The JVM itself died | `hs_err_pid*.log` | `./scripts/files.sh ls` |
+| Players' own crashes | their instance folder: `crash-reports/` and `logs/latest.log` | ask them for it |
+
+**The crash is in the log before the current one.** The container restarts by
+itself after a crash, so `latest.log` is the fresh boot. Look in the newest
+`.log.gz` instead.
+
+**No crash report at all usually means the process was killed from outside.**
+Check how the last run ended:
+
+```bash
+docker inspect -f 'exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' iron-and-arcana
+```
+
+`0` is a clean stop and `1` is a Java crash, which should come with a report.
+`137` means it was SIGKILLed: either the host ran out of memory (`oom=true`,
+so lower `MAX_MEMORY` or add RAM) or Docker's stop timeout ran out (see below).
+A crash report titled *Watching Server* means one tick hung for 60 seconds and
+the watchdog killed it. That is lag, not a broken mod. `spark` is in the pack,
+so `/spark profiler` will show what was eating the tick.
+
+### Placed blocks vanished, but inventories did not
+
+When the server stops, Minecraft saves **players first and chunks second**. If
+the process dies between the two, every inventory is saved as it is now while
+the world goes back to its last save. Blocks placed since then vanish and do
+not come back to anyone's inventory. Items moved into chests vanish the same
+way. Items taken *out* of chests come out duplicated.
+
+The likeliest cause is Docker rather than a crash. Docker SIGKILLs a container
+**10 seconds** after asking it to stop, and saving this pack's dimensions can
+take longer than that. So every `docker compose stop`, `restart`, `down` and
+every update could cut the save short. (Diagnosed from the code paths on
+2026-11-05, not yet confirmed from this server's logs. The check below
+settles it.) `docker-compose.yml` now sets
+`stop_grace_period: 3m` and `STOP_DURATION: 150`, and `stop.sh` reports an
+exit code of 137 rather than claiming the world is safe.
+
+To check whether earlier runs finished saving, count how often each rolled log
+says it did. `0` means that run never finished saving:
+
+```bash
+docker run --rm -v iron-and-arcana_data:/data alpine sh -c \
+  'for f in /data/logs/*.log.gz; do echo "$(zcat "$f" | grep -c "All dimensions are saved") $f"; done'
+```
+
+Two smaller windows remain, and both are vanilla behaviour:
+
+- A **watchdog crash** saves nothing at all. Players and world roll back
+  together to the last autosave (every 5 minutes), so time is lost but no
+  items are.
+- **Logging off saves that player immediately**, but the world only saves at
+  the next autosave. If the server crashes in between, blocks that player
+  placed before leaving can be lost. The window is at most 5 minutes.
+
+### "Failed to verify username!"
+
+That message comes from the server, and it means Mojang's session server said
+the player had not joined. A network failure shows a different message,
+*Authentication servers are down*. The server log says which it was:
+
+```bash
+docker compose logs --since 24h | grep -E "invalid session|servers are unavailable"
+```
+
+- `Username 'X' tried to join with an invalid session`: Mojang did not
+  recognise the join. Each retry repeats the whole handshake, which is why the
+  second or third try works. It is between the client, the launcher's login
+  and Mojang. If one player hits it constantly, they should sign out of the
+  launcher and back in to refresh their token.
+- `Couldn't verify username because servers are unavailable`: this host could
+  not reach `sessionserver.mojang.com`. Check the host's DNS and network.
 
 ## Whitelisting
 

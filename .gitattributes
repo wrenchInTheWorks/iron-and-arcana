@@ -8,6 +8,9 @@
 *.js     text eol=lf
 *.snbt  text eol=lf
 *.properties text eol=lf
+# ProjectRed.cfg is indexed too. Missing from this list, a Windows checkout
+# got CRLF and `packwiz refresh` wrote a hash CI could not reproduce.
+*.cfg   text eol=lf
 *.yml   text eol=lf
 
 # Shell scripts MUST be LF. A CRLF shebang fails on Linux with the famously

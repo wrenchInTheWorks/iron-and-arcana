@@ -117,44 +117,93 @@ whether the server is up or not, and `pull` copies into `server/pulled/`.
 itself after a crash, so `latest.log` is the fresh boot. Look in the newest
 `.log.gz` instead.
 
-**No crash report at all usually means the process was killed from outside.**
-Check how the last run ended:
+**No crash report at all means the process was killed from outside.** Nothing
+inside Java runs, so nothing is written. Each rolled log shows how its run
+ended. A run that stopped cleanly logs `Stopping server`. A killed one simply
+stops mid-play, usually on a run of `Can't keep up!` warnings:
 
 ```bash
-docker inspect -f 'exit={{.State.ExitCode}} oom={{.State.OOMKilled}}' iron-and-arcana
+docker compose exec -T minecraft sh -c 'cd /data/logs && for f in $(ls -tr 20*.log.gz); do
+  printf "%-20s new-run=%-3s stopped=%s  last line %s\n" "$f" \
+    "$(zcat $f | head -1 | grep -q "\[main/" && echo yes || echo no)" \
+    "$(zcat $f | grep -c "Stopping server")" "$(zcat $f | tail -1 | cut -c2-22)"; done'
 ```
 
-`0` is a clean stop and `1` is a Java crash, which should come with a report.
-`137` means it was SIGKILLed: either the host ran out of memory (`oom=true`,
-so lower `MAX_MEMORY` or add RAM) or Docker's stop timeout ran out (see below).
+A `new-run=no` file is the daily rollover, so read it as part of the run
+before it. A run whose files never show `stopped=1` was killed. On 2026-11-04,
+every run after the 10:31 update ended that way.
+
+> **Do not count `All dimensions are saved`.** An earlier version of this
+> section did. That line is also printed about a minute after every **boot**,
+> so a killed run still scores 1.
+
+Two things kill the server from outside, and **Docker cannot tell you which**:
+
+1. **The host ran out of memory.** This is the one that has actually happened,
+   repeatedly (see "Memory" below). The kernel's OOM killer takes the biggest
+   process, which is always Java. Docker's `OOMKilled` flag stays `false`,
+   because it only covers a container memory limit and this stack sets none.
+   The restart policy also brings the server back within a minute, so
+   `docker inspect` shows a healthy container. The host's kernel log is the only
+   record, one boot at a time:
+
+   ```bash
+   journalctl -k -b 0 | grep 'Killed process'    # this boot; -b -1 for the one before
+   sar -r; sar -S                                # memory and swap every 10 minutes (sysstat)
+   ```
+
+2. **Docker's stop timeout ran out** (see below).
+
 A crash report titled *Watching Server* means one tick hung for 60 seconds and
 the watchdog killed it. That is lag, not a broken mod. `spark` is in the pack,
-so `/spark profiler` will show what was eating the tick.
+so `/spark profiler` will show what was eating the tick. If the host is
+swapping, the watchdog can fire without managing to write the report at all.
+
+### Memory: what `MAX_MEMORY` really costs
+
+Java's resident size is the heap **plus about 1.3 GB** of its own (metaspace,
+code, threads, GC). That was measured at 9.3 GB resident for an 8 GB heap.
+`USE_AIKAR_FLAGS` commits `INIT_MEMORY` at boot, and under load the heap grows
+to `MAX_MEMORY` and stays there. So the budget is:
+
+> `MAX_MEMORY` + 1.5 GB + everything else on the host  <=  RAM, **without swap**
+
+**Swap is not headroom.** Once the heap is partly swapped out, every garbage
+collection touches disk. The first symptom is 15-30 second `Can't keep up!`
+stalls, and the kill follows once swap fills too. On 2026-11-04, a 15 GiB host
+running a desktop session and a browser beside a 12 GB heap swapped to 100% and
+was OOM-killed seven times in one afternoon and evening, roughly every 40
+minutes of play.
+
+`VIEW_DISTANCE` is the other half. The server keeps `(2v+1)^2` chunks per
+player and generates every one of them when a player explores: 289 at 8, 625 at
+12, 2401 at 24. Raising it multiplies memory, worldgen and bandwidth together.
 
 ### Placed blocks vanished, but inventories did not
 
-When the server stops, Minecraft saves **players first and chunks second**. If
-the process dies between the two, every inventory is saved as it is now while
-the world goes back to its last save. Blocks placed since then vanish and do
-not come back to anyone's inventory. Items moved into chests vanish the same
-way. Items taken *out* of chests come out duplicated.
+This is what a kill looks like from inside the game. Players are saved more
+often than the world. Each player's file is written whenever that player logs
+off, and when the server stops it saves **players first and chunks second**.
+The world only reaches disk at the 5-minute autosave and at a clean stop. A
+lagging server ticks slowly, so the autosave comes even less often in real time.
+When the process is killed, inventories are as recent as each player's last
+logoff, but the world goes back to the last autosave. Blocks placed since then
+vanish and do not come back to anyone's inventory. Items moved into chests
+vanish the same way. Items taken *out* of chests come out duplicated.
 
-The likeliest cause is Docker rather than a crash. Docker SIGKILLs a container
-**10 seconds** after asking it to stop, and saving this pack's dimensions can
-take longer than that. So every `docker compose stop`, `restart`, `down` and
-every update could cut the save short. (Diagnosed from the code paths on
-2026-11-05, not yet confirmed from this server's logs. The check below
-settles it.) `docker-compose.yml` now sets
-`stop_grace_period: 3m` and `STOP_DURATION: 150`, and `stop.sh` reports an
-exit code of 137 rather than claiming the world is safe.
+**The confirmed cause was host OOM kills.** Every run on 2026-11-04 and 11-05
+ended in one. None logged `Stopping server`, and each kill is in the host's
+kernel log, 20-40 seconds after that run's last line. The **10-minute** losses
+players reported fit a server that had fallen a quarter to a third behind
+real time.
 
-To check whether earlier runs finished saving, count how often each rolled log
-says it did. `0` means that run never finished saving:
-
-```bash
-docker run --rm -v iron-and-arcana_data:/data alpine sh -c \
-  'for f in /data/logs/*.log.gz; do echo "$(zcat "$f" | grep -c "All dimensions are saved") $f"; done'
-```
+**Docker's stop timeout can do the same, and it has been fixed.** Docker
+SIGKILLs a container **10 seconds** after asking it to stop, and saving this
+pack's dimensions can take longer than that. So `docker compose stop`,
+`restart`, `down` and every update could cut the save short.
+`docker-compose.yml` now sets `stop_grace_period: 3m` and `STOP_DURATION: 150`.
+`stop.sh` reports an exit code of 137 rather than claiming the world is safe.
+This was diagnosed from the code, and no logged run has ended this way yet.
 
 Two smaller windows remain, and both are vanilla behaviour:
 
@@ -172,14 +221,18 @@ the player had not joined. A network failure shows a different message,
 *Authentication servers are down*. The server log says which it was:
 
 ```bash
-docker compose logs --since 24h | grep -E "invalid session|servers are unavailable"
+docker compose exec -T minecraft sh -c 'zcat /data/logs/20*.log.gz; cat /data/logs/latest.log' \
+  | grep -E "invalid session|servers are unavailable"
 ```
 
 - `Username 'X' tried to join with an invalid session`: Mojang did not
   recognise the join. Each retry repeats the whole handshake, which is why the
   second or third try works. It is between the client, the launcher's login
   and Mojang. If one player hits it constantly, they should sign out of the
-  launcher and back in to refresh their token.
+  launcher and back in to refresh their token. On this server it **clusters
+  right after a crash**: everyone reconnects at once and retries rapidly, and
+  one burst on 2026-11-04 was a dozen attempts in two minutes. A stable
+  server shows it only now and then.
 - `Couldn't verify username because servers are unavailable`: this host could
   not reach `sessionserver.mojang.com`. Check the host's DNS and network.
 

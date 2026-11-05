@@ -42,6 +42,60 @@ dropping Create and Immersive Engineering, which are the pack's tech pillars.
 
 ---
 
+## The live server machine: test locally first (owner's rule, 2026-11-05)
+
+The live server and the Discord bot run on **`garage-server_wireless`**
+(Ubuntu, LAN). This computer can reach it over SSH as
+`michael@garage-server_wireless`.
+
+> **Nothing experimental reaches the server machine** unless it has first been
+> tested on the **local** server on this computer, or the owner explicitly
+> says to apply it directly to the server.
+>
+> That covers everything that changes state there: pack updates (moving
+> `PACKWIZ_URL` to a new tag), `docker-compose.yml` and script changes, bot
+> deploys and rebuilds, config or world edits, and any command that writes on
+> the host or inside its containers.
+>
+> **Read-only inspection is fine** when asked for: logs, crash reports,
+> `docker inspect`, `docker compose ps`, and `ls` / `cat` / `zcat` / `grep`
+> inside the running container. Prefer `docker compose exec -T` reads over
+> `docker run`, which can pull an image and start something new on the host.
+
+The local server is this repo's own `server/` stack under **Docker Desktop**.
+The engine is often stopped, so `docker ps` fails until Docker Desktop is
+started. That does not mean there is no local server.
+
+SSH: the owner replaced `~/.ssh/id_ed25519` on 2026-11-05 with a key that has
+**no passphrase** (`SHA256:keHiGn3s...`), so `-o BatchMode=yes` works directly.
+The old one had a passphrase. With a key like that, BatchMode fails with
+"Permission denied" right after "Server accepts key", and the owner, not Claude,
+types the passphrase into an agent. Two quoting traps:
+
+- **PowerShell 5.1 strips embedded double quotes** from arguments to native
+  programs, so a multi-line remote script passed as an argument arrives
+  mangled (`template parsing error: function "com" not defined`). Run it from
+  Git Bash instead: `/c/Windows/System32/OpenSSH/ssh.exe -o BatchMode=yes
+  michael@garage-server_wireless bash -s <<'EOF' ... EOF`.
+- Use Windows OpenSSH (`/c/Windows/System32/OpenSSH/ssh.exe`), not Git Bash's
+  own `ssh`, which does not see the Windows agent or the same config.
+
+**What is on the host** (read 2026-11-05):
+
+| | |
+|---|---|
+| Server stack | `~/Desktop/Iron & Arcana/server`, a **symlink** into a git clone at `~/Documents/Git/iron-and-arcana` |
+| That clone | on the **old `2.0` branch at `54de19f` (2026-10-02)**, with a local `docker-compose.yml` edit: `VIEW_DISTANCE` default 24, `SIMULATION_DISTANCE` 8, BlueMap port unpublished (the tunnel serves it) |
+| Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, branch `2.0`, `93c4cac` |
+| Machine | 15 GiB RAM, 4 GiB swap, 4 cores, GNOME desktop session, on **Wi-Fi** (USB dongle `wlx...`) |
+
+`.env` picks the pack, so the pack is current, but **the host's compose file
+and scripts are a month old**. None of the 2026-11-05 stop-timeout changes are
+there until that clone is moved to `main`. The local compose edit has to be
+carried across when it is.
+
+---
+
 ## Key Workflows
 
 ```bash
@@ -1039,12 +1093,74 @@ Fixed in `server/docker-compose.yml`: `stop_grace_period: 3m`, with the image's
 `save-all flush` first so the shutdown save is small, and `stop.sh` reports
 exit 137 instead of announcing that the world is safe.
 
-**Diagnosed from the code paths, not yet confirmed from the server's logs.**
-`server/README.md` ("Crashes, logs and rollbacks") has a one-liner that counts
-`All dimensions are saved` in every rolled log. A `0` is a run that never
-finished saving. Run it before treating this as closed. The **first** `up -d`
-after pulling this change must be preceded by `docker compose stop -t 180`,
-because the container being replaced still carries the old 10-second limit.
+**This was not what happened on 2.4.0.** The server's logs, read on
+2026-11-05, show every lost run ending in a **host OOM kill** (next section),
+and none in a stop that ran out of time. The fix stands because the window is
+real. The **first** `up -d` after pulling this change must be preceded by
+`docker compose stop -t 180`, because the container being replaced still
+carries the old 10-second limit. The host's clone does not have this change
+yet (see "What is on the host").
+
+> Counting `All dimensions are saved` per log, which this section originally
+> recommended, **does not work**: the line is also printed about a minute after
+> every boot, so a killed run scores 1. Count `Stopping server` instead.
+> `server/README.md` has the corrected one-liner.
+
+### The rollbacks were the host OOM-killing Java (confirmed 2026-11-05)
+
+Read from the server machine, read-only. **Every run after the 2.4.0 update at
+10:31 on 2026-11-04 ended in a SIGKILL.** No rolled log since then contains
+`Stopping server`, and each one ends 20-40 seconds before a line like this in
+the **host's** kernel log:
+
+```
+Out of memory: Killed process 2886128 (java) total-vm:17063452kB, anon-rss:12643528kB
+```
+
+Eleven since 2026-10-04, **eight of them on 4-5 November**: 14:30, 15:02, 15:24,
+16:00, 16:42, 17:24 and 19:52 on the 4th, and 07:50 on the 5th. That is roughly
+every 40 minutes of play.
+
+**Why.** The live `.env` runs `INIT_MEMORY=8G` and `MAX_MEMORY=12G` (the repo
+default is 6G) on a 15 GiB host that is also a desktop. Firefox alone was
+3.2 GB on 2026-11-05. Java's resident size is the heap plus about 1.3 GB (9.3 GB
+at an 8 GB heap), so a 12 GB heap was 12.4-13.0 GB at each kill. `sar` (sysstat
+is installed) shows swap at 51% with nobody on. Whenever players were on it
+climbed to 98-100%, with 250-800 MB available, and every kill sits at one of
+those peaks. Swapping the heap is also the lag: killed runs lost 25-33% of
+their wall time to `Can't keep up!`, with single stalls of 15-32 s.
+
+**Why players were kept and blocks were not.** A kill saves nothing. Each
+player's file is written whenever that player logs off, and the logs show
+constant relogs. The world is written only at the autosave, every 6000 ticks.
+At the measured tick rate that was every 6-8 minutes of real time, which
+matches the "10+ minutes" lost.
+
+**What Docker shows is misleading.** `OOMKilled` stays `false`, because it only
+reflects a container memory limit and this stack sets none. `ExitCode` and
+`RestartCount` reset with the automatic restart, and no crash report is
+written. The kernel log is the only record, and `journalctl -k` covers one boot
+at a time (`-b -1` for the previous).
+
+**The fix is a change to the live `.env`**, so it is the owner's call under the
+server rule above. Recommended: `MAX_MEMORY=8G`, which leaves about 5.5 GB for
+the desktop. Also bring `VIEW_DISTANCE` down from 24. The owner raised it on
+purpose, but it is quadratic: 2401 chunks per player at 24 against 625 at 12,
+all generated as a player explores. **Do not schedule the bot's overnight
+pregen until this is fixed**: Chunky on top of a 12 GB heap is more of the
+same memory pressure, with nobody watching.
+
+Also from the same read:
+
+- **The host went down hard at 09:19 on 2026-11-05.** The journal reaches no
+  shutdown target. Before that came a watchdog kill (one 60-second tick, 09:13)
+  and Wi-Fi re-authentication failures from 09:12. Swap was at 77% and not
+  climbing, so memory is not proven for that one. The watchdog wrote no crash
+  report.
+- **The Wi-Fi drops 20-140 times a day** (`CTRL-EVENT-DISCONNECTED reason=4`).
+  Most drops are brief. The one `Couldn't verify username because servers are
+  unavailable` in the logs is from the 09:13 outage.
+- `michael` has no crontab, so `auto-restart.sh` is not scheduled on the host.
 
 ## Player reports from 2.4.0 (2026-11-05)
 
@@ -1065,11 +1181,27 @@ server is actually running 2.4.0**. Check
 investigating further. Dark oak and the giant spruce/jungle variants still
 need a 2x2 of saplings, which is vanilla.
 
+**Checked on the server on 2026-11-05: `seasonal_crops = false` is live.**
+GlitchCore had written its own defaults back into the file, which proves it
+loaded it. So the follow-up report, "four dark oak saplings will only grow in
+a dark forest, even with bone meal", is **not** Serene Seasons. Nothing else in
+the pack touches it either. No jar overrides
+`worldgen/configured_feature/dark_oak.json`, and the six that ship
+`replaceable_by_trees` tags (Farmer's Delight, Tinkers', Alex's Caves, Chipped,
+Deep Aether, Twilight Forest) only *add* blocks, which makes growth easier.
+Vanilla dark oak needs about 10 clear blocks above the 2x2, and nothing solid
+within 1 block of the trunk or within 2 near the top. A torch, fence, roof
+or a neighbouring tree's trunk is enough to stop it. Bone meal only works 45% of
+the time, and the first success just advances the sapling a stage. When there is no
+room it is still consumed, with no message. Open ground in a dark forest passes
+those checks, and a base usually does not.
+
 **"Items don't despawn" is simulation distance, not a mod.** Nothing in the
 pack disables despawning globally. Scanned for `ItemExpireEvent`,
 `getEntityLifespan`, `ItemEntity.age` (`f_31985_`) and `ItemEntity` mixins.
-Items only age in entity-ticking chunks, and `SIMULATION_DISTANCE=4` means
-only 4 chunks around a player. Leave and the timer freezes. The real
+Items only age in entity-ticking chunks: 4 chunks around a player at the
+repo's `SIMULATION_DISTANCE=4`, or 8 on the live server, whose `.env` raises it.
+Leave and the timer freezes. The real
 exceptions are deliberate:
 
 | Source | Behaviour |
@@ -1090,21 +1222,26 @@ problem entirely. Maps are also filed **per server address**. As of
 2026-11-04 the host connects as `Garage-server_wireless` (192.168.1.69) while
 players use `minecraft.wrenchintheworks.online`, so those are two separate maps.
 
-**"Failed to verify username" needs the server log.** It is the vanilla
-`multiplayer.disconnect.unverified_username`: Mojang's `hasJoined` returned no
-profile. A network failure would show *Authentication servers are down*
-instead. The bot is not the cause, since it only calls Mojang on
-`/ia whitelist`, so rate limiting is out. Client logs from 2026-11-04 show
-bursts of 10-15 reconnects inside two minutes, some dropping before Forge's
-mod negotiation (where auth happens) and some just after it, and the client
-never logs the reason. `server/README.md` lists the two server log lines that
-tell the cases apart.
+**"Failed to verify username" is Mojang, made worse by the crashes.** It is the
+vanilla `multiplayer.disconnect.unverified_username`: Mojang's `hasJoined`
+returned no profile. The server log, read on 2026-11-05, settles which case:
+every instance but one is `Username 'X' tried to join with an invalid session`,
+meaning Mojang had no record of the client's join. The exception is a single
+`Couldn't verify username because servers are unavailable`, from the host's
+09:13 network outage. So this is not the host's network, and not the bot. It
+does **cluster after each OOM restart**, when all players reconnect at once.
+After the 16:00 restart on 2026-11-04, one player made a dozen attempts in two
+minutes, mostly abandoned mid-login, before one got through. On a stable run it
+appears only now and then, and a retry works. Stopping the kills removes most
+of it, and nothing on the server can remove the rest.
 
 ### Overnight pregen lives in the bot, driving the pack's Chunky
 
 Built on 2026-11-05 in the bot repo, branch `feat/chunky-pregen` (not yet
 merged or deployed): `pregen.py`, `/ia mod pregen-status|pregen-now|pregen-stop`
-and a `PREGEN_AT` schedule that is off by default. The pack needed **no
+and a nightly schedule that is off by default. An administrator sets it from
+Discord with `/ia config pregen`; the `PREGEN_*` values in the bot's `.env`
+are only defaults. The pack needed **no
 change**. Chunky was already in it, and the bot reads region files through its
 existing read-only mount. The design record is the bot's handover, "Overnight
 pre-generation".
@@ -1131,6 +1268,10 @@ would change that picture, for example a chunk loader parked at the frontier.
 **Pregenerated chunks freeze the worldgen they were made with.** The Project Red
 deepslate fix rule applies to every future worldgen mod too, so keep the ring
 modest rather than pregenerating far ahead.
+
+**Do not schedule it on the live host until its memory is fixed.** See "The
+rollbacks were the host OOM-killing Java". As of 2026-11-05 the host swaps to
+100% under three players, and an unattended Chunky run would add to it.
 
 ## The Discord bot — what the pack has to know about it
 

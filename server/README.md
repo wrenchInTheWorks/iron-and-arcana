@@ -420,6 +420,13 @@ internet. Cloudflare's proxy would not carry 8100 anyway — it accepts a fixed
 port list that does not include it, which is the other reason the map goes
 through a tunnel rather than a proxied record.
 
+Set `BLUEMAP_BIND=127.0.0.1` in `.env` to keep 8100 off the LAN as well. The
+live host does this. The tunnel does not use the published port at all, so
+the only thing that still reaches it is `curl http://localhost:8100` on the
+host. Before 2026-11-05 the host got the same effect by deleting the port line
+from its copy of `docker-compose.yml`, which left the clone permanently dirty.
+Keep host-specific settings in `.env`, so the clone can follow `main` cleanly.
+
 ## If the repo ever goes private
 
 `raw.githubusercontent.com` needs the repo to be public for `PACKWIZ_URL` to

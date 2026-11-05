@@ -94,7 +94,7 @@ types the passphrase into an agent. Three traps:
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
 | Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
-| Bot schedules | **all off** as of 2026-11-05: no daily restart, no pre-generation, and `BACKUP_INTERVAL_HOURS=0` (see "Backups" under Not done yet) |
+| Bot schedules | **Backups every 2 hours** (`BACKUP_INTERVAL_HOURS=2`, on since 2026-11-05 14:24). Daily restart and pre-generation are **off** until an administrator sets them with `/ia config restart` / `/ia config pregen`. The bot's previous `.env` is at `~/iron-and-arcana-backups/bot-env-2026-11-05-before` |
 | Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** (connection `SPARK-SZX7GC-5G`) through a Realtek USB dongle (`rtw88_8821cu`) |
 | Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run. Restarts are the bot's job now |
 
@@ -212,7 +212,8 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 ### Not done yet
 
 1. **Linux migration.** The runbook is in `server/README.md` ("Moving the
-   server to another host"). Only `world/` moves (~40 MB of the ~890 MB volume);
+   server to another host"). Only `world/` moves (40 MB in October, 1.2 GB by
+   2026-11-05);
    mods re-download, BlueMap re-renders, `config/` ships from the repo. The two
    things that do not survive on their own are `world/serverconfig/` (23
    per-world Forge configs, including the backpack slowness nerf, which
@@ -227,13 +228,31 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    is down. **A restore has still never been performed**, so the migration
    remains its first real test.
 
-   > **Scheduled backups are OFF on the live host** (read 2026-11-05). The
-   > bot's `.env` there has `BACKUP_INTERVAL_HOURS=0`, and the newest of its 3
-   > local archives is from **2026-10-12**. The off-host restic repository *is*
-   > configured, so the schedule is the only thing missing. Turning it on is a
-   > one-line change to that `.env` (`2` = two-hourly) and an
-   > `up -d --build`. It is the owner's call because each run uploads to their
-   > Google Drive.
+   > **Scheduled backups were off until 2026-11-05.** The bot's `.env` on the
+   > host had `BACKUP_INTERVAL_HOURS=0`, and the newest local archive was from
+   > 2026-10-12. Turned on at 14:24 that day (`2`, two-hourly) at the owner's
+   > request. The first run at 14:34:
+   >
+   > - **Local: fine.** 1043 MB archive from 1228.6 MB of world, in 46.7 s.
+   >   Six are kept, so budget about 6.5 GB on the bot's volume. **The world is
+   >   1.2 GB now**, against 41 MB in October, mostly `region/` (view distance
+   >   24 generating chunks as players explore). Every size estimate in the bot's
+   >   docs predates that.
+   > - **Off-host: failing.** Google answers `invalid_grant: Token has been
+   >   expired or revoked`. The `rclone.conf` uses the owner's **own** OAuth
+   >   client (`client_id` set, `scope = drive`). An OAuth app left in
+   >   **Testing** status gets refresh tokens that expire after 7 days, so a
+   >   reconnect alone would fail again a week later. Fix: set the app to
+   >   *In production* in Google Cloud (OAuth consent screen / Audience), then
+   >   reconnect. The file is `config/rclone.conf`, owned by the bot's uid
+   >   10001 with mode 600, so michael needs sudo to copy it out and back.
+   > - **When off-host works again, the first snapshot is ~1 GB, and it runs
+   >   inside the `save-off` pause** (`_perform_backup` holds one pause for both
+   >   copies). Saving stays off for the whole upload, over Wi-Fi at the edge
+   >   of range. Later snapshots are incremental and short.
+   > - **No audit channel is set**, so every backup, restart and pregen report
+   >   goes only to the bot's stdout (`(no audit channel set)` in its log).
+   >   Set one with `/ia config audit-channel`.
 3. **Cloudflare exposure.** Port-forward 25565, a `cloudflare-ddns` container,
    DNS-only A record plus SRV, and a Tunnel for BlueMap only. No CGNAT (public
    IP confirmed, gateway 192.168.1.254). The runbook lives in the private

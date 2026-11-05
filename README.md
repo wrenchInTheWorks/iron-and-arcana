@@ -147,8 +147,8 @@ One Minecraft account per Discord account; running it again with a different
 name swaps which one is whitelisted.
 
 That is handled by **Wrench's Toolkit**, a self-hosted Discord bot that also
-bridges in-game chat, joins, leaves and deaths into Discord, and takes the
-scheduled off-host backups. Its repo is private for now, so it is not a
+bridges in-game chat, joins, leaves and deaths into Discord, and takes
+scheduled backups of the world. Its repo is private for now, so it is not a
 dependency you can pick up — and it does not need to be. **The pack ships no
 Discord mod**: the bridge works by tailing the server log and sending RCON, so
 the pack stays fully playable with no bot running.

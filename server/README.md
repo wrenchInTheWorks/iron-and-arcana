@@ -282,9 +282,10 @@ indistinguishable from a stale lock after an unclean kill.
 
 There is no backup script here any more. **Routine backups are the Discord
 bot's job** -- Wrench's Toolkit takes them on a schedule, without stopping the
-server (`save-off`, flush, copy, `save-on`) and copies them off-host to Google
-Drive with restic, deduplicated so two days of two-hourly snapshots costs about
-46 MB. See `IRON_ARCANA_HANDOVER.md` in that repo.
+server (`save-off`, flush, copy, `save-on`). It can also copy them off-host
+with restic. **On the live server that is off**, so the archives stay on the
+host, in the bot's volume, and are copied off by hand. See
+`IRON_ARCANA_HANDOVER.md` in that repo.
 
 The recipe above remains the way to take one **by hand** -- for a migration, or
 if the bot is not running. It stops the server, which the bot's version does
@@ -293,7 +294,8 @@ not need to.
 ## Moving the server to another host
 
 The same archive is the migration path. **Only `world/` needs to move.** Of the
-~890 MB in the volume the world is ~40 MB (~28 MB compressed): `mods/` (~594 MB)
+~890 MB in the volume (October) the world was ~40 MB (~28 MB compressed); by
+2026-11-05 it was 1.2 GB, about 1 GB compressed. The rest: `mods/` (~594 MB)
 is re-fetched by packwiz on first start, `bluemap/` (~83 MB) re-renders itself,
 and everything in `config/` ships from the repo.
 

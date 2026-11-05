@@ -94,7 +94,7 @@ types the passphrase into an agent. Three traps:
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
 | Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
-| Bot schedules | **Backups every 2 hours** (`BACKUP_INTERVAL_HOURS=2`, on since 2026-11-05 14:24). Daily restart and pre-generation are **off** until an administrator sets them with `/ia config restart` / `/ia config pregen`. The bot's previous `.env` is at `~/iron-and-arcana-backups/bot-env-2026-11-05-before` |
+| Bot schedules | **Backups every 2 hours** (`BACKUP_INTERVAL_HOURS=2`, on since 2026-11-05 14:24), **local only**: the Drive copy was turned off at 15:48 the same day. Daily restart and pre-generation are **off** until an administrator sets them with `/ia config restart` / `/ia config pregen`. The bot's previous `.env` is at `~/iron-and-arcana-backups/bot-env-2026-11-05-before` |
 | Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** (connection `SPARK-SZX7GC-5G`) through a Realtek USB dongle (`rtw88_8821cu`) |
 | Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run. Restarts are the bot's job now |
 
@@ -221,9 +221,10 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    is gitignored.
 2. **Backups — now the bot's job.** `server/scripts/backup.sh` was deleted on
    2026-10-12: Wrench's Toolkit takes scheduled backups without stopping the
-   server (`save-off`, flush, copy, `save-on`) and copies them off-host to
-   Google Drive with restic, deduplicated so two days of two-hourly snapshots
-   costs ~46 MB rather than ~716 MB of full copies. The manual recipe in
+   server (`save-off`, flush, copy, `save-on`). It can also copy them
+   off-host to Google Drive with restic, but **on the live host that is off**
+   since 2026-11-05 (below): archives stay on the server and the owner moves
+   them off by hand. The manual recipe in
    `server/README.md` is still the migration path and the fallback when the bot
    is down. **A restore has still never been performed**, so the migration
    remains its first real test.
@@ -238,18 +239,30 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    >   1.2 GB now**, against 41 MB in October, mostly `region/` (view distance
    >   24 generating chunks as players explore). Every size estimate in the bot's
    >   docs predates that.
-   > - **Off-host: failing.** Google answers `invalid_grant: Token has been
-   >   expired or revoked`. The `rclone.conf` uses the owner's **own** OAuth
-   >   client (`client_id` set, `scope = drive`). An OAuth app left in
-   >   **Testing** status gets refresh tokens that expire after 7 days, so a
-   >   reconnect alone would fail again a week later. Fix: set the app to
-   >   *In production* in Google Cloud (OAuth consent screen / Audience), then
-   >   reconnect. The file is `config/rclone.conf`, owned by the bot's uid
-   >   10001 with mode 600, so michael needs sudo to copy it out and back.
-   > - **When off-host works again, the first snapshot is ~1 GB, and it runs
-   >   inside the `save-off` pause** (`_perform_backup` holds one pause for both
-   >   copies). Saving stays off for the whole upload, over Wi-Fi at the edge
-   >   of range. Later snapshots are incremental and short.
+   > - **Off-host: turned off at 15:48 the same day, by the owner.** It was
+   >   failing anyway: Google answered `invalid_grant: Token has been expired
+   >   or revoked`. Rather than reconnect, the owner chose local-only, because
+   >   their Drive does not have the room. `RESTIC_REPOSITORY` is empty in the
+   >   bot's `.env`, with the old value commented above it. The `.env` before
+   >   that change is `~/iron-and-arcana-backups/bot-env-2026-11-05-before-local-only`.
+   >   Every backup report now ends "No off-host copy", which is accurate.
+   > - **Moving them off is by hand.** The archives are in the bot's volume
+   >   under `/var/lib/docker` (root-only), so use `docker cp`, which needs no
+   >   sudo because michael is in the `docker` group. On the host:
+   >   `f=$(docker exec wrenchs-toolkit sh -c 'ls -t /data/backups/*.tar.gz | head -1')`
+   >   then `docker cp "wrenchs-toolkit:$f" ~/`. Only six are kept, which is
+   >   12 hours at two-hourly, so the local tail is the **only** history
+   >   beyond what the owner has copied away. Disk is not the constraint: 179
+   >   GB free on 2026-11-05.
+   > - **If off-host is ever turned back on**, two traps. The rclone config
+   >   uses the owner's **own** OAuth client (`scope = drive`), and an app left
+   >   in **Testing** gets refresh tokens that expire after 7 days, so publish
+   >   it to *In production* first, then reconnect. `config/rclone.conf` is
+   >   owned by uid 10001, mode 600, so that needs sudo. And the first
+   >   snapshot (~1 GB) **runs inside the `save-off` pause**, because
+   >   `_perform_backup` holds one pause for both copies, so saving would stay
+   >   off for the whole upload over the host's Wi-Fi. Copy to a staging
+   >   directory under the pause and upload outside it before re-enabling.
    > - **No audit channel is set**, so every backup, restart and pregen report
    >   goes only to the bot's stdout (`(no audit channel set)` in its log).
    >   Set one with `/ia config audit-channel`.

@@ -70,7 +70,7 @@ SSH: the owner replaced `~/.ssh/id_ed25519` on 2026-11-05 with a key that has
 **no passphrase** (`SHA256:keHiGn3s...`), so `-o BatchMode=yes` works directly.
 The old one had a passphrase. With a key like that, BatchMode fails with
 "Permission denied" right after "Server accepts key", and the owner, not Claude,
-types the passphrase into an agent. Two quoting traps:
+types the passphrase into an agent. Three traps:
 
 - **PowerShell 5.1 strips embedded double quotes** from arguments to native
   programs, so a multi-line remote script passed as an argument arrives
@@ -79,20 +79,29 @@ types the passphrase into an agent. Two quoting traps:
   michael@garage-server_wireless bash -s <<'EOF' ... EOF`.
 - Use Windows OpenSSH (`/c/Windows/System32/OpenSSH/ssh.exe`), not Git Bash's
   own `ssh`, which does not see the Windows agent or the same config.
+- **`docker compose exec -T` inside a `bash -s` heredoc eats the rest of the
+  script.** It reads stdin, and stdin is the script, so every line after it
+  silently never runs. Put `</dev/null` on every `exec` (and `stop`/`up`) in a
+  heredoc'd script.
 
-**What is on the host** (read 2026-11-05):
+**What is on the host** (tidied 2026-11-05, on the owner's instruction):
 
 | | |
 |---|---|
-| Server stack | `~/Desktop/Iron & Arcana/server`, a **symlink** into a git clone at `~/Documents/Git/iron-and-arcana` |
-| That clone | on the **old `2.0` branch at `54de19f` (2026-10-02)**, with a local `docker-compose.yml` edit: `VIEW_DISTANCE` default 24, `SIMULATION_DISTANCE` 8, BlueMap port unpublished (the tunnel serves it) |
-| Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, branch `2.0`, `93c4cac` |
-| Machine | 15 GiB RAM, 4 GiB swap, 4 cores, GNOME desktop session, on **Wi-Fi** (USB dongle `wlx...`) |
+| Server stack | `~/Desktop/Iron & Arcana/server`, a **symlink** into a git clone at `~/Documents/Git/iron-and-arcana`. Run `docker compose` from the symlink path: it is the project's recorded working dir |
+| That clone | on **`main`, tracking `origin/main`, clean**. It was on `2.0` at `54de19f` (2026-10-02) with an uncommitted `docker-compose.yml` edit until 2026-11-05. The local `2.0` branch was deleted |
+| Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.0` |
+| What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
+| Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
+| Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, branch `2.0` at `93c4cac`, clean and level with `origin/2.0`. **The bot repo's default branch is `master`, which is stale.** `2.0` is the live one, the same trap shape this repo's `2.0` was |
+| Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** through a Realtek USB dongle (`rtw88_8821cu`) |
+| Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run |
 
-`.env` picks the pack, so the pack is current, but **the host's compose file
-and scripts are a month old**. None of the 2026-11-05 stop-timeout changes are
-there until that clone is moved to `main`. The local compose edit has to be
-carried across when it is.
+**Updating the host** is now `git pull --ff-only` in the clone, then
+`docker compose up -d` from the stack path. Keep the clone clean. Anything
+host-specific goes in `.env`, never into a tracked file. A local edit to
+`docker-compose.yml` is what kept this clone on a month-old branch: pulling
+would have meant merging around it, so nobody pulled.
 
 ---
 
@@ -1098,8 +1107,13 @@ exit 137 instead of announcing that the world is safe.
 and none in a stop that ran out of time. The fix stands because the window is
 real. The **first** `up -d` after pulling this change must be preceded by
 `docker compose stop -t 180`, because the container being replaced still
-carries the old 10-second limit. The host's clone does not have this change
-yet (see "What is on the host").
+carries the old 10-second limit.
+
+**Live on the host since 2026-11-05.** It was stopped with `-t 180` (3 s,
+exit 0, `Stopping server` then `All dimensions are saved` in the log), moved
+to `main`, and started with `up -d`. `docker inspect` now reports
+`StopTimeout=180`. The local Docker Desktop server still needs the same
+one-time `stop -t 180` before its first `up -d` on this compose file.
 
 > Counting `All dimensions are saved` per log, which this section originally
 > recommended, **does not work**: the line is also printed about a minute after
@@ -1142,25 +1156,43 @@ reflects a container memory limit and this stack sets none. `ExitCode` and
 written. The kernel log is the only record, and `journalctl -k` covers one boot
 at a time (`-b -1` for the previous).
 
-**The fix is a change to the live `.env`**, so it is the owner's call under the
-server rule above. Recommended: `MAX_MEMORY=8G`, which leaves about 5.5 GB for
-the desktop. Also bring `VIEW_DISTANCE` down from 24. The owner raised it on
-purpose, but it is quadratic: 2401 chunks per player at 24 against 625 at 12,
-all generated as a player explores. **Do not schedule the bot's overnight
-pregen until this is fixed**: Chunky on top of a 12 GB heap is more of the
-same memory pressure, with nobody watching.
+**Fixed on 2026-11-05, on the owner's instruction:** `MAX_MEMORY` 12G -> 8G
+in the live `.env`, with `INIT_MEMORY` left at 8G. Java's command line now
+carries `-Xms8G -Xmx8G` (through `user_jvm_args.txt`, so `ps` on the host only
+shows `@user_jvm_args.txt`). It sat at 8.97 GB resident after boot, with 2.8 GB
+available on the host and swap empty.
+
+`VIEW_DISTANCE` was **left at 24**, because the owner raised it on purpose.
+It is the next lever if lag or memory pressure come back. The cost is
+quadratic: 2401 chunks per player at 24 against 625 at 12, all generated as a
+player explores. The first busy evening is the real test: `sar -r -S` the next
+morning should show swap nowhere near 100%, and `journalctl -k | grep 'Killed
+process'` should be empty.
 
 Also from the same read:
 
-- **The host went down hard at 09:19 on 2026-11-05.** The journal reaches no
-  shutdown target. Before that came a watchdog kill (one 60-second tick, 09:13)
-  and Wi-Fi re-authentication failures from 09:12. Swap was at 77% and not
-  climbing, so memory is not proven for that one. The watchdog wrote no crash
-  report.
+- **The host froze at about 09:13 on 2026-11-05**, and the owner power-cycled
+  it at 09:19 when keyboard, mouse and power button got no response. **It was
+  not asleep.** GNOME's automatic suspend is off
+  (`sleep-inactive-ac-timeout 0`), the screen only blanks after 5 minutes
+  (`idle-delay 300`), and no boot in the journal contains a suspend. A blank
+  screen on a hung machine looks exactly like sleep. The evidence for a
+  freeze: the 09:20 `sar` sample was never written, Minecraft's watchdog
+  killed the server at 09:13 (one 60-second tick, no crash report), systemd
+  aborted a stuck `snapd` at 09:18, and journal timestamps arrive out of order.
+  **Memory does not explain this one.** At 09:10 there was 1.9 GB available,
+  swap was steady at 77%, and paging was idle. The Wi-Fi driver is the main
+  suspect but not proven. `rtw88_8821cu` logs `failed to get tx report from
+  firmware` all morning, and at the end its deauth requests were failing.
+  The power cycle booted kernel 7.0.0-42 (it had been -38). If it happens
+  again, `journalctl -k -b -1` right after the reboot is the first read, and a
+  wired connection is the real fix.
 - **The Wi-Fi drops 20-140 times a day** (`CTRL-EVENT-DISCONNECTED reason=4`).
+  Expected, per the owner: the machine sits at the edge of the modem's range.
   Most drops are brief. The one `Couldn't verify username because servers are
-  unavailable` in the logs is from the 09:13 outage.
-- `michael` has no crontab, so `auto-restart.sh` is not scheduled on the host.
+  unavailable` in the logs is from the 09:13 freeze. Wi-Fi power saving is on
+  for the dongle (`iw dev wlx1cbfce2251d6 get power_save`). Turning it off
+  needs sudo, so it is the owner's call.
 
 ## Player reports from 2.4.0 (2026-11-05)
 
@@ -1269,9 +1301,11 @@ would change that picture, for example a chunk loader parked at the frontier.
 deepslate fix rule applies to every future worldgen mod too, so keep the ring
 modest rather than pregenerating far ahead.
 
-**Do not schedule it on the live host until its memory is fixed.** See "The
-rollbacks were the host OOM-killing Java". As of 2026-11-05 the host swaps to
-100% under three players, and an unattended Chunky run would add to it.
+**The host's memory was fixed on 2026-11-05** (see "The rollbacks were the
+host OOM-killing Java"). Before that it swapped to 100% under three players,
+and an unattended Chunky run would have added to it. That blocker is gone, but
+the branch is not deployed: test it against the local server first, as for any
+bot change, and watch `sar -r -S` the morning after its first night.
 
 ## The Discord bot — what the pack has to know about it
 

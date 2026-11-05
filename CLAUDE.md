@@ -93,9 +93,10 @@ types the passphrase into an agent. Three traps:
 | Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.0` |
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
-| Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, branch `2.0` at `93c4cac`, clean and level with `origin/2.0`. **The bot repo's default branch is `master`, which is stale.** `2.0` is the live one, the same trap shape this repo's `2.0` was |
-| Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** through a Realtek USB dongle (`rtw88_8821cu`) |
-| Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run |
+| Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
+| Bot schedules | **all off** as of 2026-11-05: no daily restart, no pre-generation, and `BACKUP_INTERVAL_HOURS=0` (see "Backups" under Not done yet) |
+| Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** (connection `SPARK-SZX7GC-5G`) through a Realtek USB dongle (`rtw88_8821cu`) |
+| Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run. Restarts are the bot's job now |
 
 **Updating the host** is now `git pull --ff-only` in the clone, then
 `docker compose up -d` from the stack path. Keep the clone clean. Anything
@@ -225,6 +226,14 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    `server/README.md` is still the migration path and the fallback when the bot
    is down. **A restore has still never been performed**, so the migration
    remains its first real test.
+
+   > **Scheduled backups are OFF on the live host** (read 2026-11-05). The
+   > bot's `.env` there has `BACKUP_INTERVAL_HOURS=0`, and the newest of its 3
+   > local archives is from **2026-10-12**. The off-host restic repository *is*
+   > configured, so the schedule is the only thing missing. Turning it on is a
+   > one-line change to that `.env` (`2` = two-hourly) and an
+   > `up -d --build`. It is the owner's call because each run uploads to their
+   > Google Drive.
 3. **Cloudflare exposure.** Port-forward 25565, a `cloudflare-ddns` container,
    DNS-only A record plus SRV, and a Tunnel for BlueMap only. No CGNAT (public
    IP confirmed, gateway 192.168.1.254). The runbook lives in the private
@@ -261,28 +270,28 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 **`main` is the live branch. Work on `main`.**  `2.0` was fast-forwarded into
 `main` on 2026-10-11 (53 commits, no divergence) and the pack went to **2.2.0**.
 
-> **The `2.0` branch is now a trap, and it cost real debugging time.** It is
-> frozen at `9bd0290` -- 113 mods, no Project Red -- while `main` has moved on.
-> CI no longer builds it, so it will never catch up. The failure is silent and
-> convincing: both branches report `version = "2.2.0"`, so a server whose
-> `PACKWIZ_URL` still ends in `/2.0/pack.toml` boots happily on a two-week-old
-> pack with no error anywhere. That happened on 2026-10-13.
+> **The `2.0` branch was deleted on 2026-11-05**, on GitHub, in this checkout
+> and on the host. It had been a trap: frozen at `9bd0290` (113 mods, no
+> Project Red) while reporting the same `version = "2.2.0"` as `main`, so a
+> server whose `PACKWIZ_URL` ended in `/2.0/pack.toml` booted happily on a
+> two-week-old pack with no error anywhere. That happened on 2026-10-13. Every
+> commit it held is in `main`. A `PACKWIZ_URL` still naming `/2.0/` now gets a
+> 404 and the server refuses to boot, which is the loud failure it should
+> always have been.
 >
 > If a host is "not getting the new mods", **check `PACKWIZ_URL` in its `.env`
 > first**, before anything else. Note `docker compose pull` is unrelated -- it
 > fetches the server image; the pack is installed by packwiz-installer at
 > container start. And after editing `.env` use `docker compose up -d`, not
 > `restart`: restart reuses the existing container with its old environment.
->
-> Deleting the branch would remove the trap entirely.
 
 Everything that used to point at the `2.0` branch now points at `main`:
 `README.md`'s packwiz-installer route, `server/.env.example`, and the
-verification snippet in `server/README.md`. The live `server/.env` on the host
-has to be changed by hand -- it is gitignored.
+verification snippet in `server/README.md`. The live `server/.env` pins a
+release tag (`v2.4.0`).
 
 Releases are cut by `publish.yml` whenever `pack.toml`'s version **changes**
-between commits, on `main` and `2.0`. It passes `--target "$GITHUB_SHA"`, so
+between commits, on `main`. It passes `--target "$GITHUB_SHA"`, so
 tags land on the commit actually built -- that was broken once and produced a
 v2.1.0 tag pointing at a v1.2.3 commit, which was deleted.
 
@@ -1033,12 +1042,21 @@ why that did not work in game; `/stop` as an operator is the one to use. No
 server-side utility mod is needed for either scheduled or manual restarts, and
 none was added.
 
-**Scheduled restarts are a cron job, not a mod:**
-`server/scripts/auto-restart.sh` warns players (default 15/10/5/1 minutes),
-saves, then stops, and lets Docker relaunch. It skips the countdown when nobody
-is online, and `--now` skips it entirely. This is the **first of the server
-scripts to have actually been executed** rather than only syntax-checked; it
-ran clean end to end, exit 0.
+**Scheduled restarts are the bot's job (since 2026-11-05).** An administrator
+sets them in Discord with `/ia config restart time:05:30` (`warn:15,10,5,1`
+is the default). The bot warns online players in game, waits for a running
+backup, stops pre-generation, sends `stop`, and reports to the audit channel
+how long the server took to come back. It is **off until someone sets a time**,
+and as of 2026-11-05 nobody has. The design record is in the bot's handover,
+"Daily restart".
+
+`server/scripts/auto-restart.sh` is the fallback for when the bot is down. It
+warns players (default 15/10/5/1 minutes), saves, then stops, and lets Docker
+relaunch. It skips the countdown when nobody is online, and `--now` skips it
+entirely. It was the **first of the server scripts to have actually been
+executed** rather than only syntax-checked, and it ran clean end to end, exit 0.
+It was never put in a crontab on the host. Do not add one while the bot's
+schedule is on, or the server restarts twice.
 
 The player-count parser reads `There are N of a max of M players online`, and
 deliberately assumes players ARE online if that reply cannot be parsed -- the
@@ -1191,8 +1209,13 @@ Also from the same read:
   Expected, per the owner: the machine sits at the edge of the modem's range.
   Most drops are brief. The one `Couldn't verify username because servers are
   unavailable` in the logs is from the 09:13 freeze. Wi-Fi power saving is on
-  for the dongle (`iw dev wlx1cbfce2251d6 get power_save`). Turning it off
-  needs sudo, so it is the owner's call.
+  for the dongle (`iw dev wlx1cbfce2251d6 get power_save`). The connection is
+  on NetworkManager's default, which Ubuntu's `default-wifi-powersave-on.conf`
+  sets to 3 (on). The owner turns it off with sudo, per connection:
+  `sudo nmcli connection modify "SPARK-SZX7GC-5G" 802-11-wireless.powersave 2`
+  then `sudo nmcli connection up "SPARK-SZX7GC-5G"`. The driver's own deep
+  power save (`rtw88_core disable_lps_deep`) is still `N`. Setting it to `y`
+  in `/etc/modprobe.d/` is the next step if the firmware errors continue.
 
 ## Player reports from 2.4.0 (2026-11-05)
 

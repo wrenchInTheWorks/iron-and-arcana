@@ -41,6 +41,12 @@ Then right-click → *Allow Launching*.
 
 ## Automatic restarts
 
+**Use the Discord bot for these, not cron.** Since 2026-11-05 an administrator
+sets the daily restart with `/ia config restart time:05:30` in Discord. The bot
+warns players, waits for a running backup, and reports when the server is back.
+`auto-restart.sh` below is the fallback for a host with no bot. Do not run both,
+or the server restarts twice.
+
 No mod is needed. The container runs `restart: unless-stopped`, so a clean
 server stop exits Java with code 0 and Docker starts it again immediately --
 measured at under 5 seconds. A "restart" is therefore just a graceful stop, and

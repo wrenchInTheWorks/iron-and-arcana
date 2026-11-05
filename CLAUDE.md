@@ -94,7 +94,7 @@ types the passphrase into an agent. Three traps:
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
 | Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
-| Bot schedules | **Backups every 2 hours** (`BACKUP_INTERVAL_HOURS=2`, on since 2026-11-05 14:24), **local only**: the Drive copy was turned off at 15:48 the same day. Daily restart and pre-generation are **off** until an administrator sets them with `/ia config restart` / `/ia config pregen`. The bot's previous `.env` is at `~/iron-and-arcana-backups/bot-env-2026-11-05-before` |
+| Bot schedules | **Backups every 2 hours** (`BACKUP_INTERVAL_HOURS=2`, on since 2026-11-05 14:24), **local only**: the Drive copy was turned off at 15:48 the same day. **24 archives kept** (`BACKUP_KEEP_LOCAL=24`, two days). Daily restart and pre-generation are **off** until an administrator sets them with `/ia config restart` / `/ia config pregen`. The bot's previous `.env` is at `~/iron-and-arcana-backups/bot-env-2026-11-05-before` |
 | Machine | 15 GiB RAM, 4 GiB swap, 4 cores, Ubuntu 26.04.1, kernel 7.0, GNOME desktop session, on **Wi-Fi** (connection `SPARK-SZX7GC-5G`) through a Realtek USB dongle (`rtw88_8821cu`) |
 | Not scheduled | `michael` has no crontab, so `auto-restart.sh` does not run. Restarts are the bot's job now |
 
@@ -235,7 +235,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    > request. The first run at 14:34:
    >
    > - **Local: fine.** 1043 MB archive from 1228.6 MB of world, in 46.7 s.
-   >   Six are kept, so budget about 6.5 GB on the bot's volume. **The world is
+   >   Six were kept at first (about 6.5 GB). Now 24, so about 26 GB. **The world is
    >   1.2 GB now**, against 41 MB in October, mostly `region/` (view distance
    >   24 generating chunks as players explore). Every size estimate in the bot's
    >   docs predates that.
@@ -250,10 +250,12 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    >   under `/var/lib/docker` (root-only), so use `docker cp`, which needs no
    >   sudo because michael is in the `docker` group. On the host:
    >   `f=$(docker exec wrenchs-toolkit sh -c 'ls -t /data/backups/*.tar.gz | head -1')`
-   >   then `docker cp "wrenchs-toolkit:$f" ~/`. Only six are kept, which is
-   >   12 hours at two-hourly, so the local tail is the **only** history
-   >   beyond what the owner has copied away. Disk is not the constraint: 179
-   >   GB free on 2026-11-05.
+   >   then `docker cp "wrenchs-toolkit:$f" ~/`. **24 are kept**
+   >   (`BACKUP_KEEP_LOCAL=24`, raised from 6 at 16:00 on the owner's call),
+   >   which is two days at two-hourly and about 26 GB. That local tail is the
+   >   **only** history beyond what the owner has copied away. Disk is not the
+   >   constraint: 179 GB free on 2026-11-05, though the 26 GB grows with the
+   >   world.
    > - **If off-host is ever turned back on**, two traps. The rclone config
    >   uses the owner's **own** OAuth client (`scope = drive`), and an app left
    >   in **Testing** gets refresh tokens that expire after 7 days, so publish

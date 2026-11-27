@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.4.1 (on `main`; the live server is still on 2.4.0) | Small private friend server**
+**Forge 1.20.1 | v2.4.1 (on `main` and live) | Small private friend server**
 
 ---
 
@@ -90,7 +90,7 @@ types the passphrase into an agent. Three traps:
 |---|---|
 | Server stack | `~/Desktop/Iron & Arcana/server`, a **symlink** into a git clone at `~/Documents/Git/iron-and-arcana`. Run `docker compose` from the symlink path: it is the project's recorded working dir |
 | That clone | on **`main`, tracking `origin/main`, clean**. It was on `2.0` at `54de19f` (2026-10-02) with an uncommitted `docker-compose.yml` edit until 2026-11-05. The local `2.0` branch was deleted |
-| Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.0`. **2.4.1 was released on 2026-11-27 and not yet applied here**, on the owner's instruction |
+| Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.1` since 2026-11-27 17:41. The `.env` before that is `~/iron-and-arcana-backups/env-2026-11-27-before-2.4.1` |
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
 | Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
@@ -299,10 +299,13 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 5. ~~Pin `PACKWIZ_URL` to a tag~~ **done 2026-11-04** -- pinned to `v2.4.0`
    in `server/.env.example`, now `v2.4.1`. The live `server/.env` is
    gitignored and has to be changed by hand on the host. See "Restarts" below.
-6. **Move the live server to 2.4.1** when the owner says so: `PACKWIZ_URL` to
-   `v2.4.1` in the host's `.env`, then `docker compose up -d`. The host already
-   has the 180 s stop timeout, so no `stop -t 180` is needed first. Then post
-   `docs/discord-psa-2.4.1.md`. Players do not need to update for 2.4.1.
+6. ~~Move the live server to 2.4.1~~ **done 2026-11-27 17:41**, on the
+   owner's instruction, with nobody online and clear of the backup schedule.
+   `save-all flush`, `PACKWIZ_URL` to `v2.4.1`, `docker compose up -d`. The old
+   run stopped cleanly (`Stopping server`, then `All dimensions are saved` at
+   17:41:06), and the new one was healthy at 17:42:38 with
+   `weather_frequency.js` loaded and 0 KubeJS errors. **Still to do:** post
+   `docs/discord-psa-2.4.1.md`. Players do not need to update.
 
 ### Version and branch state
 
@@ -327,7 +330,7 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 Everything that used to point at the `2.0` branch now points at `main`:
 `README.md`'s packwiz-installer route, `server/.env.example`, and the
 verification snippet in `server/README.md`. The live `server/.env` pins a
-release tag (`v2.4.0`).
+release tag (`v2.4.1`).
 
 Releases are cut by `publish.yml` whenever `pack.toml`'s version **changes**
 between commits, on `main`. It passes `--target "$GITHUB_SHA"`, so

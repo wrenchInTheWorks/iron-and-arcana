@@ -1,5 +1,5 @@
 # Iron & Arcana — Claude Handover Document
-**Forge 1.20.1 | v2.4.0 (on `main`) | Small private friend server**
+**Forge 1.20.1 | v2.4.1 (on `main`; the live server is still on 2.4.0) | Small private friend server**
 
 ---
 
@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Name | Iron & Arcana |
-| Version | 2.4.0 |
+| Version | 2.4.1 |
 | Minecraft | 1.20.1 |
 | Loader | **Forge 47.4.10** (not NeoForge) |
 | Author | iron-and-arcana |
@@ -90,7 +90,7 @@ types the passphrase into an agent. Three traps:
 |---|---|
 | Server stack | `~/Desktop/Iron & Arcana/server`, a **symlink** into a git clone at `~/Documents/Git/iron-and-arcana`. Run `docker compose` from the symlink path: it is the project's recorded working dir |
 | That clone | on **`main`, tracking `origin/main`, clean**. It was on `2.0` at `54de19f` (2026-10-02) with an uncommitted `docker-compose.yml` edit until 2026-11-05. The local `2.0` branch was deleted |
-| Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.0` |
+| Host-specific settings | **all in `.env`**: `INIT_MEMORY=8G`, `MAX_MEMORY=8G`, `VIEW_DISTANCE=24`, `SIMULATION_DISTANCE=8`, `BLUEMAP_BIND=127.0.0.1`, `PACKWIZ_URL` at `v2.4.0`. **2.4.1 was released on 2026-11-27 and not yet applied here**, on the owner's instruction |
 | What was replaced | `~/iron-and-arcana-backups/` (mode 700): `env-2026-11-05-before` (the old `.env`, which holds the RCON password) and `compose-local-edit-2026-11-05.patch` |
 | Tunnel and DDNS | `cloudflared` from `~/Desktop/Networking/cloudflared-tunnel`, joined to `iron-and-arcana_default` and reaching BlueMap over it, so 8100 does not need publishing. `cloudflare-ddns` from `~/Documents/Git/cloudflare-ddns` |
 | Bot | `~/Documents/Git/wrenchs-toolkit-discord-bot`, on **`master`** tracking `origin/master`, clean. Deployed 2026-11-05 at `308ddef` (pre-generation, `/ia config pregen`, `/ia config restart`). The bot repo's `2.0` branch was fast-forwarded into `master` and deleted the same day, so `master` is live. Update with `git pull --ff-only` then `docker compose up -d --build` |
@@ -296,8 +296,12 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
 4. **Config tuning** after some playtime. Serene Seasons was made cosmetic on
    2026-11-03 -- see "Serene Seasons is cosmetic" below.
 5. ~~Pin `PACKWIZ_URL` to a tag~~ **done 2026-11-04** -- pinned to `v2.4.0`
-   in `server/.env.example`. The live `server/.env` is gitignored and has to
-   be changed by hand on the host. See "Restarts" below.
+   in `server/.env.example`, now `v2.4.1`. The live `server/.env` is
+   gitignored and has to be changed by hand on the host. See "Restarts" below.
+6. **Move the live server to 2.4.1** when the owner says so: `PACKWIZ_URL` to
+   `v2.4.1` in the host's `.env`, then `docker compose up -d`. The host already
+   has the 180 s stop timeout, so no `stop -t 180` is needed first. Then post
+   `docs/discord-psa-2.4.1.md`. Players do not need to update for 2.4.1.
 
 ### Version and branch state
 
@@ -355,9 +359,11 @@ Checked 2026-10-01 by reading the jars. **Every v1 KubeJS job is obsolete on
 | 18 Silent Gear material overrides | Silent Gear removed from the pack |
 | EMI stack hiding | Unnecessary — config-disabled items do not appear |
 
-**Nothing was ported, but KubeJS is no longer idle** — it now carries two
-`kubejs/data/` recipe overrides, which is exactly the escape-hatch use it was
-kept for (v1 maintained a running list of broken recipes). Note Architectury
+**Nothing was ported, but KubeJS is no longer idle** — it now carries
+`kubejs/data/` recipe and worldgen overrides, which is exactly the
+escape-hatch use it was kept for (v1 maintained a running list of broken
+recipes), and since 2.4.1 a server script that cuts rain by 35% (see "Rain:
+35% fewer" below). Note Architectury
 API is a KubeJS dependency — check before removing either.
 
 ### Live KubeJS overrides
@@ -969,7 +975,62 @@ immediately. GlitchCore also syncs config server -> client
 The companion file is `config/sereneseasons/seasons.toml`, which is
 **deliberately not tracked**. Colour shifts, snow and ice, and weather
 frequency are all left at their defaults, because those are the parts worth
-keeping.
+keeping. Rain is reduced on top of its weather frequency by a KubeJS script,
+not through this file: see the next section for why the file cannot do it.
+
+## Rain: 35% fewer (2.4.1, 2026-11-27)
+
+The owner asked for weather events cut by 35%. Shipped as
+`kubejs/server_scripts/weather_frequency.js`. It is **server-side only**, so
+players do not need to update, and a 2.4.0 client joins a 2.4.1 server with
+no mismatch.
+
+**Serene Seasons, not vanilla, was why it rained so much.** With
+`change_weather_frequency = true` (its default),
+`RandomUpdateHandler.adjustWeatherFrequency` runs every tick: if it is not
+raining and the countdown to the next rain is above the sub-season's
+`max_rain_time`, it re-rolls the countdown into
+`[min_rain_time, max_rain_time)`. The defaults are 36000 in winter, 96000 in
+spring and summer and 180000 in autumn, with `min_rain_time` 12000
+throughout. Vanilla rolls a dry spell of 12000-180000 ticks and a rain of
+12000-24000, so the mean dry spell is 24000 in winter, 54000 in spring and
+summer, and vanilla's own 96000 in autumn. Share of the time raining: winter
+~43%, spring and summer ~25%, autumn ~16%, which is vanilla.
+
+**Its config cannot fix this.** Serene Seasons only ever shortens a dry spell.
+A roll below `max_rain_time` is left alone, so no value makes the wait longer
+than vanilla's, and autumn could not be reduced at all.
+
+**So the script calls off rain as it starts.** A natural start has a
+recognisable state on its first tick: the raining flag is true and `rainTime`
+is 0, because vanilla flips the flag when the countdown reaches 0 and only
+rolls the rain's length on the next tick. `/weather rain` sets a length
+directly, so commands are never touched. When the script calls a start off, it
+sets raining back to false, vanilla rolls a fresh dry spell on the next tick,
+and Serene Seasons caps it as usual. Letting a start through with probability
+q gives a cycle of C/q + R. Solving C/q + R = (C + R) / 0.65 gives these
+chances of calling it off: **winter 48.5%, spring and summer 41.8%, autumn
+39.0%**. Every season gets 35% fewer rains and spends 35% less time raining,
+and the seasonal pattern is kept. Thunder only shows while it rains, so storms
+drop by about the same share.
+
+`LevelEvents.tick('minecraft:overworld', ...)` is posted from Architectury's
+`SERVER_LEVEL_POST`: once per tick, after the level's own tick, and keyed by
+dimension. So each start is seen exactly once. The season comes from
+`sereneseasons.api.season.SeasonHelper`. Without Serene Seasons the weather
+is vanilla, and the script falls back to the autumn figure.
+
+**Tested on the local server on 2026-11-27.** `/weather clear 1` ends in a
+natural start about a second later, so trials are cheap. Out of 40 winter
+starts, 20 were called off (expected 19.4). A temporary probe script showed
+that every called-off start stayed dry and rolled a fresh spell. It also
+showed Serene Seasons re-rolling any vanilla roll above 36000 on the next tick
+(146377 became 12599), which confirms the winter mean the chances are built
+on. On the live server, each decision logs `weather: <SEASON> rain called off`
+or `... let through` to `logs/kubejs/server.log`.
+
+**If `season_properties` are ever changed, recompute the chances.** They
+assume Serene Seasons' defaults.
 
 > **"8-day seasons" was a misreading, now corrected.** The option is
 > `time_settings.sub_season_duration`, and the jar's own comment is "The
@@ -1253,9 +1314,11 @@ Also from the same read:
 
 ## Player reports from 2.4.0 (2026-11-05)
 
-Diagnosed by reading jars, and none needed a pack change, so **there was no
-2.4.1 release**. Shipping identical content under a new version would only
+Diagnosed by reading jars, and none needed a pack change, so none of them
+went into a release. Shipping identical content under a new version would only
 make every player re-import, which itself costs them their map (see below).
+2.4.1 (2026-11-27) is the rain change, and it is server-side, so players need
+not re-import for it either.
 
 **"Trees don't grow outside their biomes" is Serene Seasons, and 2.4.0 already
 turns it off.** SS tags every vanilla sapling to seasons (jungle and acacia
@@ -1585,7 +1648,8 @@ public pack, and no longer constrained by Modrinth's rules.
   `options.txt` existed only to enable Fresh Animations and was removed with
   them. Do not reintroduce them for looks without re-testing mob-heavy scenes.
 - **Seasons are cosmetic, not a farming mechanic.** Serene Seasons is kept for
-  the colour, weather and snow; `seasonal_crops` is off. If a mod is ever added
+  the colour, weather and snow; `seasonal_crops` is off. Its rain runs 35% below
+  its own default since 2.4.1, through KubeJS (see "Rain: 35% fewer"). If a mod is ever added
   that reads Serene Seasons' crop tags, check it does not reintroduce the
   gating by its own route.
 - **Performance is a real constraint.** BlueMap, MineColonies AI and Create

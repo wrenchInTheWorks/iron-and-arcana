@@ -81,6 +81,10 @@ file = "kubejs/server_scripts/projectred_gear.js"
 hash = "a20acef5641f22a0c48c3b1a25c1742bd1eb228cf63ed73fcecd88ca620766ac"
 
 [[files]]
+file = "kubejs/server_scripts/weather_frequency.js"
+hash = "4579e72d1043965c947d62a52a5b883d79d63265efbe5b96640171906078e683"
+
+[[files]]
 file = "mods/aether-treasure-reforging.pw.toml"
 hash = "5507d07be075713dd8d9824354a3b7a34a881144c40a7a7591279e6575da7411"
 metafile = true

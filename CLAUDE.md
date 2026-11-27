@@ -255,7 +255,8 @@ key is configured in `%APPDATA%\packwiz\.packwiz.toml`.
    >   which is two days at two-hourly and about 26 GB. That local tail is the
    >   **only** history beyond what the owner has copied away. Disk is not the
    >   constraint: 179 GB free on 2026-11-05, though the 26 GB grows with the
-   >   world.
+   >   world. **Measured on 2026-11-27: 24 archives, 40 GB, 138 GB free**, the
+   >   oldest two days old, so retention is working and the world has grown.
    > - **If off-host is ever turned back on**, two traps. The rclone config
    >   uses the owner's **own** OAuth client (`scope = drive`), and an app left
    >   in **Testing** gets refresh tokens that expire after 7 days, so publish
@@ -1225,8 +1226,8 @@ carries the old 10-second limit.
 **Live on the host since 2026-11-05.** It was stopped with `-t 180` (3 s,
 exit 0, `Stopping server` then `All dimensions are saved` in the log), moved
 to `main`, and started with `up -d`. `docker inspect` now reports
-`StopTimeout=180`. The local Docker Desktop server still needs the same
-one-time `stop -t 180` before its first `up -d` on this compose file.
+`StopTimeout=180`. The local Docker Desktop server got the same one-time
+`stop -t 180` and `up -d` on 2026-11-27 and reports `StopTimeout=180` too.
 
 > Counting `All dimensions are saved` per log, which this section originally
 > recommended, **does not work**: the line is also printed about a minute after
